@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>User Login</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/site_media/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <!--<link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">-->
+
+    <!-- Custom CSS -->
+    <link href="/site_media/css/template.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/site_media/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="bg-img">
+    <nav class="navbar navbar-default-ems navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand slogan">Exam Central</a>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="tcl-login tcl-login-panel tcl-panel-default">
+                    
+                    <div class="panel-body tcl-panel-heading">
+                        <form role="form" method="post" action=".">
+                           {{ form.non_field_errors|striptags }}
+                           {% csrf_token %}
+                            <fieldset>
+                                <div class="form-group">
+                                    {{ form.username }}
+                                    <!--<input class="form-control"  placeholder="E-mail" name="email" type="email" > --!>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    {{ form.password }}
+                                    <!--<input class="form-control"  placeholder="Password" name="password" type="password" value=""> --!>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                    </label>
+                                   <span class="float-right forgotpwd"><a href="#">Forgot Password</a></span>
+                                </div>
+                                <div class="checkbox margin-bottom-0">
+                                    <button type="submit" class="tcl-btn info">Sign In</button>
+                                    <span class="padding-left-20">|</span>
+                                    <button type="button" class="tcl-btn info float-right" onclick="window.location.href='/register'">Sign Up</button>
+                                </div>
+                                
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-ems"></div>
+
+    <!-- jQuery -->
+    <script src="/site_media/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/site_media/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <!--<script src="vendor/metisMenu/metisMenu.min.js"></script>-->
+
+
+</body>
+
+</html>

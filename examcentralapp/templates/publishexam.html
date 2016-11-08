@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Publish Exam{% endblock %}
+{% block external %}
+{% endblock %}
+{% block content %}
+<div id="publishexam-div">
+  <form class="form-signin" method="post" action="/publishexam/">
+    {% csrf_token %}
+    <h2 class="form-signin-heading">Publish Exam</h2>
+    <h2 class="form-signin-heading">{{examname}}</h2>
+    <input type="hidden" name="examid" value="{{ examid }}" />
+    <button class="btn-large button-ec" type="submit">Publish</button>
+  </form> 
+</div>
+{% endblock %}

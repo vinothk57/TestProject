@@ -1,0 +1,48 @@
+{% if userexams %}
+    {% for exam in userexams %}
+      <li>
+        <PRE>
+        <p>{{ exam.examname|escape }}</p>
+        <form id="removeexam-form" method="post" action="/removeexam/">
+          {% csrf_token %}
+          <input type="hidden" name="examid" value="{{ exam.examname.id }}" />
+          <button id="{{exam.id}}removeexambtn" class="tcl-btn" type="submit" value="removeexam"> Unsubscribe </button>
+        </form>
+
+        <form id="takeexam-form" method="post" action="/takeexam/">
+          {% csrf_token %}
+          <input type="hidden" name="examid" value="{{ exam.examname.id }}" />
+          <button id="{{exam.id}}takeexambtn" class="tcl-btn" type="submit" value="takeexam"> Attend Now </button>
+        </form>
+
+        {% if show_tags %}
+          Tags:
+          {% if exam.examname.tag_set.all %}
+            <ul>
+              {% for tag in exam.examname.tag_set.all %}
+                <li>{{ tag.name }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            None.
+          {% endif %}
+        {% endif %}
+        {% if show_user %}
+          Posted by:
+          <a href="/user/{{ exam.user.username }}/">
+            {{ exam.user.username }}</a>
+        {% endif %}
+        </PRE>
+      </li>
+                     <div class="col-md-3 margin-top-10 margin-bottom-10">
+                        <div><img src="site_media/images/inst-img.jpg" class="img-thumbnail1" width="197" height="91">
+                        </div>
+                        <div class="main-cont">{{ exam.examname | escape }}</div>
+                        <input type="button" name="button" value="Take Exam" class="take-exam-btn" onclick="window.location.href='exam.html'" />
+                     </div>
+
+    {% endfor %}
+{% else %}
+  <p>No Exam found.</p>
+{% endif %}
+

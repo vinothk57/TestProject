@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exam Central</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/site_media/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/site_media/css/template.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/site_media/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+   
+    <!-- jQuery -->
+    <script src="/site_media/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/site_media/bootstrap/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <header>
+            <div class="navbar navbar-default-ems navbar-fixed-top">
+                <div class="container"><a href="/" class="navbar-brand slogan">Exam Central</a>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Signup</a></li>
+                </ul>
+
+                </div>
+            </div>
+            <div><img src="/site_media/images/banner.jpg" class="img-responsive" height="400"></div>
+    </header>
+    
+    <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 border-head"><h4>Popular Exams</h4></div>
+                </div>
+                <div class="row">
+                  {% include 'examlist.html' %}
+                </div>
+
+            </div>
+    </section>
+    <footer>
+    <div class="footer-tcl">
+           <div class="container footer-list">
+            <div class="row">
+            <div class="col-md-3 footer-cont">
+                <h4>Exam Central</h4><p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout</p>
+            </div>
+            <div class="col-md-3">
+                <h4 class="padding-left-36">Exam Central</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Careers</a></li>
+                    
+                </ul>
+            </div>
+            <div class="col-md-3">
+                 <h4 class="padding-left-36">Connect with us</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Linkedin</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                 <h4 class="padding-left-36">More</h4>
+                <ul>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+           </div>
+    </div>
+    </footer>
+
+</body>
+
+</html>

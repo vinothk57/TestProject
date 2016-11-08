@@ -1,0 +1,25 @@
+<p>{{ qno }}. {{ qdetails.question }}</p>
+
+{% if qdetails.qtype == 1 %}
+<form>
+  <input type="radio" name="option"/> {{ optiona.option}}<br>
+  <input type="radio" name="option"/> {{ optionb.option}}<br>
+  {% if optionc %}
+    <input type="radio" name="option"/> {{ optionc.option}}<br>
+  {% endif %}
+  {% if optiond %}
+    <input type="radio" name="option"/> {{ optiond.option}}<br>
+  {% endif %}
+</form>
+{% else %}
+<form>
+  <input type="checkbox" name="option"/> {{ optiona.option}}<br>
+  <input type="checkbox" name="option"/> {{ optionb.option}}<br>
+  {% if optionc %}
+    <input type="checkbox" name="option"/> {{ optionc.option}}<br>
+  {% endif %}
+  {% if optiond %}
+    <input type="checkbox" name="option"/> {{ optiond.option}}<br>
+  {% endif %}
+</form>
+{% endif %}

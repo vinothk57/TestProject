@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Add Questions{% endblock %}
+{% block external %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="tcl-login tcl-login-panel tcl-panel-default">
+           <div class="panel-body tcl-panel-heading">
+
+             <form method="post" action="/addquestions/">
+               {% csrf_token %}
+               <h2>Add Questions</h2>
+               <h2>{{examname}}</h2>
+               {% if quploaded > 0 %}
+                 <h2>Total Questions added : {{quploaded}}</h2>
+               {% endif %}
+               <div class="form-group">
+                   {{ form.qno.errors }}
+                   {{ form.qno }}
+               </div>
+               <div class="form-group">
+                   {{ form.question.errors }}
+                   {{ form.question }}
+               </div>
+               <div class="form-group">
+                   {{ form.qtype.errors }}
+                   {{ form.qtype.label_tag }}
+                   {{ form.qtype }}
+               </div>
+               <div class="form-group">
+                   {{ form.qcategory.errors }}
+                   {{ form.qcategory.label_tag }}
+                   {{ form.qcategory }}
+               </div>
+               <div class="form-group">
+                   {{ form.optionA.errors }}
+                   {{ form.optionA }}
+               </div>
+               <div class="form-group">
+                   {{ form.isOptionA.errors }}
+                   {{ form.isOptionA.label_tag }}
+                   {{ form.isOptionA }}
+               </div>
+               <div class="form-group">
+                   {{ form.optionB.errors }}
+                   {{ form.optionB }}
+               </div>
+               <div class="form-group">
+                   {{ form.isOptionB.errors }}
+                   {{ form.isOptionB.label_tag }}
+                   {{ form.isOptionB }}
+               </div>
+               <div class="form-group">
+                   {{ form.optionC.errors }}
+                   {{ form.optionC }}
+               </div>
+               <div class="form-group">
+                   {{ form.isOptionC.errors }}
+                   {{ form.isOptionC.label_tag }}
+                   {{ form.isOptionC }}
+               </div>
+               <div class="form-group">
+                   {{ form.optionD.errors }}
+                   {{ form.optionD }}
+               </div>
+               <div class="form-group">
+                   {{ form.isOptionD.errors }}
+                   {{ form.isOptionD.label_tag }}
+                   {{ form.isOptionD }}
+               </div>
+               <div class="form-group">
+                   {{ form.answer.errors }}
+                   {{ form.answer }}
+               </div>
+
+               <input type="hidden" name="examid" value="{{ examid }}" />
+               
+             {% if quploaded > 0 %}
+                 <div class="form-group text-center margin-bottom-0">
+                   <button class="tcl-btn" type="submit">Add another question</button>
+                 </div>
+             {% else %}
+                 <div class="form-group text-center margin-bottom-0">
+                   <button class="tcl-btn" type="submit">Add</button>
+                 </div>
+             {% endif %}
+             {% if quploaded > 0 %}
+               </form>
+                 <form method="post" action="/publishexam/">
+                 {% csrf_token %}
+                 <input type="hidden" name="examid" value="{{ examid }}" />
+                 <div class="form-group text-center margin-bottom-0">
+                   <button class="tcl-btn" type="submit">Publish</button>
+                 </div>
+               </form>
+             {% endif %}
+           </div>
+       </div>
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block external %}
+      <script type="text/javascript" src="/site_media/search.js">
+      </script>
+{% endblock %}
+{% block title %}Search Exam{% endblock %}
+{% block head %}Find exam{% endblock %}
+{% block content %}
+  {% if user.username %}
+    <p>Welcome {{ user.username }}!
+      <p><a href="/logout/">Logout</a></p>
+      <p>You can start taking the exams now!</p>
+  {% else %}
+    <p>Welcome anonymous user!
+      You need to <a href="/login/">login</a>
+      before you can start taking exams.</p>
+  {% endif %}
+
+  <form id="search-form" method="get" action=".">
+    {{ form.as_p }}
+    <input type="submit" value="search" />
+  </form>
+  <div id="search-results">
+    {% if show_results %}
+      {% include 'examlist.html' %}
+    {% endif %}
+  </div>
+{% endblock %}

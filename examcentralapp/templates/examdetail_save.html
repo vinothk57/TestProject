@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Create Exam{% endblock %}
+{% block external %}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="tcl-login tcl-login-panel tcl-panel-default">
+               <div class="panel-body tcl-panel-heading">
+                 <h2>Create Exam</h2>
+                 <form id="createexam-form" method="post" action=".">
+                   {% csrf_token %}
+                   
+                   <div class="form-group">
+                       {{ form.examname.errors }}
+                      {{ form.examname }}
+                   </div>
+                   <div class="form-group">
+                       {{ form.total_questions.errors }}
+                      {{ form.total_questions }}
+                   </div>
+                   <div class="form-group">
+                       {{ form.start_time.errors }}
+                      {{ form.start_time }}
+                   </div>
+                   <div class="form-group">
+                       {{ form.end_time.errors }}
+                      {{ form.end_time }}
+                   </div>
+                   <div class="form-group">
+                       {{ form.price.errors }}
+                      {{ form.price }}
+                   </div>
+                   <div class="form-group">
+                       {{ form.tags.errors }}
+                      {{ form.tags }}
+                   </div>
+                   <div class="form-group text-center margin-bottom-0">
+                     <button class="tcl-btn" type="submit">Save</button>
+                   </div>
+                 </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

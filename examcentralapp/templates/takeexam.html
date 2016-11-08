@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Attend Exam{% endblock %}
+{% block external %}
+      <script type="text/javascript" src="/site_media/getqtn.js">
+      </script>
+{% endblock %}
+{% block content %}
+
+<!--  <div style="width:100%;">
+    <div id="qarea" style="width:50%;height:500px; float:left;border:1px solid #ccc;"> 
+     
+    </div>
+    <div style="width:40%;height:500px; float:right; border:1px solid #ccc"> 
+       <input type="hidden" id="examid" value="{{ examid }}" />
+       <form id="getqtn-form" method="get" action=".">
+         {% csrf_token %}
+         {% for index in quploaded %}
+           <input id="qno{{ index }}" type="submit" value="{{ index }}" />
+         {% endfor %}
+       </form>
+    </div>
+  </div>
+--!>
+                <div class="row">
+                    <div class="col-md-12 cont-head"><div class="pull-left"><h4>{{ examname }}</h4></div><div id="countdown2" class="pull-right"></div></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8" style="border:1px solid #ccc; border-radius: 5px; margin-bottom: 12px; ">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#general">General Awareness</a></li>
+                            <li><a data-toggle="tab" href="#analysis">Data Analysis</a></li>
+                            <li><a data-toggle="tab" href="#language">English Language</a></li>
+                            <li><a data-toggle="tab" href="#reasoning">Reasoning</a></li>
+                        </ul>
+                      <div class="tab-content">
+                        <div id="general" class="tab-pane fade in active border-radius">
+                            <ul class="margin-top-10 qtn-cont" id="genList">
+                            </ul>
+
+                        </div>
+                        <div id="analysis" class="tab-pane fade border-radius">
+                            <ul class="margin-top-10 qtn-cont" id="analysisList">
+                            </ul>
+                        </div>
+                        <div id="language" class="tab-pane fade border-radius">
+                            <ul class="margin-top-10 qtn-cont" id="langList">
+                            </ul>
+                        </div>
+                        <div id="reasoning" class="tab-pane fade border-radius">
+                            <ul class="margin-top-10 qtn-cont" id="reasonList">
+                            </ul>
+                        </div>
+                      </div>
+                        <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="review" class="tcl-btn" value="Mark for Review and Next" /></div>
+                        <div class="col-md-3 col-md-offset-1 margin-top-10 margin-bottom-10"><input type="button" id="clear" class="tcl-btn" value="Clear Response" /></div>
+                        <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="prev" class="tcl-btn pull-right" value="Previous" /></div>
+                        <div class="col-md-2 margin-top-10 margin-bottom-10"><input type="button" id="next" class="tcl-btn pull-right" value="Save and Next" /></div>
+                    </div>
+                    <div class="col-md-4 text-center" style="height:500px;">
+                        <div style="border: 1px solid #ccc; border-radius: 5px;">
+                          <input type="hidden" id="examid" value="{{ examid }}" />
+                          <input type="hidden" id="totalqtns" value="{{ totalqtns }}" />
+                          <form id="getqtn-form" method="get" action=".">
+                            {% csrf_token %}
+                            {% for index in quploaded %}
+                              <input id="qno{{ index }}" type="submit" class="btn notvstd-btn btn-sm" value="{{ index }}" />
+                            {% endfor %}
+                          </form>
+                        </div>
+                        <div style="width: 100%" class="margin-top-10 margin-bottom-10">
+                            <div style="width: 25%; float: left;">Answered</div>
+                            <div style="width: 25%; float: left;"><input type="button"  name="" value="" class="btn btn-info btn-sm ans-button"/></div>
+                            <div style="width: 25%; float: left;">Not Visited</div>
+                            <div style="width: 25%; float: left;"><input type="button"  name="" value="" class="btn btn-info btn-sm notvisit-button"></div>
+                        </div>
+                        <div>
+                            <div style="width: 25%; float: left;">Marked for Review</div>
+                            <div style="width: 25%; float: left;"><input type="button"  name="" value="" class="btn btn-info btn-sm markrew-button"/></div>
+                            <div style="width: 25%; float: left;">Not Answered</div>
+                            <div style="width: 25%; float: left;"><input type="button"  name="" value="" class="btn btn-info btn-sm notans-button"></div>
+                        </div>
+                        <div style="clear:both;"></div>
+                        <div style="border-radius: 5px; border:1px solid #ccc;height: 110px; margin-top: 20px;">
+                            <div style="float: left; padding: 40px;"><a href="#">Instructions</a></div>
+                            <div style="float: right; padding: 30px;"><input id="submitexam" type="button" name="" value="Submit" class="tcl-btn"/></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}User Login{% endblock %}
+{% block content %}
+  {% if form.has_errors %}
+    <p>Your username and password didn't match. 
+       Please try again.</p>
+  {% endif %}
+  <div class="container">
+    <form class="form-signin" method="post" action=".">
+      {% csrf_token %}
+      <h2 class="form-signin-heading">Sign In</h2>
+      <p><label for="id_username">User Id* </label></p>
+      <p>{{ form.username }}</p>  
+      <p><label for="id_password">Password* </label></p>
+      <p>{{ form.password }}</p>
+      
+      <center> <button class="btn-large button-ec" type="submit">Login</button> </center>
+      <!--<input type="submit" value="login" />
+      <input type="hidden" name="next" value="/" /> --!>
+    </form>
+  </div>
+
+{% endblock %}

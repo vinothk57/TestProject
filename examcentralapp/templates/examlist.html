@@ -1,0 +1,84 @@
+{% if examlist %}
+<!--  <ul class="list_exams">
+    {% for exam in examlist %}
+      <li class="title">
+        <p>{{ exam.examname }}</p>
+        <br />
+        {% if show_tags %}
+          Tags:
+          {% if exam.examname.tag_set.all %}
+            <ul class="tags">
+              {% for tag in exam.examname.tag_set.all %}
+                <li>{{ tag.name }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            None.
+          {% endif %}
+          <br />
+        {% endif %}
+        {% if show_user %}
+          Posted by: 
+          <a href="/user/{{ exam.user.username }}/" 
+          class="username">
+            {{ exam.user.username }}</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul> --!>
+{% else %}
+  <p>No Exam found.</p>
+{% endif %}
+
+{% for exam in examlist %}
+   <div class="col-md-3">
+      <div class="col-md-3 margin-top-10 margin-bottom-10">
+       <div><img src="site_media/images/inst-img.jpg" class="img-thumbnail1" width="197" height="91"></div>
+         <div class="main-cont"><div class="height-100">{{ exam.examname }}</div>
+         <!--<input type="button" name="button" value="Rs:300" class="exam-btn" data-toggle="modal" data-target="#myModal"/> --!>
+         <button id="{{ exam.id }}examdetailbtn" type="button" class="exam-btn" data-toggle="modal" data-target="#myModal"> {{exam.price}}</button>
+         </div>
+      </div>
+   </div>
+   <script>$("#{{ exam.id }}examdetailbtn").click(function(){
+     $("#myModal").find(".modal-title").html( "<h4> {{ exam.examname }} </h4>" );
+     $("#myModal").find(".modal-body").html( "Total Questions:  {{ exam.total_questions }}<br> \
+                                              Start Time:  {{ exam.start_time }} <br>\
+                                              End Time:  {{ exam.end_time }} <br>\
+                                              Price:  {{ exam.price }}" );
+
+     {% if user.username %}
+       $("#myModal").find(".modal-footer").html( "  <form id=\"addexam-form\" method=\"post\" action=\"/addexam/\"> \
+                                                      {% csrf_token %} \
+                                                      <input type=\"hidden\" name=\"examid\" value=\"{{ exam.id }}\" /> \
+                                                      <button type=\"submit\" value=\"addexam\">Subscribe </button> \
+                                                    </form> \
+                                                    " );
+       $("#myModal").find(".modal-footer").find("button").attr("id", "{{ exam.id}}addexambtn");
+       $("#myModal").find(".modal-footer").find("button").attr("class", "btn btn-default");
+     {% endif %}
+     });
+   </script>
+{% endfor %}
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title text-center">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text available in the website.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
