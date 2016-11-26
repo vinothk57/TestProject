@@ -3,6 +3,8 @@ var lastqtnno = 1;
 var totalqtn = $("#totalqtns").val();
 var loadQuestionAt = "#genList";
 var getLastQtn = false;
+var JSONAnswerData = {};
+JSONAnswerData['ansList'] = {};
 
 //Model JSON
 var JSONObj = {
@@ -64,6 +66,14 @@ function saveAnswer() {
     $('#' + qid).removeClass("ansd-btn"); 
     $('#' + qid).addClass("notans-btn");
   }
+
+  if(ans != "") {
+    JSONAnswerData['ansList'][currqtnno] = ans;
+  } else {
+    if (currqtnno in JSONAnswerData['ansList']) {
+      delete JSONAnswerData['ansList'][currqtnno]
+    }
+  }
 }
 
 function checkAnswered() {
@@ -92,7 +102,15 @@ function checkAnswered() {
     }
   }
 
+  if(ans != "") {
+    JSONAnswerData['ansList'][currqtnno] = ans;
+  } else {
+    if (currqtnno in JSONAnswerData['ansList']) {
+      delete JSONAnswerData['ansList'][currqtnno]
+    }
+  }
 }
+
 function getLastQtnOfCategory(category) {
   var qtnFound = false;
   for (i = JSONObj['qlist'].length -1; i >=0; i--) {
@@ -217,7 +235,7 @@ function loadQuestionData() {
         }
         options = options + "/>" + qelement['options'][i]['option'];
       }
-    } else if (qelement['type'] == 2) {
+    } else if (qelement['type'] == 3) {
       for (i = 0; i <  qelement['options'].length; i++) {
         options = options + "<br><input type=\"checkbox\" name=\"option\" ";
         if(qelement['options'][i]['checked'] == "true") {
@@ -367,15 +385,51 @@ $(document).ready(function () {
     }
   );
 
-  $("#submitexam").click(function() {
-     var JSONAnswerData = {};
+  $("#submitexam").click(function(e) {
+     e.preventDefault();
      JSONAnswerData['examid'] = $("#examid").val();
-     JSONAnswerData['ansList'] = [];
+     JSONAnswerData['attemptid'] = $("#attemptid").val();
      $.ajax({
-         url: '/evaluateexam',
-         type: 'POST',
-         data: {json: JSON.stringify(JSONAnswerData)}
-     })
+         url: "/evaluateexam/",
+         type: "post",
+         dataType: "json",
+         data: {
+               json: JSON.stringify(JSONAnswerData)
+         },
+         success: function(result) {
+             $("#content-div").html("<h4>Exam Submitted successfully</h4><br> <h3> Result </h3>\
+                                                   <table class=\"table table-striped\"> \
+                                       <thead> \
+                                         <tr> \
+                                           <th>Item</th> \
+                                           <th>Value</th> \
+                                         </tr> \
+                                       </thead> \
+                                       <tbody> \
+                                         <tr> \
+                                           <td>Total Questions</td> \
+                                           <td>" + result["totalqtns"] + "</td> \
+                                         </tr> \
+                                         <tr> \
+                                           <td>Answered Questions</td> \
+                                           <td>" + result["answered_questions"] + "</td> \
+                                         </tr> \
+                                         <tr> \
+                                           <td>Correct Answers</td> \
+                                           <td>" + result["correctly_answered"] + "</td> \
+                                         </tr> \
+                                         <tr> \
+                                           <td>Total Score</td> \
+                                           <td>" + result["mark"] + "</td> \
+                                         </tr> \
+                                       </tbody> \
+                                     </table><br><br>");
+         },
+         error: function(data){
+             alert('error; ' + JSON.stringify(data));
+         }
+     });
+    return false;
   });
 
   var examid = $("#examid").val();

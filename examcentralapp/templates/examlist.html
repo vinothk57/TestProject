@@ -43,6 +43,7 @@
    <script>$("#{{ exam.id }}examdetailbtn").click(function(){
      $("#myModal").find(".modal-title").html( "<h4> {{ exam.examname }} </h4>" );
      $("#myModal").find(".modal-body").html( "Total Questions:  {{ exam.total_questions }}<br> \
+                                              Total Allowed Attempts:  {{ exam.attempts_allowed }} <br>\
                                               Start Time:  {{ exam.start_time }} <br>\
                                               End Time:  {{ exam.end_time }} <br>\
                                               Price:  {{ exam.price }}" );

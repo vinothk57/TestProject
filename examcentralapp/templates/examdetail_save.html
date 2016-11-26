@@ -20,6 +20,10 @@
                       {{ form.total_questions }}
                    </div>
                    <div class="form-group">
+                       {{ form.attempts_allowed.errors }}
+                      {{ form.attempts_allowed }}
+                   </div>
+                   <div class="form-group">
                        {{ form.start_time.errors }}
                       {{ form.start_time }}
                    </div>

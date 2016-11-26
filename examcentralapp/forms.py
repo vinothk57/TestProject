@@ -65,6 +65,10 @@ class ExamDetailsSaveForm(forms.Form):
     label='', min_value = 1,
     widget=forms.TextInput(attrs={'id': 'total-questions', 'class': 'form-control', 'placeholder': 'Total Questions'})
   )
+  attempts_allowed = forms.IntegerField(
+    label='', min_value = 1,
+    widget=forms.TextInput(attrs={'id': 'attempts-allowed', 'class': 'form-control', 'placeholder': 'Attempts allowed per user'})
+  )
 
   start_time = forms.DateTimeField(label='', widget=forms.DateTimeInput(attrs={'id': 'start-time', 'class': 'form-control', 'placeholder': 'Start Time'}))
   end_time = forms.DateTimeField(label ='', widget=forms.DateTimeInput(attrs={'id': 'end-time', 'class': 'form-control', 'placeholder': 'End Time'}))

@@ -25,7 +25,7 @@
                     <div class="col-md-12 cont-head"><div class="pull-left"><h4>{{ examname }}</h4></div><div id="countdown2" class="pull-right"></div></div>
                 </div>
 
-                <div class="row">
+                <div id="content-div" class="row">
                     <div class="col-md-8" style="border:1px solid #ccc; border-radius: 5px; margin-bottom: 12px; ">
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#general">General Awareness</a></li>
@@ -60,6 +60,7 @@
                     <div class="col-md-4 text-center" style="height:500px;">
                         <div style="border: 1px solid #ccc; border-radius: 5px;">
                           <input type="hidden" id="examid" value="{{ examid }}" />
+                          <input type="hidden" id="attemptid" value="{{ attemptid }}" />
                           <input type="hidden" id="totalqtns" value="{{ totalqtns }}" />
                           <form id="getqtn-form" method="get" action=".">
                             {% csrf_token %}
@@ -83,7 +84,8 @@
                         <div style="clear:both;"></div>
                         <div style="border-radius: 5px; border:1px solid #ccc;height: 110px; margin-top: 20px;">
                             <div style="float: left; padding: 40px;"><a href="#">Instructions</a></div>
-                            <div style="float: right; padding: 30px;"><input id="submitexam" type="button" name="" value="Submit" class="tcl-btn"/></div>
+                              <div style="float: right; padding: 30px;">
+                                  <input id="submitexam" type="button" name="" value="Submit" class="tcl-btn"/>
                         </div>
 
                     </div>

@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 import json
+from datetime import datetime
 
 # Create your views here.
 from django.http import HttpResponse, Http404
@@ -108,6 +110,7 @@ def examdetails_save_page(request):
       # Create or get Exam Detail.
       examname, created = ExamName.objects.get_or_create(
         examname=form.cleaned_data['examname'], total_questions=form.cleaned_data['total_questions'],
+        attempts_allowed=form.cleaned_data['attempts_allowed'],
         start_time=form.cleaned_data['start_time'], end_time=form.cleaned_data['end_time'], price=form.cleaned_data['price'],
         published=False
       )
@@ -193,6 +196,7 @@ def addquestions_page(request):
   if request.method == 'POST':
     form = QuestionDetailsSaveForm(request.POST)
     if form.is_valid():
+      right_options = ""
       # Add question
       examquestion, created = ExamQuestions.objects.get_or_create(
         examname_id=request.POST.get("examid", ""), qno=form.cleaned_data['qno'], question=form.cleaned_data['question'],
@@ -202,30 +206,43 @@ def addquestions_page(request):
 
       isOptionA = request.POST.get('isOptionA', 0)
       optionA, created = OptionA.objects.get_or_create(
-        examid = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionA'],
+        examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionA'],
         isright = isOptionA
       )
 
       isOptionB = request.POST.get('isOptionB', 0)
       optionB, created = OptionB.objects.get_or_create(
-        examid = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionB'],
+        examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionB'],
         isright = isOptionB
       )
 
       isOptionC = request.POST.get('isOptionC', 0)
-      optionC, created = OptionC.objects.get_or_create(
-        examid = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionC'],
-        isright = isOptionC
-      )
+      if request.POST.get("optionC", ""):
+        optionC, created = OptionC.objects.get_or_create(
+          examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionC'],
+          isright = isOptionC
+        )
 
       isOptionD = request.POST.get('isOptionD', 0)
       if request.POST.get("optionD", ""):
         optionD, created = OptionD.objects.get_or_create(
-          examid = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionD'],
+          examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionD'],
           isright = isOptionD
         )
 
-      examid = request.POST.get("examid", "")
+      if isOptionA:
+        right_options += "1"
+      if isOptionB:
+        right_options += " 2"
+      if isOptionC:
+        right_options += " 3"
+      if isOptionD:
+        right_options += " 4"
+
+      solution, created = ExamSolution.objects.get_or_create(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'],
+                                                             correct_options = right_options, explanation = form.cleaned_data['answer']
+                                                            )
+
       examname = ExamName.objects.get(id=request.POST.get("examid", "")).examname
       uploaded_questions = ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count()
       form = QuestionDetailsSaveForm()
@@ -237,11 +254,26 @@ def addquestions_page(request):
                    })
 
       return render_to_response('addquestions.html', variables)
+    #if form is not valid
+    else:
+      variables = RequestContext(request, {
+                     'examname': ExamName.objects.get(id=request.POST.get("examid", "")).examname,
+                     'examid': request.POST.get("examid", ""),
+                     'quploaded': ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count(),
+                     'form': form
+                   })
+      return render_to_response('addquestions.html', variables)
+
+  #if request is not POST
   else:
     form = QuestionDetailsSaveForm()
-  variables = RequestContext(request, {
-    'form': form
-  })
+
+  variables =  RequestContext(request, {
+                 'examname': examname.examname,
+                 'examid': examname.id,
+                 'quploaded': 0,
+                 'form': form
+               })
   return render_to_response('addquestions.html', variables)
 
 @login_required
@@ -263,16 +295,33 @@ def takeexam_page(request):
       )
       if userexam.exists():
         totalqtn = ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count()
-        #totalqtn = 4
-        #remove the above hard coded value
         examname = ExamName.objects.get(id=request.POST.get("examid", "")).examname
-        variables = RequestContext(request, {
-          'examid': request.POST.get("examid", ""),
-          'quploaded': range(1, totalqtn + 1),
-          'examname': examname,
-          'totalqtns': totalqtn
-        })
-        return render_to_response('takeexam.html', variables)
+
+        allowedAttempt = ExamName.objects.get(id=request.POST.get("examid", "")).attempts_allowed
+        totalqtns = ExamName.objects.get(id=request.POST.get("examid", "")).total_questions
+        userAttemptCount = UserScoreSheet.objects.filter(
+                         user_id=request.user.id,
+                         examname_id=request.POST.get("examid", "")
+                       ).count()
+        if allowedAttempt > userAttemptCount:
+          userAttemptCount = userAttemptCount + 1
+          scoresheet, created = UserScoreSheet.objects.get_or_create(
+                                      user_id=request.user.id, examname_id = request.POST.get("examid", ""), 
+                                      attemptid=userAttemptCount, start_time=datetime.now(),
+                                      total_questions=totalqtns, answered_questions=0, correctly_answered=0, issubmitted=False, mark=0
+                                  )
+          variables = RequestContext(request, {
+            'examid': request.POST.get("examid", ""),
+            'quploaded': range(1, totalqtn + 1),
+            'examname': examname,
+            'attemptid': userAttemptCount,
+            'totalqtns': totalqtn
+          })
+
+          return render_to_response('takeexam.html', variables)
+
+        else:
+          return HttpResponseRedirect('/myaccount')
 
   return HttpResponseRedirect('/myaccount')
 
@@ -290,10 +339,10 @@ def getqtn_page(request):
   if request.GET.has_key('qid'):
     qno = request.GET['qid'].strip()
     qdetails = ExamQuestions.objects.filter(examname_id=examid, qno=qno)[0]
-    a = OptionA.objects.filter(examid=examid, qid=qno)
-    b = OptionB.objects.filter(examid=examid, qid=qno)
-    c = OptionC.objects.filter(examid=examid, qid=qno)
-    d = OptionD.objects.filter(examid=examid, qid=qno)
+    a = OptionA.objects.filter(examname_id=examid, qid=qno)
+    b = OptionB.objects.filter(examname_id=examid, qid=qno)
+    c = OptionC.objects.filter(examname_id=examid, qid=qno)
+    d = OptionD.objects.filter(examname_id=examid, qid=qno)
 
     if a.exists():
       optiona = a[0];
@@ -320,6 +369,63 @@ def getqtn_page(request):
     return HttpResponseRedirect('/myaccount')
 
 @login_required
+@csrf_exempt
+def evalexam_page(request):
+  if request.method == 'POST':
+
+      posted_json = request.POST.get("json", "")
+      my_dict = json.loads(posted_json)
+      #Get userexam
+      userexam = UserExams.objects.filter(
+        user_id=request.user.id,
+        examname_id=my_dict["examid"]
+      )
+
+      if userexam.exists():
+        totalqtns = ExamName.objects.get(id=my_dict["examid"]).total_questions
+        rightcount = 0
+  
+        for key, value in my_dict['ansList'].items():
+          solution = ExamSolution.objects.filter(examname_id=my_dict["examid"], qid=key)[0].correct_options
+
+          isRightChoice = False
+
+          if solution.strip() == value.strip():
+            isRightChoice = True
+            rightcount = rightcount + 1
+
+          useranswer, created = UserAnswerSheet.objects.get_or_create(
+              user_id = request.user.id,
+              examname_id=my_dict["examid"], attemptid=my_dict["attemptid"], qid=key,
+              user_choices=value, user_explanation="", isright = isRightChoice
+          )
+
+        scoresheet = UserScoreSheet.objects.get(
+                                      user_id=request.user.id, examname_id=my_dict["examid"], 
+                                      attemptid=my_dict["attemptid"],
+                                      total_questions=totalqtns
+                                  )
+        scoresheet.answered_questions = len(my_dict['ansList'])
+        scoresheet.correctly_answered = rightcount
+        scoresheet.issubmitted = True
+        scoresheet.mark = rightcount * 1
+        scoresheet.end_time = datetime.now()
+        scoresheet.save()
+
+        resultdict = {}
+        resultdict['totalqtns'] = totalqtns
+        resultdict['answered_questions'] = len(my_dict['ansList'])
+        resultdict['correctly_answered'] = rightcount
+        resultdict['mark'] = rightcount * 1
+
+        return HttpResponse(json.dumps(resultdict))
+        #return render_to_response('showresult.html', variables)
+
+  #return HttpResponse("post request success")
+  #return HttpResponse(json.dumps(my_dict))
+  return HttpResponseRedirect('/myaccount')
+
+@login_required
 def fetchQuestionPaperJSON(request):
   examid = 0
   
@@ -339,10 +445,10 @@ def fetchQuestionPaperJSON(request):
         qdict['type'] = qtn.qtype
         qdict['qcategory'] = qtn.qcategory
         qdict['options'] = [];
-        a = OptionA.objects.filter(examid=examid, qid=qtn.qno)
-        b = OptionB.objects.filter(examid=examid, qid=qtn.qno)
-        c = OptionC.objects.filter(examid=examid, qid=qtn.qno)
-        d = OptionD.objects.filter(examid=examid, qid=qtn.qno)
+        a = OptionA.objects.filter(examname_id=examid, qid=qtn.qno)
+        b = OptionB.objects.filter(examname_id=examid, qid=qtn.qno)
+        c = OptionC.objects.filter(examname_id=examid, qid=qtn.qno)
+        d = OptionD.objects.filter(examname_id=examid, qid=qtn.qno)
 
         if a.exists():
           opta = {}

@@ -64,10 +64,20 @@ WSGI_APPLICATION = 'examcentral.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'examcentraldb',
+        'USER': 'vinoth',
+        'PASSWORD': 'vinoth',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': 'examcentraldb',
+#    }
+#}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
