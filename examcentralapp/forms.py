@@ -47,6 +47,34 @@ class RegistrationForm(forms.Form):
     raise forms.ValidationError('Email already registered.')
 
 
+class UpdateProfileForm(forms.Form):
+  username = forms.CharField(label='Username ', max_length=30, widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'form-control', 'placeholder': 'Username'}))
+  firstname = forms.CharField(label='First Name ', max_length=30, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
+  lastname = forms.CharField(label='Last Name ', max_length=30, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}), required=False)
+  email = forms.EmailField(label='Email ', widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'form-control', 'placeholder': 'Email'}))
+  address = forms.CharField(label='Address ', max_length=30, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Door No./Building/Street Name'}), required=False)
+  city = forms.CharField(label='City', max_length=50, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'City'}), required=False)
+  country = forms.CharField(label='Country', max_length=50, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Country'}), required=False)
+  pincode = forms.IntegerField(
+    label='PIN Code', min_value = 1,
+    widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'PIN/ZIP Code'}), required=False
+  )
+  phone = forms.RegexField(regex=r'^\+?1?\d{9,15}$', 
+                                error_message = ("Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."), required=False)
+  aboutme = forms.CharField(label='About Me', max_length=1000, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell everyone how cool you are!'}), required=False)
+
+  def clean_phone(self):
+    phone = self.cleaned_data['phone']
+    if phone:
+      if not re.search(r'^[0-9\+]+$', phone):
+        raise forms.ValidationError('Phone number can only contain numeric characters and +.')
+
+#  def clean_pincode(self):
+#    pincode = self.cleaned_data['pincode']
+#    if not re.search(r'^[0-9\+]+$', pincode):
+#      raise forms.ValidationError('PIN/ZIP code can only contain numeric characters')
+
+
 # If you don't do this you cannot use Bootstrap CSS
 #Login page - Default form modified
 class LoginForm(AuthenticationForm):
@@ -69,6 +97,8 @@ class ExamDetailsSaveForm(forms.Form):
     label='', min_value = 1,
     widget=forms.TextInput(attrs={'id': 'attempts-allowed', 'class': 'form-control', 'placeholder': 'Attempts allowed per user'})
   )
+
+  duration = forms.IntegerField(label='', min_value = 1, widget=forms.TextInput(attrs={'id': 'duration', 'class': 'form-control', 'placeholder': 'Exam duration in minutes'}))
 
   start_time = forms.DateTimeField(label='', widget=forms.DateTimeInput(attrs={'id': 'start-time', 'class': 'form-control', 'placeholder': 'Start Time'}))
   end_time = forms.DateTimeField(label ='', widget=forms.DateTimeInput(attrs={'id': 'end-time', 'class': 'form-control', 'placeholder': 'End Time'}))
@@ -130,3 +160,8 @@ class QuestionDetailsSaveForm(forms.Form):
      widget=forms.TextInput(attrs={'id': 'answer', 'class': 'form-control', 'placeholder': 'Enter Answer'})
    )
 
+class DocumentForm(forms.Form):
+  docfile = forms.FileField(
+        label='Select a file',
+        help_text='max. 42 megabytes'
+    )

@@ -31,21 +31,18 @@
 {% endif %}
 
 {% for exam in examlist %}
-   <div class="col-md-2 margin-top-10 margin-bottom-10 margin-left-20">
-       <div class="tag">CAT</div>
-       <div><img src="site_media/images/inst-img.jpg" class="img-thumbnail1" width="197" height="91">
-       </div>
-
-       <div class="main-cont"><div class="height-100">{{ exam.examname }}</div>
-       <!--<input type="button" name="button" value={{exam.price}} class="exam-btn"  data-toggle="modal" data-target="#myModal"/> --!>
-       <button id="{{ exam.id }}examdetailbtn" type="button" class="exam-btn" data-toggle="modal" data-target="#myModal"> {{exam.price}}</button>
-       </div>
+   <div class="col-md-3">
+      <div class="col-md-3 margin-top-10 margin-bottom-10">
+       <div><img src="site_media/images/inst-img.jpg" class="img-thumbnail1" width="197" height="91"></div>
+         <div class="main-cont"><div class="height-100">{{ exam.examname }}</div>
+         <!--<input type="button" name="button" value="Rs:300" class="exam-btn" data-toggle="modal" data-target="#myModal"/> --!>
+         <button id="{{ exam.id }}examdetailbtn" type="button" class="exam-btn" data-toggle="modal" data-target="#myModal"> {{exam.price}}</button>
+         </div>
+      </div>
    </div>
-
    <script>$("#{{ exam.id }}examdetailbtn").click(function(){
      $("#myModal").find(".modal-title").html( "<h4> {{ exam.examname }} </h4>" );
      $("#myModal").find(".modal-body").html( "Total Questions:  {{ exam.total_questions }}<br> \
-                                              Duration: {{ exam.duration }} minutes <br> \
                                               Total Allowed Attempts:  {{ exam.attempts_allowed }} <br>\
                                               Start Time:  {{ exam.start_time }} <br>\
                                               End Time:  {{ exam.end_time }} <br>\
@@ -79,7 +76,7 @@
         <p>Some text available in the website.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="addtoaccount" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 

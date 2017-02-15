@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title %}{{ username }}{% endblock %}
 {% block content %}
+  <div class="container exam-img">
+
   {% if user.is_authenticated %}
     <div class="row">
         <div class="col-md-12 cont-head"><h4>My Exam</h4></div>
@@ -11,4 +13,5 @@
   {% else %}
     <p>User not logged in! Please login again!</p>
   {% endif %}
+  </div>
 {% endblock %}

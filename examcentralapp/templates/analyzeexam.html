@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Analyze Exam{% endblock %}
+{% block external %}
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript" src="/site_media/analyze.js">
+      </script>
+{% endblock %}
+{% block content %}
+
+                <div class="row">
+                    <div class="col-md-12 cont-head"><div class="pull-left"><h4>{{ examname }} - Attempt: {{attemptid}} - Analysis</h4></div><div id="countdown2" class="pull-right"></div></div>
+                    <input type="hidden" id="examid" value="{{ examid }}" />
+                    <input type="hidden" id="attemptid" value="{{ attemptid }}" />
+                </div>
+
+                <div id="content-div" class="row">
+
+                </div>
+                <div> <br><br><br></div>
+
+{% endblock %}

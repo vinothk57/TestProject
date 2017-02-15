@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Creating a JavaScript Object.</p>
+
+<p id="demo"></p>
+
+<script>
+var person = {"firstName":"Vinoth", lastName:"Doe", age:50, eyeColor:"blue"};
+
+person["firstName"] = {};
+person["firstName"][1] = "vinoth kumar kamaraj";
+document.getElementById("demo").innerHTML =
+person.firstName[1] + " is " + person.age + " years old." + person[1];
+</script>
+
+</body>
+</html>

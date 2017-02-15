@@ -1,0 +1,35 @@
+{% if analyticslist %}
+
+       <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Exam</th> <th>Attempt </th> <th>Start Time</th><th>End Time</th> <th>Total Questions</th><th>Total Answered</th> <th>Correct Answers</th><th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for exam in analyticslist %}
+              <tr>
+                <td>{{exam.examname}}</td>
+                <td>{{exam.attemptid}}</td>
+                <td>{{exam.start_time}}</td>
+                <td>{{exam.end_time}}</td>
+                <td>{{exam.total_questions}}</td>
+                <td>{{exam.answered_questions}}</td>
+                <td>{{exam.correctly_answered}}</td>
+                <td>{{exam.mark}}</td>
+                <td>
+                          <form id="analyzeexam-form" method="get" action="/analyzeexam/">
+                              <input type="hidden" name="examid" value="{{ exam.examname.id }}" />
+                              <input type="hidden" name="attemptid" value="{{ exam.attemptid }}" />
+                              <input type="submit" class="btn-primary" value="Analysis" />
+                          </form>
+                </td>
+              </tr>
+
+            {% endfor %}
+          </tbody>
+       </table>
+{% else %}
+  <p>No Exam found.</p>
+{% endif %}
+

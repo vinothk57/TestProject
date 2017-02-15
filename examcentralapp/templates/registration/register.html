@@ -34,32 +34,69 @@
                         <div class="tcl-login tcl-login-panel tcl-panel-default">
                            <div class="panel-body tcl-panel-heading">
                                 <form method="post" action".">
-                                    {{ form.non_field_errors }}
+                                {% if form.non_field_errors %}
+                                  <div class="isa_error">
+                                    <i class="fa fa-times-circle"></i>
+                                      {{ form.non_field_errors|striptags }}
+                                  </div>
+                                {% endif %}
+
                                     {% csrf_token %}
                                     <div class="form-group">
-                                        {{ form.username.errors }}
                                        {{ form.username }}
                                     </div>
+                                    {% if form.username.errors %}
+                                      <div class="isa_error">
+                                        <i class="fa fa-times-circle"></i>
+                                          {{ form.username.errors }}
+                                      </div>
+                                    {% endif %}
+
                                     <div class="form-group">
-                                        {{ form.firstname.errors }}
                                        {{ form.firstname }}
                                     </div>
+                                    {% if form.firstname.errors %}
+                                      <div class="isa_error">
+                                        <i class="fa fa-times-circle"></i>
+                                          {{ form.firstname.errors }}
+                                      </div>
+                                    {% endif %}
                                     <div class="form-group">
-                                        {{ form.lastname.errors }}
                                        {{ form.lastname }}
                                     </div>
+                                    {% if form.lastname.errors %}
+                                      <div class="isa_error">
+                                        <i class="fa fa-times-circle"></i>
+                                          {{ form.lastname.errors }}
+                                      </div>
+                                    {% endif %}
                                     <div class="form-group">
-                                        {{ form.email.errors }}
                                        {{ form.email }}
                                     </div>
+                                    {% if form.email.errors %}
+                                      <div class="isa_error">
+                                        <i class="fa fa-times-circle"></i>
+                                          {{ form.email.errors }}
+                                      </div>
+                                    {% endif %}
                                     <div class="form-group">
-                                        {{ form.password1.errors }}
                                        {{ form.password1 }}
                                     </div>
+                                    {% if form.password1.errors %}
+                                      <div class="isa_error">
+                                        <i class="fa fa-times-circle"></i>
+                                          {{ form.password1.errors }}
+                                      </div>
+                                    {% endif %}
                                     <div class="form-group">
-                                        {{ form.password2.errors }}
                                        {{ form.password2 }}
                                     </div>
+                                    {% if form.password2.errors %}
+                                      <div class="isa_error">
+                                        <i class="fa fa-times-circle"></i>
+                                          {{ form.password2.errors }}
+                                      </div>
+                                    {% endif %}
                                        <!-- <input type="text"  placeholder="Enter Your First Name"  class="form-control" name="name"/> --!>
                                     <!--<div class="form-group">
                                         <input type="text" name="last" placeholder="Enter Your Last Name" class="form-control"/>

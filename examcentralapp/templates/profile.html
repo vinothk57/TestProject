@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username }} - Profile{% endblock %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-12 cont-head"><h4>Profile Information</h4></div>
+    </div>
+        {% include "updateprofile.html" %}
+  {% else %}
+    <p>User not logged in! Please login again!</p>
+  {% endif %}
+{% endblock %}
+{% block external %}
+  <script type="text/javascript" src="/site_media/getprofile.js"></script>
+  <script src="/site_media/js/jquery.datetimepicker.full.min.js"></script> 
+<script>
+
+$.datetimepicker.setLocale('en');
+
+$('#datetimepicker_format').datetimepicker({value:'2015/04/15 05:03', format: $("#datetimepicker_format_value").val()});
+console.log($('#datetimepicker_format').datetimepicker('getValue'));
+
+$("#datetimepicker_format_change").on("click", function(e){
+        $("#datetimepicker_format").data('xdsoft_datetimepicker').setOptions({format: $("#datetimepicker_format_value").val()});
+});
+$("#datetimepicker_format_locale").on("change", function(e){
+        $.datetimepicker.setLocale($(e.currentTarget).val());
+});
+
+$('#datetimepicker').datetimepicker({
+dayOfWeekStart : 1,
+lang:'en',
+disabledDates:['1986/01/08','1986/01/09','1986/01/10'],
+startDate:      '1986/01/05'
+});
+$('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
+
+$('.some_class').datetimepicker();
+$('#datetimepicker_dark').datetimepicker({theme:'dark'});
+</script>
+{% endblock %}

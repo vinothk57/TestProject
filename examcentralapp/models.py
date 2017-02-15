@@ -1,14 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import User
 from examcentralapp.choices import *
+from examcentralapp.storage import OverwriteStorage
+
+def user_directory_path(instance, filename):
+  return 'user_%s/profilepic/profile.png' % (instance.user.id)
+
+def qtn_directory_path(instance, filename):
+  return '%s/%s' % (instance.examname, filename)
 
 # Create your models here.
+class UserDetails(models.Model):
+  user = models.ForeignKey(User)
+  address = models.TextField(max_length=5000, null=True, blank=True)
+  city = models.TextField(max_length=500, null=True, blank=True)
+  country = models.TextField(max_length=500, null=True, blank=True)
+  pincode = models.BigIntegerField(max_length=10, null=True, blank=True)
+  phone = models.CharField(max_length=30, null=True, blank=True)
+  aboutme = models.TextField(max_length=5000, null=True, blank=True)
+  profilepic = models.FileField(upload_to=user_directory_path, storage=OverwriteStorage(), null=True, blank=True)
+  def __str__(self):
+    return '%s, %s, %s, %s' % (self.user.username, self.address, self.city, self.country)
+
 class ExamName(models.Model):
   examname = models.TextField(unique=True)
   total_questions = models.IntegerField(max_length=4)
   attempts_allowed = models.IntegerField(max_length=4)
+  duration = models.IntegerField(max_length=4)
   start_time = models.DateTimeField()
   end_time = models.DateTimeField()
+  mark_per_qtn = models.IntegerField(max_length=4)
+  negative_per_qtn = models.DecimalField(max_digits=6, decimal_places=2)
   price = models.DecimalField(max_digits=6, decimal_places=2)
   published = models.BooleanField(default=False)
 
@@ -28,6 +50,7 @@ class ExamQuestions(models.Model):
   question = models.TextField()
   qtype = models.IntegerField(choices=QTYPE_CHOICES, default=1)
   qcategory = models.IntegerField(choices=QCATEGORY_CHOICES, default=1)
+  qpic = models.FileField(upload_to=qtn_directory_path, null=True, blank=True)
   answer = models.TextField(max_length=5000)
   class Admin:
     pass

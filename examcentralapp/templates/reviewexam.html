@@ -1,39 +1,7 @@
 {% extends "base.html" %}
-{% block title %}Attend Exam{% endblock %}
+{% block title %}Review Exam{% endblock %}
 {% block external %}
-      <script type="text/javascript" src="/site_media/getqtn.js">
-      </script>
-      <script type="text/javascript">
-      (function () {
-        function display( notifier, str ) {
-          document.getElementById(notifier).innerHTML = "Time Remaining: " + str;
-        }
-      
-        function toHourMinuteAndSecond( x ) {
-          return Math.floor(x/3600) + ":" + Math.floor((x - (Math.floor(x/3600) * 3600)) / 60) + ":" + x%60 ;
-        }
-      
-        function setTimer( remain, actions ) {
-          var action;
-          (function countdown() {
-             display("countdown", toHourMinuteAndSecond(remain));
-             if (action = actions[remain]) {
-               action();
-             }
-             if (remain > 0) {
-               remain -= 1;
-               setTimeout(arguments.callee, 1000);
-             }
-          })(); // End countdown
-        }
-      
-        setTimer({{ duration }} * 60, {
-          10: function () { display("countdown", "Just 10 seconds to go"); },
-           5: function () { display("countdown", "5 seconds left");        },
-           0: function () { display("countdown", "Time is up. Auto Submission of exam;"); document.getElementById("submitexam").click(); }
-        });
-      })();
-      
+      <script type="text/javascript" src="/site_media/solution.js">
       </script>
 {% endblock %}
 {% block content %}
@@ -54,7 +22,7 @@
   </div>
 --!>
                 <div class="row">
-                    <div class="col-md-12 cont-head"><div class="pull-left"><h4>{{ examname }}</h4></div><div id="countdown" class="pull-right"></div></div>
+                    <div class="col-md-12 cont-head"><div class="pull-left"><h4>{{ examname }} - Attempt: {{attemptid}} - Review</h4></div><div id="countdown2" class="pull-right"></div></div>
                 </div>
 
                 <div id="content-div" class="row">
@@ -84,10 +52,8 @@
                             </ul>
                         </div>
                       </div>
-                        <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="review" class="addtoaccount" value="Mark for Review and Next" /></div>
-                        <div class="col-md-3 col-md-offset-1 margin-top-10 margin-bottom-10"><input type="button" id="clear" class="addtoaccount" value="Clear Response" /></div>
-                        <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="prev" class="addtoaccount pull-right" value="Previous" /></div>
-                        <div class="col-md-2 margin-top-10 margin-bottom-10"><input type="button" id="next" class="addtoaccount pull-right" value="Save and Next" /></div>
+                        <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="prev" class="tcl-btn pull-right" value="Previous" /></div>
+                        <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="next" class="tcl-btn pull-right" value="Next" /></div>
                     </div>
                     <div class="col-md-4 text-center" style="height:500px;">
                         <div style="border: 1px solid #ccc; border-radius: 5px;">
@@ -117,7 +83,6 @@
                         <div style="border-radius: 5px; border:1px solid #ccc;height: 110px; margin-top: 20px;">
                             <div style="float: left; padding: 40px;"><a href="#">Instructions</a></div>
                               <div style="float: right; padding: 30px;">
-                                  <input id="submitexam" type="button" name="" value="Submit" class="tcl-btn"/>
                         </div>
 
                     </div>

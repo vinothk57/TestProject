@@ -40,18 +40,37 @@
                     
                     <div class="panel-body tcl-panel-heading">
                         <form role="form" method="post" action=".">
-                           {{ form.non_field_errors|striptags }}
+                           {% if form.non_field_errors %}
+                             <div class="isa_error">
+                               <i class="fa fa-times-circle"></i>
+                                 {{ form.non_field_errors|striptags }}
+                             </div>
+                           {% endif %}
                            {% csrf_token %}
                             <fieldset>
-                                <div class="form-group">
+                                <div class="form-group inner-addon left-addon">
+                                    <i class="glyphicon glyphicon-user"></i>
                                     {{ form.username }}
                                     <!--<input class="form-control"  placeholder="E-mail" name="email" type="email" > --!>
                                     
                                 </div>
-                                <div class="form-group">
+                                    {% if form.username.errors %}
+                                      <div class="isa_error">
+                                        <i class="fa fa-times-circle"></i>
+                                          {{ form.username.errors }}
+                                      </div>
+                                    {% endif %}
+                                <div class="form-group inner-addon left-addon">
+                                    <span class="glyphicon glyphicon-lock"></span>
                                     {{ form.password }}
                                     <!--<input class="form-control"  placeholder="Password" name="password" type="password" value=""> --!>
                                 </div>
+                                    {% if form.password.errors %}
+                                      <div class="isa_error">
+                                        <i class="fa fa-times-circle"></i>
+                                          {{ form.password.errors }}
+                                      </div>
+                                    {% endif %}
                                 <div class="checkbox">
                                     <label>
                                         <input name="remember" type="checkbox" value="Remember Me">Remember Me

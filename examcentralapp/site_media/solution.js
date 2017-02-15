@@ -148,10 +148,10 @@ function getFirstQtnOfCategory(category) {
 function showQuestionsOfCategory(category) {
     for (i = 0; i <  JSONObj['qlist'].length; i++) {
       var qno = i + 1;
-      if(JSONObj['qlist'][i]['qcategory'] != category) {
-         $("#qno" + qno).hide();
-      } else {
+      if(JSONObj['qlist'][i]['qcategory'] == category) {
          $("#qno" + qno).show();
+      } else {
+         $("#qno" + qno).hide();
       }
     }
     if(category == "1") {
@@ -229,24 +229,40 @@ function loadQuestionData() {
     var options = "";
     if(qelement['type'] == 1) {
       for (i = 0; i <  qelement['options'].length; i++) {
-        options = options + "<br><input type=\"radio\" name=\"option\" ";
+        options = options + "<br><input type=\"radio\" disabled name=\"option\" ";
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
         options = options + "/>" + qelement['options'][i]['option'];
+
+        options = options + "<a href=\"#\" class=\"btn btn-primary btn-xs\">"
+        if(qelement['options'][i]['isright']) {
+          options = options + "<span class=\"glyphicon glyphicon-ok\"></span> Correct </a>"
+        } else {
+          options = options + "<span class=\"glyphicon glyphicon-remove\"></span> Wrong </a>"
+        }
       }
     } else if (qelement['type'] == 3) {
       for (i = 0; i <  qelement['options'].length; i++) {
-        options = options + "<br><input type=\"checkbox\" name=\"option\" ";
+        options = options + "<br><input type=\"checkbox\" disabled name=\"option\" ";
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
         options = options + "/>" + qelement['options'][i]['option'];
+
+        options = options + "<a href=\"#\" class=\"btn btn-primary btn-xs\">"
+        if(qelement['options'][i]['isright']) {
+          options = options + "<span class=\"glyphicon glyphicon-ok\"></span> Correct </a>"
+        } else {
+          options = options + "<span class=\"glyphicon glyphicon-remove\"></span> Wrong </a>"
+        }
       }
     }
 
+    var explanation = "<br><br> <h4>Explanation:</h4><br><h3>" + qelement['explanation'] + "</h3>";
+    
     $(loadQuestionAt).html(
-      qstring + options
+      qstring + options + explanation
     );
 }
 
@@ -286,12 +302,14 @@ function showCorrectBtns() {
       $("#prev").show();
     } 
     if(currqtnno < Number(totalqtn)) {
-      $("#review").prop('value', 'Mark for Review and Next');
-      $("#next").prop('value', 'Save and Next');
+    //  $("#review").prop('value', 'Mark for Review and Next');
+    //  $("#next").prop('value', 'Save and Next');
+      $("#next").show();
     }
     if(currqtnno == Number(totalqtn)) {
-      $("#review").prop('value', 'Mark for Review');
-      $("#next").prop('value', 'Save');
+    //  $("#review").prop('value', 'Mark for Review');
+    //  $("#next").prop('value', 'Save');
+      $("#next").hide();
     }
 }
 
@@ -370,7 +388,8 @@ function viewResult() {
 $(document).ready(function () {
 //  $("#getqtn-form").submit(getqtn_submit);
   var examidval = $("#examid").val();
-  $.getJSON("/fetchpaper/?ajax&examid=" + encodeURIComponent(examidval), "", success);
+  var attemptidval = $("#attemptid").val();
+  $.getJSON("/fetchsolution/?ajax&examid=" + encodeURIComponent(examidval) + "&attemptid=" + encodeURIComponent(attemptidval), "", success);
 
   $("#getqtn-form").submit(getqtnfromJSON);
 
@@ -383,7 +402,7 @@ $(document).ready(function () {
     //getnextqtn();
     var qid = "qno" + currqtnno;
     $('#' + qid).removeClass("review-btn"); 
-    saveAnswer();
+    //saveAnswer();
     lastqtnno = currqtnno;
     getnextqtnJSON();
     return false;
@@ -391,7 +410,7 @@ $(document).ready(function () {
 
   $("#prev").click(function() {
     var examid = $("#examid").val();
-    checkAnswered();
+    //checkAnswered();
     lastqtnno = currqtnno;
     currqtnno--;
     if( currqtnno != Number("0")) {
@@ -451,7 +470,6 @@ $(document).ready(function () {
 
   $("#submitexam").click(function(e) {
      e.preventDefault();
-     $("#countdown").hide();
      JSONAnswerData['examid'] = $("#examid").val();
      JSONAnswerData['attemptid'] = $("#attemptid").val();
      $.ajax({

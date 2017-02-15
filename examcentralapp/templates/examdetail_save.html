@@ -1,6 +1,29 @@
 {% extends "base.html" %}
 {% block title %}Create Exam{% endblock %}
 {% block external %}
+<script src="/site_media/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+
+$.datetimepicker.setLocale('en');
+
+$('#start-time_format').datetimepicker({value:'', format: $("#start-time_format_value").val()});
+console.log($('#start-time_format').datetimepicker('getValue'));
+
+$("#start-time_format_change").on("click", function(e){
+        $("#start-time_format").data('xdsoft_datetimepicker').setOptions({format: $("#start-time_format_value").val()});
+});
+$("#start-time_format_locale").on("change", function(e){
+        $.datetimepicker.setLocale($(e.currentTarget).val());
+});
+
+$('#start-time').datetimepicker({format: 'Y-m-d H:i', value:'',step:5});
+$('#end-time').datetimepicker({format: 'Y-m-d H:i', value:'',step:5});
+
+$('.some_class').datetimepicker();
+$('#start-time_dark').datetimepicker({theme:'dark'});
+$('#end-time_dark').datetimepicker({theme:'dark'});
+</script>
+
 {% endblock %}
 {% block content %}
     <div class="row">

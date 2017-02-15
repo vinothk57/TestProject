@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username }}{% endblock %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-12 cont-head"><h4>List of Exams Attended</h4></div>
+    </div>
+        {% include "analyticslist.html" %}
+  {% else %}
+    <p>User not logged in! Please login again!</p>
+  {% endif %}
+{% endblock %}

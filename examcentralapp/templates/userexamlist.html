@@ -1,7 +1,9 @@
 {% if userexams %}
     {% for exam in userexams %}
-       <div class="col-md-3 margin-top-10 margin-bottom-10">
-          <div><img src="/site_media/images/inst-img.jpg" class="img-thumbnail1" width="197" height="91"></div>
+     <div class="col-md-2 margin-top-10 margin-bottom-10 margin-left-20">
+       <div class="tag">CAT</div>
+
+       <div><img src="/site_media/images/inst-img.jpg" class="img-thumbnail1" width="197" height="91"></div>
           <div class="main-cont"><div class="height-100">{{ exam.examname | escape}}</div>
           <form id="removeexam-form" method="post" action="/removeexam/">
             {% csrf_token %}
@@ -14,9 +16,9 @@
             <input type="hidden" name="examid" value="{{ exam.examname.id }}" />
             <button id="{{exam.id}}takeexambtn" class="exam-btn" type="submit" value="takeexam">Take Exam</button>
           </form>
-          </div>
+       </div>
 
-        </div>
+     </div>
 
     {% endfor %}
 {% else %}

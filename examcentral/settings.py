@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+import examcentralapp
+examcentralapppath = os.path.dirname(examcentralapp.__file__)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -58,6 +60,8 @@ ROOT_URLCONF = 'examcentral.urls'
 
 WSGI_APPLICATION = 'examcentral.wsgi.application'
 
+MEDIA_ROOT = os.path.join(examcentralapppath, 'media')
+MEDIA_URL = '/media/'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

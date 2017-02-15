@@ -1,6 +1,12 @@
 from django.contrib import admin
 from examcentralapp.models import *
 
+class UserDetailsAdmin(admin.ModelAdmin):
+    list_display = ('user', 'city', 'country', 'phone', 'address', 'profilepic')
+    list_filter = ('user', 'city', 'country', 'phone')
+    ordering = ('user', 'country', 'city')
+    search_fields = ('user', 'country', 'city')
+
 class UserExamsAdmin(admin.ModelAdmin):
     list_display = ('user', 'examname')
     list_filter = ('user', 'examname')
@@ -8,7 +14,7 @@ class UserExamsAdmin(admin.ModelAdmin):
     search_fields = ('user', 'examname')
 
 class ExamQuestionsAdmin(admin.ModelAdmin):
-    list_display = ('examname', 'qno', 'question', 'qtype', 'qcategory', 'answer')
+    list_display = ('examname', 'qno', 'question', 'qpic', 'qtype', 'qcategory', 'answer')
     list_filter = ('examname', 'qno')
     ordering = ('qno',)
     search_fields = ('question', 'examname')
@@ -66,3 +72,4 @@ admin.site.register(OptionD, OptionDAdmin)
 admin.site.register(ExamSolution, ExamSolutionAdmin)
 admin.site.register(UserAnswerSheet, UserAnswerSheetAdmin)
 admin.site.register(UserScoreSheet, UserScoreSheetAdmin)
+admin.site.register(UserDetails, UserDetailsAdmin)
