@@ -1,6 +1,8 @@
 import os.path
 import examcentralapp
-from django.conf.urls import patterns, include, url
+from django.conf.urls import *
+from django.contrib.auth.views import login
+from django.views.static import serve
 
 from django.contrib import admin
 admin.autodiscover()
@@ -16,7 +18,7 @@ media = os.path.join(
 )
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
     # url(r'^$', 'examcentral.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
@@ -37,10 +39,10 @@ urlpatterns = patterns('',
     url(r'^analyzeexam/$', analyzegraphs_page),
     url(r'^$', main_page),
     url(r'^user/(\w+)/$', user_page),
-    url(r'^login/$', 'django.contrib.auth.views.login', {'authentication_form': LoginForm}),
+    url(r'^login/$', login, {'authentication_form': LoginForm}),
     url(r'^logout/$', logout_page),
-    url(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', { 'document_root': site_media }),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', { 'document_root': media }),
+    url(r'^site_media/(?P<path>.*)$', serve, { 'document_root': site_media }),
+    url(r'^media/(?P<path>.*)$', serve, { 'document_root': media }),
     url(r'^search/$', search_page),
     url(r'^getqtn/$', getqtn_page),
     url(r'^fetchpaper/$', fetchQuestionPaperJSON),
@@ -52,7 +54,9 @@ urlpatterns = patterns('',
     url(r'^createexam/$', examdetails_save_page),
     url(r'^addquestions/$', addquestions_page),
     url(r'^publishexam/$', publishexam_page),
+    url(r'^reset_password/$', ResetPasswordRequestView.as_view(), name="reset_password"),
+    url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
 
     # Admin interface
     #url(r'^admin/', include('django.contrib.admin.urls')),
-)
+]

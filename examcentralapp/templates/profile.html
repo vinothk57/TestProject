@@ -2,9 +2,10 @@
 {% block title %}{{ user.username }} - Profile{% endblock %}
 {% block content %}
   {% if user.is_authenticated %}
-    <div class="row">
+<!--    <div class="row">
         <div class="col-md-12 cont-head"><h4>Profile Information</h4></div>
-    </div>
+    </div> --!>
+        <div class="container cont-head"><h4>Profile Information</h4>
         {% include "updateprofile.html" %}
   {% else %}
     <p>User not logged in! Please login again!</p>

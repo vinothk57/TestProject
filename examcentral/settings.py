@@ -24,7 +24,7 @@ SECRET_KEY = '_)e(5(i_b+8!-%oln2k-e&js@na&-ft%p$kz^d8o6%4t7$avak'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+#TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -32,6 +32,14 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
     },
 ]
 
@@ -110,6 +118,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',    # Login w/ username
 ]
 
+#SOCIALACCOUNT_QUERY_EMAIL = True
 
 EMAIL_USE_TLS = True
 

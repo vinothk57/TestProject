@@ -7,6 +7,7 @@ from datetime import datetime
 from django.http import HttpResponse, Http404
 from django.template import Context
 from django.template.loader import get_template
+from django.template.loader import *
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib.auth import logout
@@ -17,6 +18,21 @@ from examcentralapp.models import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
+
+#For Reset password
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template import loader
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
+from django.views.generic import *
+from examcentralapp.forms import PasswordResetRequestForm
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.db.models.query_utils import Q
+from django.contrib.auth import get_user_model
 
 def main_page(request):
   
@@ -43,9 +59,19 @@ def main_page(request):
   })
 
   if request.GET.has_key('ajax'):
-    return render_to_response('examlist.html', variables)
+    return render(request, 'examlist.html', { 'form': form,
+    'examlist': examlist,
+    'show_results': show_results,
+    'show_tags': True
+    })
+
   else:
-    return render_to_response('main_page.html', variables)
+    return render(request, 'main_page.html', { 'form': form,
+    'examlist': examlist,
+    'show_results': show_results,
+    'show_tags': True
+    })
+
 
 def user_loggedin(request):
   if request.user.is_authenticated():
@@ -63,7 +89,12 @@ def user_page(request, username):
     'userexams': exams,
     'show_tags': True
   })
-  return render_to_response('user_page.html', variables)
+  return render(request, 'user_page.html', {
+    'username': username,
+    'userexams': exams,
+    'show_tags': True
+  })
+
 
 def profile_page(request):
 
@@ -104,7 +135,11 @@ def profile_page(request):
                 'uid' : request.user.id
               })
 
-  return render_to_response('profile.html', variables)
+  return render(request, 'profile.html', {
+                'form': form,
+                'uid' : request.user.id
+              })
+
 
 def logout_page(request):
   logout(request)
@@ -140,10 +175,11 @@ def register_page(request):
                  'form': form
               })
 
-  return render_to_response(
-    'registration/register.html', 
-    variables
-  )
+  return render(request, 'registration/register.html', { 'form': form })
+  #return render_to_response(
+  #  'registration/register.html', 
+  #  variables
+  #)
 
 @login_required
 def examdetails_save_page(request):
@@ -176,14 +212,22 @@ def examdetails_save_page(request):
                      'form': form
                    })
 
-      return render_to_response('addquestions.html', variables)
+      return render(request, 'addquestions.html', {
+                     'examname': examname.examname,
+                     'examid': examname.id,
+                     'quploaded': 0,
+                     'form': form
+                   })
 
   else:
     form = ExamDetailsSaveForm()
   variables = RequestContext(request, {
     'form': form
   })
-  return render_to_response('examdetail_save.html', variables)
+  return render(request, 'examdetail_save.html',  {
+    'form': form
+  })
+
 
 def search_page(request):
   form = SearchForm()
@@ -197,18 +241,18 @@ def search_page(request):
       examlist = ExamName.objects.filter(examname__icontains=query)[:10]
   if request.GET.has_key('blank'):
     examlist = ExamName.objects.filter(published=True)
-  variables = RequestContext(request, { 'form': form,
+  variables = { 'form': form,
     'form': form,
     'examlist': examlist,
     'show_results': show_results,
     'show_tags': True,
     'show_user': True
-  })
+  }
 
   if request.GET.has_key('ajax'):
-    return render_to_response('examlist.html', variables)
+    return render(request, 'examlist.html', variables)
   else:
-    return render_to_response('search.html', variables)
+    return render(request, 'search.html', variables)
 
 @login_required
 def model_form_upload(request):
@@ -312,35 +356,35 @@ def addquestions_page(request):
       examname = ExamName.objects.get(id=request.POST.get("examid", "")).examname
       uploaded_questions = ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count()
       form = QuestionDetailsSaveForm()
-      variables =  RequestContext(request, {
+      variables =  {
                      'examname': examname,
                      'examid': request.POST.get("examid", ""),
                      'quploaded': uploaded_questions,
                      'form': form
-                   })
+                   }
 
-      return render_to_response('addquestions.html', variables)
+      return render(request, 'addquestions.html', variables)
     #if form is not valid
     else:
-      variables = RequestContext(request, {
+      variables = {
                      'examname': ExamName.objects.get(id=request.POST.get("examid", "")).examname,
                      'examid': request.POST.get("examid", ""),
                      'quploaded': ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count(),
                      'form': form
-                   })
-      return render_to_response('addquestions.html', variables)
+                   }
+      return render(request, 'addquestions.html', variables)
 
   #if request is not POST
   else:
     form = QuestionDetailsSaveForm()
 
-  variables =  RequestContext(request, {
+  variables = {
                  'examname': examname.examname,
                  'examid': examname.id,
                  'quploaded': 0,
                  'form': form
-               })
-  return render_to_response('addquestions.html', variables)
+              }
+  return render(request, 'addquestions.html', variables)
 
 @login_required
 def publishexam_page(request):
@@ -386,7 +430,14 @@ def takeexam_page(request):
             'duration' : duration
           })
 
-          return render_to_response('takeexam.html', variables)
+          return render(request, 'takeexam.html', {
+            'examid': request.POST.get("examid", ""),
+            'quploaded': range(1, totalqtn + 1),
+            'examname': examname,
+            'attemptid': userAttemptCount,
+            'totalqtns': totalqtn,
+            'duration' : duration
+          })
 
         else:
           return HttpResponseRedirect('/myaccount')
@@ -432,7 +483,16 @@ def getqtn_page(request):
     })
 
   if request.GET.has_key('ajax'):
-    return render_to_response('question.html', variables)
+    return render(request, 'question.html', {
+      'qdetails': qdetails,
+      'optiona': optiona,
+      'optionb': optionb,
+      'optionc': optionc,
+      'optiond': optiond,
+      'examid': examid,
+      'qno': qno
+    })
+
   else:
     return HttpResponseRedirect('/myaccount')
 
@@ -487,8 +547,21 @@ def evalexam_page(request):
         resultdict['totalqtns'] = totalqtns
         resultdict['answered_questions'] = len(my_dict['ansList'])
         resultdict['correctly_answered'] = rightcount
-        resultdict['mark'] = rightcount * 1
+        resultdict['mark'] = str(scoresheet.mark)
 
+        msg_html = render_to_string('result_mail.html', {'examid': scoresheet.examname.id, 'attemptid': scoresheet.attemptid, 'examname': scoresheet.examname.examname, 'userscore': scoresheet.mark, 'maxscore': totalqtns * ExamName.objects.get(id=my_dict["examid"]).mark_per_qtn});
+        send_mail(
+          'ExamCentral - Result :' + str(scoresheet.examname.examname) + ' - Attempt: ' + str(scoresheet.attemptid),
+          'Hi ' + str(request.user.first_name) + ',\n\n\
+           Your score is: ' + str(scoresheet.mark) + '.\n\
+           Total questions: ' + str(totalqtns) + '.\n\
+           Answered questions: ' + str(resultdict['answered_questions']) + '.\n\
+           Correct answers: ' + str(rightcount) + '.\n\nRegards,\nExamCentral Team.',
+          'from@example.com',
+          [request.user.email],
+          fail_silently=False,
+          html_message=msg_html,
+        )
         return HttpResponse(json.dumps(resultdict))
 
   return HttpResponseRedirect('/myaccount')
@@ -638,7 +711,9 @@ def history_page(request):
   variables = RequestContext(request, {
     'historylist': historylist
   })
-  return render_to_response('history_page.html', variables)
+  return render(request, 'history_page.html', {
+    'historylist': historylist
+  })
 
 @login_required
 def analysis_page(request):
@@ -647,7 +722,9 @@ def analysis_page(request):
   variables = RequestContext(request, {
     'analyticslist': analyticslist
   })
-  return render_to_response('analytics_page.html', variables)
+  return render(request, 'analytics_page.html', {
+    'analyticslist': analyticslist
+  })
 
 @login_required
 def review_page(request):
@@ -674,7 +751,13 @@ def review_page(request):
           'totalqtns': totalqtn
         })
 
-        return render_to_response('reviewexam.html', variables)
+        return render(request, 'reviewexam.html', {
+          'examid': request.GET.get('examid', ""),
+          'quploaded': range(1, totalqtn + 1),
+          'examname': examname,
+          'attemptid': request.GET.get('attemptid', ""),
+          'totalqtns': totalqtn
+        })
 
       else:
         return HttpResponseRedirect('/')
@@ -706,7 +789,13 @@ def analyzegraphs_page(request):
           'totalqtns': totalqtn
         })
 
-        return render_to_response('analyzeexam.html', variables)
+        return render(request, 'analyzeexam.html', {
+          'examid': request.GET.get('examid', ""),
+          'quploaded': range(1, totalqtn + 1),
+          'examname': examname,
+          'attemptid': request.GET.get('attemptid', ""),
+          'totalqtns': totalqtn
+        })
 
       else:
         return HttpResponseRedirect('/')
@@ -797,6 +886,126 @@ def fetchSolutionJSON(request):
 
   if request.GET.has_key('ajax'):
     return HttpResponse(json.dumps(JSONObj), content_type="application/json")
+
+#For reset password
+class ResetPasswordRequestView(FormView):
+    template_name = "account/test_template.html"    #code for template is given below the view's code
+    success_url = '/login'
+    form_class = PasswordResetRequestForm
+
+    @staticmethod
+    def validate_email_address(email):
+        """
+        This method here validates the if the input is an email address or not. Its return type is boolean, True if the input is a email address or False if its not.
+        """
+        try:
+            validate_email(email)
+            return True
+        except ValidationError:
+            return False
+
+    def post(self, request, *args, **kwargs):
+        '''
+        A normal post request which takes input from field "email_or_username" (in ResetPasswordRequestForm). 
+        '''
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            data= form.cleaned_data["email_or_username"]
+        if self.validate_email_address(data) is True:                 #uses the method written above
+            '''
+            If the input is an valid email address, then the following code will lookup for users associated with that email address. If found then an email will be sent to the address, else an error message will be printed on the screen.
+            '''
+            associated_users= User.objects.filter(Q(email=data)|Q(username=data))
+            if associated_users.exists():
+                for user in associated_users:
+                        c = {
+                            'email': user.email,
+                            'domain': request.META['HTTP_HOST'],
+                            'site_name': 'your site',
+                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                            'user': user,
+                            'token': default_token_generator.make_token(user),
+                            'protocol': 'http',
+                            }
+                        subject_template_name='registration/password_reset_subject.txt' 
+                        # copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
+                        email_template_name='registration/password_reset_email.html'    
+                        # copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
+                        subject = loader.render_to_string(subject_template_name, c)
+                        # Email subject *must not* contain newlines
+                        subject = ''.join(subject.splitlines())
+                        email = loader.render_to_string(email_template_name, c)
+                        send_mail(subject, email, 'from@example.com', [user.email], fail_silently=False)
+                result = self.form_valid(form)
+                messages.success(request, 'An email has been sent to ' + data +". Please check its inbox to continue reseting password.")
+                return result
+            result = self.form_invalid(form)
+            messages.error(request, 'No user is associated with this email address')
+            return result
+        else:
+            '''
+            If the input is an username, then the following code will lookup for users associated with that user. If found then an email will be sent to the user's address, else an error message will be printed on the screen.
+            '''
+            associated_users= User.objects.filter(username=data)
+            if associated_users.exists():
+                for user in associated_users:
+                    c = {
+                        'email': user.email,
+                        'domain': 'localhost:8000', #or your domain eg:example.com
+                        'site_name': 'ExamCentral',
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'user': user,
+                        'token': default_token_generator.make_token(user),
+                        'protocol': 'http',
+                        }
+                    subject_template_name='registration/password_reset_subject.txt'
+                    email_template_name='registration/password_reset_email.html'
+                    subject = loader.render_to_string(subject_template_name, c)
+                    # Email subject *must not* contain newlines
+                    subject = ''.join(subject.splitlines())
+                    email = loader.render_to_string(email_template_name, c)
+                    send_mail(subject, email, 'from@example.com' , [user.email], fail_silently=False)
+                result = self.form_valid(form)
+                messages.success(request, 'Email has been sent to ' + data +"'s email address. Please check its inbox to continue reseting password.")
+                return result
+            result = self.form_invalid(form)
+            messages.error(request, 'This username does not exist in the system.')
+            return result
+        messages.error(request, 'Invalid Input')
+        return self.form_invalid(form)
+
+class PasswordResetConfirmView(FormView):
+    template_name = "account/test_template.html"
+    success_url = '/login/'
+    form_class = SetPasswordForm
+
+    def post(self, request, uidb64=None, token=None, *arg, **kwargs):
+        """
+        View that checks the hash in a password reset link and presents a
+        form for entering a new password.
+        """
+        UserModel = get_user_model()
+        form = self.form_class(request.POST)
+        assert uidb64 is not None and token is not None  # checked by URLconf
+        try:
+            uid = urlsafe_base64_decode(uidb64)
+            user = UserModel._default_manager.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            if form.is_valid():
+                new_password= form.cleaned_data['new_password2']
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, 'Password has been reset.')
+                return self.form_valid(form)
+            else:
+                messages.error(request, 'Password reset has not been unsuccessful.')
+                return self.form_invalid(form)
+        else:
+            messages.error(request,'The reset password link is no longer valid.')
+            return self.form_invalid(form)
 
 '''
     JSONObjSample = {

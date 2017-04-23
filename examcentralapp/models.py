@@ -15,7 +15,7 @@ class UserDetails(models.Model):
   address = models.TextField(max_length=5000, null=True, blank=True)
   city = models.TextField(max_length=500, null=True, blank=True)
   country = models.TextField(max_length=500, null=True, blank=True)
-  pincode = models.BigIntegerField(max_length=10, null=True, blank=True)
+  pincode = models.BigIntegerField(null=True, blank=True)
   phone = models.CharField(max_length=30, null=True, blank=True)
   aboutme = models.TextField(max_length=5000, null=True, blank=True)
   profilepic = models.FileField(upload_to=user_directory_path, storage=OverwriteStorage(), null=True, blank=True)
@@ -24,12 +24,12 @@ class UserDetails(models.Model):
 
 class ExamName(models.Model):
   examname = models.TextField(unique=True)
-  total_questions = models.IntegerField(max_length=4)
-  attempts_allowed = models.IntegerField(max_length=4)
-  duration = models.IntegerField(max_length=4)
+  total_questions = models.IntegerField()
+  attempts_allowed = models.IntegerField()
+  duration = models.IntegerField()
   start_time = models.DateTimeField()
   end_time = models.DateTimeField()
-  mark_per_qtn = models.IntegerField(max_length=4)
+  mark_per_qtn = models.IntegerField()
   negative_per_qtn = models.DecimalField(max_digits=6, decimal_places=2)
   price = models.DecimalField(max_digits=6, decimal_places=2)
   published = models.BooleanField(default=False)
@@ -46,7 +46,7 @@ class UserExams(models.Model):
 #qtype values: 0-multiple choice, 1-true or false, 2- descriptive
 class ExamQuestions(models.Model):
   examname = models.ForeignKey(ExamName)
-  qno = models.IntegerField(max_length=4)
+  qno = models.IntegerField()
   question = models.TextField()
   qtype = models.IntegerField(choices=QTYPE_CHOICES, default=1)
   qcategory = models.IntegerField(choices=QCATEGORY_CHOICES, default=1)
@@ -59,7 +59,7 @@ class ExamQuestions(models.Model):
 
 class OptionA(models.Model):
   examname = models.ForeignKey(ExamName)
-  qid = models.IntegerField(max_length=4)
+  qid = models.IntegerField()
   option = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
   class Admin:
@@ -69,7 +69,7 @@ class OptionA(models.Model):
 
 class OptionB(models.Model):
   examname = models.ForeignKey(ExamName)
-  qid = models.IntegerField(max_length=4)
+  qid = models.IntegerField()
   option = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
   class Admin:
@@ -79,7 +79,7 @@ class OptionB(models.Model):
 
 class OptionC(models.Model):
   examname = models.ForeignKey(ExamName)
-  qid = models.IntegerField(max_length=4)
+  qid = models.IntegerField()
   option = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
   class Admin:
@@ -89,7 +89,7 @@ class OptionC(models.Model):
 
 class OptionD(models.Model):
   examname = models.ForeignKey(ExamName)
-  qid = models.IntegerField(max_length=4)
+  qid = models.IntegerField()
   option = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
   class Admin:
@@ -99,7 +99,7 @@ class OptionD(models.Model):
 
 class ExamSolution(models.Model):
   examname = models.ForeignKey(ExamName)
-  qid = models.IntegerField(max_length=4)
+  qid = models.IntegerField()
   correct_options = models.TextField(max_length=5000)
   explanation = models.TextField(max_length=5000)
   class Admin:
@@ -110,8 +110,8 @@ class ExamSolution(models.Model):
 class UserAnswerSheet(models.Model):
   user = models.ForeignKey(User)
   examname = models.ForeignKey(ExamName)
-  attemptid = models.IntegerField(max_length=4)
-  qid = models.IntegerField(max_length=4)
+  attemptid = models.IntegerField()
+  qid = models.IntegerField()
   user_choices = models.TextField(max_length=5000)
   user_explanation = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
@@ -122,11 +122,11 @@ class UserAnswerSheet(models.Model):
 class UserScoreSheet(models.Model):
   user = models.ForeignKey(User)
   examname = models.ForeignKey(ExamName)
-  attemptid = models.IntegerField(max_length=4)
+  attemptid = models.IntegerField()
   start_time = models.DateTimeField()
-  total_questions = models.IntegerField(max_length=4)
-  answered_questions = models.IntegerField(max_length=4)
-  correctly_answered = models.IntegerField(max_length=4)
+  total_questions = models.IntegerField()
+  answered_questions = models.IntegerField()
+  correctly_answered = models.IntegerField()
   issubmitted = models.BooleanField(default=False)
   end_time = models.DateTimeField(null=True, blank=True)
   mark = models.DecimalField(max_digits=6, decimal_places=2)
