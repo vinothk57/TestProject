@@ -23,7 +23,7 @@ class UserDetails(models.Model):
     return '%s, %s, %s, %s' % (self.user.username, self.address, self.city, self.country)
 
 class ExamName(models.Model):
-  examname = models.TextField(unique=True)
+  examname = models.CharField(max_length=150, unique=True)
   total_questions = models.IntegerField()
   attempts_allowed = models.IntegerField()
   duration = models.IntegerField()

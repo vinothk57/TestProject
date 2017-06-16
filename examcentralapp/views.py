@@ -44,13 +44,13 @@ def main_page(request):
   form = SearchForm()
   
   show_results = True
-  if request.GET.has_key('query'):
+  if 'query' in request.GET:
     show_results = True
     query = request.GET['query'].strip()
     if query:
       form = SearchForm({'query' : query}) 
       examlist = ExamName.objects.filter(examname__icontains=query)[:10]
-    if request.GET.has_key('blank'):
+    if 'blank' in request.GET:
       examlist = ExamName.objects.filter(published=True)
   variables = RequestContext(request, { 'form': form,
     'examlist': examlist,
@@ -58,7 +58,7 @@ def main_page(request):
     'show_tags': True
   })
 
-  if request.GET.has_key('ajax'):
+  if 'ajax' in request.GET:
     return render(request, 'examlist.html', { 'form': form,
     'examlist': examlist,
     'show_results': show_results,
@@ -233,13 +233,13 @@ def search_page(request):
   form = SearchForm()
   examlist = []
   show_results = False
-  if request.GET.has_key('query'):
+  if 'query' in request.GET:
     show_results = True
     query = request.GET['query'].strip()
     if query:
       form = SearchForm({'query' : query}) 
       examlist = ExamName.objects.filter(examname__icontains=query)[:10]
-  if request.GET.has_key('blank'):
+  if 'blank' in request.GET:
     examlist = ExamName.objects.filter(published=True)
   variables = { 'form': form,
     'form': form,
@@ -249,7 +249,7 @@ def search_page(request):
     'show_user': True
   }
 
-  if request.GET.has_key('ajax'):
+  if 'ajax' in request.GET:
     return render(request, 'examlist.html', variables)
   else:
     return render(request, 'search.html', variables)
@@ -453,9 +453,9 @@ def getqtn_page(request):
   optionb = None;
   optionc = None;
   optiond = None;
-  if request.GET.has_key('examid'):
+  if 'examid' in request.GET:
     examid = request.GET['examid'].strip()
-  if request.GET.has_key('qid'):
+  if 'qid' in request.GET:
     qno = request.GET['qid'].strip()
     qdetails = ExamQuestions.objects.filter(examname_id=examid, qno=qno)[0]
     a = OptionA.objects.filter(examname_id=examid, qid=qno)
@@ -482,7 +482,7 @@ def getqtn_page(request):
       'qno': qno
     })
 
-  if request.GET.has_key('ajax'):
+  if 'ajax' in request.GET:
     return render(request, 'question.html', {
       'qdetails': qdetails,
       'optiona': optiona,
@@ -603,7 +603,7 @@ def get_graph_data(request):
   JSONObj = {
   };
 
-  if request.GET.has_key('examid'):
+  if 'examid' in request.GET:
     examid = request.GET['examid'].strip()
 
 
@@ -657,7 +657,7 @@ def get_profile_data(request):
 def fetchQuestionPaperJSON(request):
   examid = 0
   
-  if request.GET.has_key('examid'):
+  if 'examid' in request.GET:
     examid = request.GET['examid'].strip()
 
     JSONObj = {
@@ -701,7 +701,7 @@ def fetchQuestionPaperJSON(request):
         JSONObj['qlist'].append(qdict)
 
 
-  if request.GET.has_key('ajax'):
+  if 'ajax' in request.GET:
     return HttpResponse(json.dumps(JSONObj), content_type="application/json")
 
 @login_required
@@ -806,7 +806,7 @@ def analyzegraphs_page(request):
 def fetchSolutionJSON(request):
   examid = 0
   
-  if request.GET.has_key('examid'):
+  if 'examid' in request.GET:
     examid = request.GET['examid'].strip()
 
     JSONObj = {
@@ -884,7 +884,7 @@ def fetchSolutionJSON(request):
         JSONObj['qlist'].append(qdict)
 
 
-  if request.GET.has_key('ajax'):
+  if 'ajax' in request.GET:
     return HttpResponse(json.dumps(JSONObj), content_type="application/json")
 
 #For reset password

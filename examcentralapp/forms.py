@@ -59,8 +59,7 @@ class UpdateProfileForm(forms.Form):
     label='PIN Code', min_value = 1,
     widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'PIN/ZIP Code'}), required=False
   )
-  phone = forms.RegexField(regex=r'^\+?1?\d{9,15}$', 
-                                error_message = ("Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."), required=False)
+  phone = forms.RegexField(regex=r'^\+?1?\d{9,15}$', required=False)
   aboutme = forms.CharField(label='About Me', max_length=1000, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell everyone how cool you are!'}), required=False)
 
   def clean_phone(self):
