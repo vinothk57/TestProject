@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime
@@ -549,7 +550,7 @@ def evalexam_page(request):
         resultdict['correctly_answered'] = rightcount
         resultdict['mark'] = str(scoresheet.mark)
 
-        msg_html = render_to_string('result_mail.html', {'examid': scoresheet.examname.id, 'attemptid': scoresheet.attemptid, 'examname': scoresheet.examname.examname, 'userscore': scoresheet.mark, 'maxscore': totalqtns * ExamName.objects.get(id=my_dict["examid"]).mark_per_qtn});
+        msg_html = render_to_string('result_mail.html', {'username': request.user.first_name, 'examid': scoresheet.examname.id, 'attemptid': scoresheet.attemptid, 'examname': scoresheet.examname.examname, 'userscore': scoresheet.mark, 'maxscore': totalqtns * ExamName.objects.get(id=my_dict["examid"]).mark_per_qtn});
         send_mail(
           'ExamCentral - Result :' + str(scoresheet.examname.examname) + ' - Attempt: ' + str(scoresheet.attemptid),
           'Hi ' + str(request.user.first_name) + ',\n\n\
@@ -890,7 +891,7 @@ def fetchSolutionJSON(request):
 #For reset password
 class ResetPasswordRequestView(FormView):
     template_name = "account/test_template.html"    #code for template is given below the view's code
-    success_url = '/login'
+    success_url = '/reset_password'
     form_class = PasswordResetRequestForm
 
     @staticmethod
@@ -951,7 +952,7 @@ class ResetPasswordRequestView(FormView):
                 for user in associated_users:
                     c = {
                         'email': user.email,
-                        'domain': 'localhost:8000', #or your domain eg:example.com
+                        'domain': 'kumarinba.pythonanywhere.com', #or your domain eg:example.com
                         'site_name': 'ExamCentral',
                         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                         'user': user,
@@ -998,10 +999,10 @@ class PasswordResetConfirmView(FormView):
                 new_password= form.cleaned_data['new_password2']
                 user.set_password(new_password)
                 user.save()
-                messages.success(request, 'Password has been reset.')
+                messages.success(request, 'Password has been reset. Login with your new password.')
                 return self.form_valid(form)
             else:
-                messages.error(request, 'Password reset has not been unsuccessful.')
+                messages.error(request, 'Password reset has not been successful.')
                 return self.form_invalid(form)
         else:
             messages.error(request,'The reset password link is no longer valid.')

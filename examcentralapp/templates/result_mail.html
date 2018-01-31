@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="format-detection" content="telephone=no" /> <!-- disable auto telephone linking in iOS -->
-		<title>Exam Central</title>
+        <title>Exam Central</title>
 		<style type="text/css">
 			/* RESET STYLES */
 			html { background-color:#E1E1E1; margin:0; padding:0; }
@@ -210,7 +210,7 @@
 															<table border="0" cellpadding="30" cellspacing="0" width="100%">
 																<tr>
 																	<td align="center" valign="top" class="textContent">
-																		<h1 style="color:#FFFFFF;line-height:100%;font-family:Helvetica,Arial,sans-serif;font-size:35px;font-weight:normal;margin-bottom:5px;text-align:center;">Exam Central</h1>
+                                                                        <a href="http://kumarinba.pythonanywhere.com" style="text-decoration:none;"><h1 style="color:#FFFFFF;line-height:100%;font-family:Helvetica,Arial,sans-serif;font-size:35px;font-weight:normal;margin-bottom:5px;text-align:center;">Exam Central</h1></a>
 																		</div>
 																	</td>
 																</tr>
@@ -227,40 +227,6 @@
 									<!-- // CENTERING TABLE -->
 								</td>
 							</tr>
-							<!-- // MODULE ROW -->
-
-							<!-- MODULE ROW // -->
-							<!--<tr>
-								<td align="center" valign="top">
-									<!-- CENTERING TABLE // -->
-									<table border="0" cellpadding="0" cellspacing="0" width="100%">
-										<tr>
-											<td align="center" valign="top">
-												<!-- FLEXIBLE CONTAINER // -->
-												<table border="0" cellpadding="0" cellspacing="0" width="500" class="flexibleContainer">
-													<tr>
-														<td align="center" valign="top" width="500" class="flexibleContainerCell">
-
-															<!-- CONTENT TABLE // -->
-															<table border="0" cellpadding="0" cellspacing="0" width="100%">
-																<tr>
-																	<td valign="top" class="imageContent">
-																		<img src="file:///home/innoflexion/Downloads/E-mail-Template/Images/goal.jpg" width="500" class="flexibleImage" style="max-width:500px;width:100%;display:block;" alt="Exam Central" title="Exam Central" />
-																	</td>
-																</tr>
-															</table>
-															<!-- // CONTENT TABLE -->
-
-														</td>
-													</tr>
-												</table>
-												<!-- // FLEXIBLE CONTAINER -->
-											</td>
-										</tr>
-									</table>
-									<!-- // CENTERING TABLE -->
-								</td>
-							</tr> --!>
 							<!-- // MODULE ROW -->
 
 							<!-- MODULE ROW // -->
@@ -283,13 +249,13 @@
 																			<tr>
 																				<td valign="top" class="textContent">
 																					
-																					<h4 mc:edit="header" style="color:#000;line-height:125%;font-family:Helveticafont-size:16px;font-weight:bold;margin-top:0;margin-bottom:3px;text-align:left;">Dear User</h4>
+                                                                                    <h4 mc:edit="header" style="color:#000;line-height:125%;font-family:Helveticafont-size:16px;font-weight:bold;margin-top:0;margin-bottom:3px;text-align:left;">Dear {{ username }},</h4>
 			<div mc:edit="body" style="text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:15px;margin-bottom:0;color:#5F5F5F;line-height:135%;">
 
 You have successfully completed {{ examname }}</div>
 
 <div mc:edit="body" style="text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:15px;margin-bottom:0;color:#5F5F5F;line-height:135%;">You scored {{ userscore }} out of {{ maxscore }}</div>
-<div mc:edit="body" style="text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:15px;margin-bottom:0;color:#5F5F5F;line-height:135%; font-weight: bold; margin-top: 10px;">Regards,</div>
+<div mc:edit="body" style="text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:15px;margin-bottom:0;color:#5F5F5F;line-height:135%; margin-top: 10px;">Regards,</div>
 <div mc:edit="body" style="text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:15px;margin-bottom:0;color:#5F5F5F;line-height:135%;">Team Exam Central</div>
 																				</td>
 																			</tr>
@@ -319,18 +285,18 @@ You have successfully completed {{ examname }}</div>
 										<tr style="padding-top:0;">
 											<td align="center" valign="top">
 												<!-- FLEXIBLE CONTAINER // -->
-												<table border="0" cellpadding="30" cellspacing="0" width="500" class="flexibleContainer">
+												<table border="0" cellpadding="0" cellspacing="0" width="500" class="flexibleContainer">
 													<tr>
 														<td style="padding-top:0;" align="left" valign="top"  class="flexibleContainerCell">
 
 															<!-- CONTENT TABLE // -->
-															<table border="0" cellpadding="0" cellspacing="0" width="100%" class="emailButton" style="background-color: #000; margin-top: 2px;">
+															<table border="0" cellpadding="0" cellspacing="5" width="100%" class="emailButton" style="background-color: #f8f8f8; margin-top: 2px;">
 																<tr>
-																	<td align="center" valign="middle" class="buttonContent" style="padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px;">
-																		<a style="color:#FFFFFF;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:18px;line-height:100%;" href="http://localhost:8000/history" target="_blank">View Report</a>
+																	<td align="center" valign="middle" class="buttonContent" style="padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px;background-color: #000000">
+																		<a style="color:#FFFFFF;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:18px;line-height:100%;" href="http://kumarinba.pythonanywhere.com/history" target="_blank">View Report</a>
 																	</td>
-																	<td align="center" valign="middle" class="buttonContent" style="padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px; border-left: 1px dotted">
-																		<a style="color:#FFFFFF;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:18px;line-height:100%;" href="http://localhost:8000/reviewexam/?examid={{ examid }}&attemptid={{ attemptid }}" target="_blank">View Solutions</a>
+																	<td align="center" valign="middle" class="buttonContent" style="padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px; border-left: 1px dotted;background-color: #000000">
+																		<a style="color:#FFFFFF;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:18px;line-height:100%;" href="http://kumarinba.pythonanywhere.com/reviewexam/?examid={{ examid }}&attemptid={{ attemptid }}" target="_blank">View Solutions</a>
 																	</td>
 																</tr>
 															</table>
@@ -349,13 +315,14 @@ You have successfully completed {{ examname }}</div>
 							<!-- // MODULE ROW -->
 
 							<!-- MODULE ROW // -->
+                            <!--
 							<tr>
 								<td align="center" valign="top">
-									<!-- CENTERING TABLE // -->
+									<!- - CENTERING TABLE // - ->
 									<table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top: 1px dotted">
 										<tr>
 											<td align="center" valign="top">
-												<!-- FLEXIBLE CONTAINER // -->
+												<!- - FLEXIBLE CONTAINER // - ->
 												<table border="0" cellpadding="0" cellspacing="0" width="500" class="flexibleContainer">
 													<tr>
 														<td align="center" valign="top" width="500" class="flexibleContainerCell">
@@ -363,7 +330,7 @@ You have successfully completed {{ examname }}</div>
 																<tr>
 																	<td align="center" valign="top">
 
-																		<!-- CONTENT TABLE // -->
+																		<!- - CONTENT TABLE // - ->
 																		<table border="0" cellpadding="0" cellspacing="0" width="100%" >
 																			<tr>
 																				<td valign="top" class="textContent">
@@ -372,7 +339,7 @@ You have successfully completed {{ examname }}</div>
 																				</td>
 																			</tr>
 																		</table>
-																		<!-- // CONTENT TABLE -->
+																		<!- - // CONTENT TABLE - ->
 
 																	</td>
 																</tr>
@@ -380,14 +347,15 @@ You have successfully completed {{ examname }}</div>
 														</td>
 													</tr>
 												</table>
-												<!-- // FLEXIBLE CONTAINER -->
+												<!- - // FLEXIBLE CONTAINER - ->
 											</td>
 										</tr>
 									</table>
-									<!-- // CENTERING TABLE -->
+									<!- - // CENTERING TABLE - ->
 								</td>
 							</tr>
-							<!-- // MODULE ROW -->
+							<!- - // MODULE ROW - ->
+                            -->
 						</table>
 						<!-- // END -->
 
@@ -420,7 +388,7 @@ You have successfully completed {{ examname }}</div>
 																	<td valign="top" bgcolor="#000">
 
 																		<div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#828282;text-align:center;line-height:120%;">
-																			<div>Copyright &#169; 2017 <a href="http://www.charlesmudy.com/respmail/" target="_blank" style="text-decoration:none;color:#828282;"><span style="color:#828282;">Exam Central</span></a>. All&nbsp;rights&nbsp;reserved.</div>
+																			<div>Copyright &#169; 2018 <a href="http://kumarinba.pythonanywhere.com" target="_blank" style="text-decoration:none;color:#828282;"><span style="color:#828282;">Exam Central</span></a>. All&nbsp;rights&nbsp;reserved.</div>
 																			
 																		</div>
 

@@ -1,4 +1,4 @@
-<p>{{ qno }}. {{ qdetails.question }}</p>
+<p>{{ qno }}. {{ qdetails.question | linebreaks }}</p>
 
 {% if qdetails.qtype == 1 %}
 <form>

@@ -167,7 +167,7 @@ class DocumentForm(forms.Form):
 
 
 class PasswordResetRequestForm(forms.Form):
-    email_or_username = forms.CharField(label=("Email Or Username"), max_length=254)
+    email_or_username = forms.CharField(label='', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Email or Username'}))
 
 class SetPasswordForm(forms.Form):
     """
@@ -177,11 +177,11 @@ class SetPasswordForm(forms.Form):
     error_messages = {
         'password_mismatch': ("The two password fields didn't match."),
         }
-    new_password1 = forms.CharField(label=("New password"),
-                                    widget=forms.PasswordInput)
-    new_password2 = forms.CharField(label=("New password confirmation"),
-                                    widget=forms.PasswordInput)
 
+    new_password1 = forms.CharField(label='',
+            widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter new password'}))
+    new_password2 = forms.CharField(label='',
+            widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Re-enter new password'}))
     def clean_new_password2(self):
         password1 = self.cleaned_data.get('new_password1')
         password2 = self.cleaned_data.get('new_password2')

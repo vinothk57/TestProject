@@ -1,12 +1,19 @@
 {# test template #}
+{% extends "base.html" %}
+{% block title %}Reset Password{% endblock %}
+{% block content %}
+    <div class="row">
+            <div class="col-md-12 cont-head"><h4>Reset Password</h4></div>
+    </div>
+
 <!-- code for displaying success or error message in template -->
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
     <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
-    {% endif %}
 </ul>
+{% endif %}
 
 <!-- Form rendering code for template -->
 <form action="" method="post">
@@ -16,3 +23,4 @@
 
     <input type="submit" value="Submit" />
 </form>
+{% endblock %}
