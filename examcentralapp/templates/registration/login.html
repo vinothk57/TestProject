@@ -77,6 +77,7 @@
                                     </label>
                                    <span class="float-right forgotpwd"><a href="/reset_password">Forgot Password</a></span>
                                 </div>
+                                <input type="hidden" name="next" value="{{ request.GET.next}}" />
                                 <div class="checkbox margin-bottom-0">
                                     <button type="submit" class="tcl-btn info">Sign In</button>
                                     <span class="padding-left-20">|</span>
