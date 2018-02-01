@@ -42,7 +42,7 @@
                         <form role="form" method="post" action=".">
                            {% if form.non_field_errors %}
                              <div class="isa_error">
-                               <i class="fa fa-times-circle"></i>
+                                 <!-- <i class="fa fa-times-circle"></i> -->
                                  {{ form.non_field_errors|striptags }}
                              </div>
                            {% endif %}
@@ -56,7 +56,7 @@
                                 </div>
                                     {% if form.username.errors %}
                                       <div class="isa_error">
-                                        <i class="fa fa-times-circle"></i>
+                                        <!--<i class="fa fa-times-circle"></i> -->
                                           {{ form.username.errors }}
                                       </div>
                                     {% endif %}
@@ -67,21 +67,18 @@
                                 </div>
                                     {% if form.password.errors %}
                                       <div class="isa_error">
-                                        <i class="fa fa-times-circle"></i>
+                                        <!-- <i class="fa fa-times-circle"></i> -->
                                           {{ form.password.errors }}
                                       </div>
                                     {% endif %}
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
-                                   <span class="float-right forgotpwd"><a href="/reset_password">Forgot Password</a></span>
+                                <div class="forpwd text-align-right">
+                                     <a href="/reset_password">Forgot Password</a>
                                 </div>
                                 <input type="hidden" name="next" value="{{ request.GET.next}}" />
                                 <div class="checkbox margin-bottom-0">
-                                    <button type="submit" class="tcl-btn info">Sign In</button>
+                                    <button type="submit" class="exam-btn info">Sign In</button>
                                     <span class="padding-left-20">|</span>
-                                    <button type="button" class="tcl-btn info float-right" onclick="window.location.href='/register'">Sign Up</button>
+                                    <button type="button" class="exam-btn float-right" onclick="window.location.href='/register'">Sign Up</button>
                                 </div>
                                 
                             </fieldset>
@@ -92,7 +89,16 @@
         </div>
     </div>
     
-    <div class="footer-ems"></div>
+    <footer>
+    <div class="footer-tcl">
+           <div class="container footer-list">
+            <div class="row">
+            <div class="col-md-12 footer-cont">
+                <p style="margin-top:20px;">© 2018 ExamCentral. All rights reserved.</p>
+            </div>
+            </div>
+    </div>
+    </footer>
 
     <!-- jQuery -->
     <script src="/site_media/jquery/jquery.min.js"></script>
