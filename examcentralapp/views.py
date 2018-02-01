@@ -44,6 +44,9 @@ from email.mime.image import MIMEImage
 
 def main_page(request):
   
+  if not request.user.is_authenticated():
+    return render(request, 'index.html', {})
+
   examlist = ExamName.objects.filter(published=True)
   #variables = RequestContext(request, {'examlist': examlist})
   #return render_to_response(
