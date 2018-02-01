@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -22,7 +23,7 @@ from django.core.mail import send_mail
 
 #For Reset password
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template import loader
 from django.core.validators import validate_email
@@ -34,6 +35,12 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models.query_utils import Q
 from django.contrib.auth import get_user_model
+
+from django.template.loader import render_to_string
+from .token import account_activation_token
+from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
+from email.mime.image import MIMEImage
 
 def main_page(request):
   
@@ -159,16 +166,30 @@ def register_page(request):
       )
       user.is_active = False
       user.save()
-      send_mail(
-        'ExamCentral - Account Registration',
-        'Hi,\n\n\
-         Your Email Id is registered with ExamCentral.com.\n\
-         Your Username: ' + form.cleaned_data['username'] + '\n\nThanks,\nExamCentral Team.',
-        'from@example.com',
-        [form.cleaned_data['email']],
-        fail_silently=False,
+      #send_mail(
+      #  'ExamCentral - Account Registration',
+      #  'Hi,\n\n\
+      #   Your Email Id is registered with ExamCentral.com.\n\
+      #   Your Username: ' + form.cleaned_data['username'] + '\n\nThanks,\nExamCentral Team.',
+      #  'from@example.com',
+      #  [form.cleaned_data['email']],
+      #  fail_silently=False,
+      #)
+      #return HttpResponseRedirect('/')
+      
+      mail_subject = 'Account Activation - ExamCentral'
+      message = render_to_string('acc_active_email.html', {
+                'user': user,
+                'domain': request.META['HTTP_HOST'],
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+      to_email = form.cleaned_data.get('email')
+      email = EmailMessage(
+                  mail_subject, message, to=[to_email]
       )
-      return HttpResponseRedirect('/')
+      email.send()
+      return HttpResponse('Please confirm your email address to complete the registration')
   else:
     form = RegistrationForm()
 
@@ -181,6 +202,21 @@ def register_page(request):
   #  'registration/register.html', 
   #  variables
   #)
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        #login(request, user)
+        # return redirect('home')
+        return HttpResponse('Thank you for your email confirmation. Now you can login to your ExamCentral account.')
+    else:
+        return HttpResponse('Activation link is invalid!')
 
 @login_required
 def examdetails_save_page(request):
@@ -551,18 +587,30 @@ def evalexam_page(request):
         resultdict['mark'] = str(scoresheet.mark)
 
         msg_html = render_to_string('result_mail.html', {'username': request.user.first_name, 'examid': scoresheet.examname.id, 'attemptid': scoresheet.attemptid, 'examname': scoresheet.examname.examname, 'userscore': scoresheet.mark, 'maxscore': totalqtns * ExamName.objects.get(id=my_dict["examid"]).mark_per_qtn});
-        send_mail(
-          'ExamCentral - Result :' + str(scoresheet.examname.examname) + ' - Attempt: ' + str(scoresheet.attemptid),
-          'Hi ' + str(request.user.first_name) + ',\n\n\
-           Your score is: ' + str(scoresheet.mark) + '.\n\
-           Total questions: ' + str(totalqtns) + '.\n\
-           Answered questions: ' + str(resultdict['answered_questions']) + '.\n\
-           Correct answers: ' + str(rightcount) + '.\n\nRegards,\nExamCentral Team.',
-          'from@example.com',
-          [request.user.email],
-          fail_silently=False,
-          html_message=msg_html,
-        )
+        #send_mail(
+        #  'ExamCentral - Result :' + str(scoresheet.examname.examname) + ' - Attempt: ' + str(scoresheet.attemptid),
+        #  'Hi ' + str(request.user.first_name) + ',\n\n\
+        #   Your score is: ' + str(scoresheet.mark) + '.\n\
+        #   Total questions: ' + str(totalqtns) + '.\n\
+        #   Answered questions: ' + str(resultdict['answered_questions']) + '.\n\
+        #   Correct answers: ' + str(rightcount) + '.\n\nRegards,\nExamCentral Team.',
+        #  'from@example.com',
+        #  [request.user.email],
+        #  fail_silently=False,
+        #  html_message=msg_html,
+        #)
+        subject = 'ExamCentral - Result :' + str(scoresheet.examname.examname) + ' - Attempt: ' + str(scoresheet.attemptid)
+        msg = EmailMultiAlternatives(subject, msg_html, "vinoth.k.kumar@gmail.com", [request.user.email], reply_to=["noreply@examcentral.com"])
+        msg.content_subtype = 'html'  # Main content is text/html  
+        msg.mixed_subtype = 'related'  # This is critical, otherwise images will be displayed as attachments!
+
+        for f in ['templates/Images/students.jpg']:
+            fp = open(os.path.join(os.path.dirname(__file__), f), 'rb')
+            msg_img = MIMEImage(fp.read())
+            fp.close()
+            msg_img.add_header('Content-ID', '<{}>'.format(f))
+            msg.attach(msg_img)
+        msg.send()
         return HttpResponse(json.dumps(resultdict))
 
   return HttpResponseRedirect('/myaccount')
