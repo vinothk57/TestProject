@@ -77,7 +77,7 @@ def main_page(request):
     })
 
   else:
-    return render(request, 'main_page.html', { 'form': form,
+    return render(request, 'home_page.html', { 'form': form,
     'examlist': examlist,
     'show_results': show_results,
     'show_tags': True
