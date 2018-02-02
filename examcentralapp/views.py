@@ -20,6 +20,7 @@ from examcentralapp.models import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 #For Reset password
 from django.contrib.auth.tokens import default_token_generator
@@ -758,14 +759,45 @@ def fetchQuestionPaperJSON(request):
 
 @login_required
 def history_page(request):
-  historylist = UserScoreSheet.objects.filter(user_id=request.user.id, issubmitted=True)
+
+  current_page = int(request.GET.get('page' ,1))
+  limit = 10 * current_page
+  offset = limit - 10
+
+  historylist = UserScoreSheet.objects.filter(user_id=request.user.id, issubmitted=True)[offset:limit]
+
+  total_list = UserScoreSheet.objects.filter(user_id=request.user.id, issubmitted=True).count()
+
+  total_pages = int(total_list / 10)
+
+  reminder = total_list % 10
+
+  if reminder:
+     total_pages += 1 # adding one more page if the last page will contains less contacts 
+
+  pagination = make_pagination_html(current_page, total_pages)
 
   variables = RequestContext(request, {
     'historylist': historylist
   })
   return render(request, 'history_page.html', {
-    'historylist': historylist
+    'historylist': historylist,
+    'pagination': pagination
   })
+
+def make_pagination_html(current_page, total_pages):
+
+    pagination_string = ""
+
+    if current_page > 1:
+        pagination_string += '<a href="?page=%s">previous</a>' % (current_page -1)
+
+    pagination_string += '<span class="current"> Page %s of %s </span>' %(current_page, total_pages)
+
+    if current_page < total_pages:
+        pagination_string += '<a href="?page=%s">next</a>' % (current_page + 1)
+
+    return pagination_string
 
 @login_required
 def analysis_page(request):
