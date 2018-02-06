@@ -21,7 +21,7 @@
                           <form id="analyzeexam-form" method="get" action="/analyzeexam/">
                               <input type="hidden" name="examid" value="{{ exam.examname.id }}" />
                               <input type="hidden" name="attemptid" value="{{ exam.attemptid }}" />
-                              <input type="submit" class="btn-primary" value="Analysis" />
+                              <input type="submit" class="exam-btn info" style="width:70px; margin-top:0px; font-weight: normal; padding:4px; border:none;" value="Analysis" />
                           </form>
                 </td>
               </tr>
@@ -29,6 +29,12 @@
             {% endfor %}
           </tbody>
        </table>
+
+       <div class="pagination">
+         <span class="step-links">
+          {{ pagination|safe }}
+         </span>
+       </div>
 {% else %}
   <p>No Exam found.</p>
 {% endif %}
