@@ -764,7 +764,7 @@ def history_page(request):
   limit = 10 * current_page
   offset = limit - 10
 
-  historylist = UserScoreSheet.objects.filter(user_id=request.user.id, issubmitted=True)[offset:limit]
+  historylist = UserScoreSheet.objects.filter(user_id=request.user.id, issubmitted=True).order_by('-end_time')[offset:limit]
 
   total_list = UserScoreSheet.objects.filter(user_id=request.user.id, issubmitted=True).count()
 
@@ -801,13 +801,29 @@ def make_pagination_html(current_page, total_pages):
 
 @login_required
 def analysis_page(request):
-  analyticslist = UserScoreSheet.objects.filter(user_id=request.user.id, issubmitted=True)
 
+  current_page = int(request.GET.get('page' ,1))
+  limit = 10 * current_page
+  offset = limit - 10
+
+  analyticslist = UserScoreSheet.objects.filter(user_id=request.user.id, issubmitted=True).order_by('-end_time')[offset:limit]
+
+  total_list = UserScoreSheet.objects.filter(user_id=request.user.id, issubmitted=True).count()
+
+  total_pages = int(total_list / 10)
+
+  reminder = total_list % 10
+
+  if reminder:
+     total_pages += 1 # adding one more page if the last page will contains less contacts 
+
+  pagination = make_pagination_html(current_page, total_pages)
   variables = RequestContext(request, {
     'analyticslist': analyticslist
   })
   return render(request, 'analytics_page.html', {
-    'analyticslist': analyticslist
+    'analyticslist': analyticslist,
+    'pagination': pagination
   })
 
 @login_required

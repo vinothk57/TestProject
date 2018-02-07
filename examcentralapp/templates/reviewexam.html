@@ -3,6 +3,7 @@
 {% block external %}
       <script type="text/javascript" src="/site_media/solution.js">
       </script>
+      <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 {% endblock %}
 {% block content %}
 
@@ -35,39 +36,41 @@
                         </ul>
                       <div class="tab-content">
                         <div id="general" class="tab-pane fade in active border-radius">
-                            <ul class="margin-top-10 qtn-cont" id="genList">
-                            </ul>
+                           <div id="qdirection">
+                           </div>
+                           <div id="genList" style="">
+                           </div>
 
                         </div>
                         <div id="analysis" class="tab-pane fade border-radius">
-                            <ul class="margin-top-10 qtn-cont" id="analysisList">
-                            </ul>
+                           <div id="analysisList" style="">
+                           </div>
                         </div>
                         <div id="language" class="tab-pane fade border-radius">
-                            <ul class="margin-top-10 qtn-cont" id="langList">
-                            </ul>
+                           <div id="langList" style="">
+                           </div>
                         </div>
                         <div id="reasoning" class="tab-pane fade border-radius">
-                            <ul class="margin-top-10 qtn-cont" id="reasonList">
-                            </ul>
+                           <div id="reasonList" style="">
+                           </div>
                         </div>
                       </div>
                         <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="prev" class="tcl-btn pull-right" value="Previous" /></div>
                         <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="next" class="tcl-btn pull-right" value="Next" /></div>
                     </div>
-                    <div class="col-md-4 text-center" style="height:500px;">
-                        <div style="border: 1px solid #ccc; border-radius: 5px;">
+                    <div class="col-md-4 text-center">
+                        <div class="btn-border">
                           <input type="hidden" id="examid" value="{{ examid }}" />
                           <input type="hidden" id="attemptid" value="{{ attemptid }}" />
                           <input type="hidden" id="totalqtns" value="{{ totalqtns }}" />
                           <form id="getqtn-form" method="get" action=".">
                             {% csrf_token %}
                             {% for index in quploaded %}
-                              <input id="qno{{ index }}" type="submit" class="btn notvstd-btn btn-sm" value="{{ index }}" />
+                              <input id="qno{{ index }}" type="submit" class="btn btn-info btn-sm" value="{{ index }}" />
                             {% endfor %}
                           </form>
                         </div>
-                        <div style="width: 100%" class="margin-top-10 margin-bottom-10">
+                        <!--<div style="width: 100%" class="margin-top-10 margin-bottom-10">
                             <div style="width: 25%; float: left;">Answered</div>
                             <div style="width: 25%; float: left;"><input type="button"  name="" value="" class="btn btn-info btn-sm ans-button"/></div>
                             <div style="width: 25%; float: left;">Not Visited</div>
@@ -83,7 +86,7 @@
                         <div style="border-radius: 5px; border:1px solid #ccc;height: 110px; margin-top: 20px;">
                             <div style="float: left; padding: 40px;"><a href="#">Instructions</a></div>
                               <div style="float: right; padding: 30px;">
-                        </div>
+                        </div> -->
 
                     </div>
 

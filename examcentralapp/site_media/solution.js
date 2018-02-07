@@ -47,7 +47,7 @@ function showCorrectTab() {
 function saveAnswer() {
   var ans = "";
   var i = 1;
-  $(loadQuestionAt).children('input').each(function () {
+  $(loadQuestionAt + ' :input').each(function () {
       if(this.checked) {
         ans = ans + i + " ";
         JSONObj['qlist'][currqtnno - 1]['options'][i -1]['checked'] = "true";
@@ -58,12 +58,12 @@ function saveAnswer() {
   });
   // "this" is the current element in the loop
   var qid = "qno" + currqtnno;
-  $('#' + qid).removeClass("notvstd-btn review-btn"); 
+  $('#' + qid).removeClass("notvisit-btn markrew-btn"); 
   if(ans != "") {
     $('#' + qid).removeClass("notans-btn"); 
-    $('#' + qid).addClass("ansd-btn");
+    $('#' + qid).addClass("ans-btn");
   } else {
-    $('#' + qid).removeClass("ansd-btn"); 
+    $('#' + qid).removeClass("ans-btn"); 
     $('#' + qid).addClass("notans-btn");
   }
 
@@ -79,7 +79,7 @@ function saveAnswer() {
 function checkAnswered() {
   var ans = "";
   var i = 1;
-  $(loadQuestionAt).children('input').each(function () {
+  $(loadQuestionAt + ' :input').each(function () {
       if(this.checked) {
         ans = ans + i + " ";
         JSONObj['qlist'][currqtnno - 1]['options'][i -1]['checked'] = "true";
@@ -90,14 +90,14 @@ function checkAnswered() {
   });
   // "this" is the current element in the loop
   var qid = "qno" + currqtnno;
-  if ( $('#' + qid).hasClass('review-btn')) {
+  if ( $('#' + qid).hasClass('markrew-btn')) {
   } else {
-    $('#' + qid).removeClass("notvstd-btn review-btn");
+    $('#' + qid).removeClass("notvisit-btn markrew-btn");
     if(ans != "") {
       $('#' + qid).removeClass("notans-btn");
-      $('#' + qid).addClass("ansd-btn");
+      $('#' + qid).addClass("ans-btn");
     } else {
-      $('#' + qid).removeClass("ansd-btn");
+      $('#' + qid).removeClass("ans-btn");
       $('#' + qid).addClass("notans-btn");
     }
   }
@@ -224,42 +224,42 @@ function getqtn_submit() {
 
 function loadQuestionData() {
     var qelement = JSONObj['qlist'][currqtnno - 1];
-    var qstring = "<pre><strong>" + qelement['qno'] + ". " + qelement['qtn'] + "</strong></pre>";
+    var qstring = "<h6><pre style=\"white-space: pre-wrap;word-wrap: break-word;white-space: -o-pre-wrap;white-space: -moz-pre-wrap;\">" + qelement['qno'] + ". " + qelement['qtn'] + "</pre></h6>";
 
     var options = "";
     if(qelement['type'] == 1) {
       for (i = 0; i <  qelement['options'].length; i++) {
-        options = options + "<br><input type=\"radio\" disabled name=\"option\" ";
+        options = options + "<div class=\"form-group radio-pink-gap\">";
+        options = options + "<input type=\"radio\" name=\"option\" class=\"with-gap\" disabled ";
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
-        options = options + "/>" + qelement['options'][i]['option'];
+        options = options + "><label>" + qelement['options'][i]['option'] + "</label><div style=\"float:right;\">";
 
-        options = options + "<a href=\"#\" class=\"btn btn-primary btn-xs\">"
         if(qelement['options'][i]['isright']) {
-          options = options + "<span class=\"glyphicon glyphicon-ok\"></span> Correct </a>"
+          options = options + "<i class=\"fas fa-check-circle fa-lg green\"></i></div>"
         } else {
-          options = options + "<span class=\"glyphicon glyphicon-remove\"></span> Wrong </a>"
+          options = options + "<i class=\"fas fa-times-circle fa-lg red\"></i></div>"
         }
       }
     } else if (qelement['type'] == 3) {
       for (i = 0; i <  qelement['options'].length; i++) {
-        options = options + "<br><input type=\"checkbox\" disabled name=\"option\" ";
+        options = options + "<div class=\"form-group radio-pink-gap\">";
+        options = options + "<input type=\"checkbox\" name=\"option\" class=\"with-gap\" disabled ";
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
-        options = options + "/>" + qelement['options'][i]['option'];
+        options = options + "><label>" + qelement['options'][i]['option'] + "</label><div style=\"float:right;\">";
 
-        options = options + "<a href=\"#\" class=\"btn btn-primary btn-xs\">"
         if(qelement['options'][i]['isright']) {
-          options = options + "<span class=\"glyphicon glyphicon-ok\"></span> Correct </a>"
+          options = options + "<i class=\"fas fa-check-circle fa-lg green\"></i></div>"
         } else {
-          options = options + "<span class=\"glyphicon glyphicon-remove\"></span> Wrong </a>"
+          options = options + "<i class=\"fas fa-times-circle fa-lg red\"></i></div>"
         }
       }
     }
 
-    var explanation = "<br><br> <h4>Explanation:</h4><br><h3>" + qelement['explanation'] + "</h3>";
+    var explanation = "<div><h5 style=\"border-bottom:1px solid #ccc; padding-bottom:10px;\">Correct Answer is </h5></div><div class=\"form-group radio-pink-gap\"><h6>" + qelement['explanation'] + "</h6></div>";
     
     $(loadQuestionAt).html(
       qstring + options + explanation
@@ -401,7 +401,7 @@ $(document).ready(function () {
   $("#next").click(function() {
     //getnextqtn();
     var qid = "qno" + currqtnno;
-    $('#' + qid).removeClass("review-btn"); 
+    $('#' + qid).removeClass("markrew-btn"); 
     //saveAnswer();
     lastqtnno = currqtnno;
     getnextqtnJSON();
@@ -446,8 +446,8 @@ $(document).ready(function () {
     var qid = "qno" + currqtnno;
     lastqtnno = currqtnno;
     saveAnswer();
-    $('#' + qid).removeClass("ansd-btn notans-btn"); 
-    $('#' + qid).addClass("review-btn"); 
+    $('#' + qid).removeClass("ans-btn notans-btn"); 
+    $('#' + qid).addClass("markrew-btn"); 
     getnextqtnJSON();
     return false;
   });

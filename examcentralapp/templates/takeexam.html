@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 {% block title %}Attend Exam{% endblock %}
 {% block external %}
       <script type="text/javascript" src="/site_media/getqtn.js">
@@ -67,56 +67,58 @@
                         </ul>
                       <div class="tab-content">
                         <div id="general" class="tab-pane fade in active border-radius">
-                            <ul class="margin-top-10 qtn-cont" id="genList">
-                            </ul>
+                           <div id="qdirection">
+                           </div>
+                           <div id="genList" style="">
+                           </div>
 
                         </div>
                         <div id="analysis" class="tab-pane fade border-radius">
-                            <ul class="margin-top-10 qtn-cont" id="analysisList">
-                            </ul>
+                           <div id="analysisList" style="">
+                           </div>
                         </div>
                         <div id="language" class="tab-pane fade border-radius">
-                            <ul class="margin-top-10 qtn-cont" id="langList">
-                            </ul>
+                           <div id="langList" style="">
+                           </div>
                         </div>
                         <div id="reasoning" class="tab-pane fade border-radius">
-                            <ul class="margin-top-10 qtn-cont" id="reasonList">
-                            </ul>
+                           <div id="reasonList" style="">
+                           </div>
                         </div>
                       </div>
                         <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="review" class="addtoaccount" value="Mark for Review and Next" /></div>
-                        <div class="col-md-3 col-md-offset-1 margin-top-10 margin-bottom-10"><input type="button" id="clear" class="addtoaccount" value="Clear Response" /></div>
+                        <div class="col-md-3 margin-top-10 margin-bottom-10 margin-left-20"><input type="button" id="clear" class="addtoaccount" value="Clear Response" /></div>
                         <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="prev" class="addtoaccount pull-right" value="Previous" /></div>
                         <div class="col-md-2 margin-top-10 margin-bottom-10"><input type="button" id="next" class="addtoaccount pull-right" value="Save and Next" /></div>
                     </div>
-                    <div class="col-md-4 text-center" style="height:500px;">
-                        <div style="border: 1px solid #ccc; border-radius: 5px;">
+                    <div class="col-md-4 text-center">
+                        <div class="btn-border">
                           <input type="hidden" id="examid" value="{{ examid }}" />
                           <input type="hidden" id="attemptid" value="{{ attemptid }}" />
                           <input type="hidden" id="totalqtns" value="{{ totalqtns }}" />
                           <form id="getqtn-form" method="get" action=".">
                             {% csrf_token %}
                             {% for index in quploaded %}
-                              <input id="qno{{ index }}" type="submit" class="btn notvstd-btn btn-sm" value="{{ index }}" />
+                              <input id="qno{{ index }}" type="submit" class="btn btn-info btn-sm" value="{{ index }}" />
                             {% endfor %}
                           </form>
                         </div>
-                        <div style="width: 100%" class="margin-top-10 margin-bottom-10">
-                            <div style="width: 25%; float: left;">Answered</div>
-                            <div style="width: 25%; float: left;"><input type="button"  name="" value="" class="btn btn-info btn-sm ans-button"/></div>
-                            <div style="width: 25%; float: left;">Not Visited</div>
-                            <div style="width: 25%; float: left;"><input type="button"  name="" value="" class="btn btn-info btn-sm notvisit-button"></div>
+                        <div class="margin-top-10 margin-bottom-10">
+                            <div class="mark-sec-float-left">Answered</div>
+                            <div class="mark-sec-float-left"><input type="button"  name="" value="" class="btn btn-info btn-sm ans-btn"/></div>
+                            <div class="mark-sec-float-left">Not Visited</div>
+                            <div class="mark-sec-float-left"><input type="button"  name="" value="" class="btn btn-info btn-sm notvisit-bton"></div>
                         </div>
                         <div>
-                            <div style="width: 25%; float: left;">Marked for Review</div>
-                            <div style="width: 25%; float: left;"><input type="button"  name="" value="" class="btn btn-info btn-sm markrew-button"/></div>
-                            <div style="width: 25%; float: left;">Not Answered</div>
-                            <div style="width: 25%; float: left;"><input type="button"  name="" value="" class="btn btn-info btn-sm notans-button"></div>
+                            <div class="mark-sec-float-left"">Marked for Review</div>
+                            <div class="mark-sec-float-left"><input type="button"  name="" value="" class="btn btn-info btn-sm markrew-btn"/></div>
+                            <div class="mark-sec-float-left">Not Answered</div>
+                            <div class="mark-sec-float-left"><input type="button"  name="" value="" class="btn btn-info btn-sm notans-btn"></div>
                         </div>
                         <div style="clear:both;"></div>
-                        <div style="border-radius: 5px; border:1px solid #ccc;height: 110px; margin-top: 20px;">
-                            <div style="float: left; padding: 40px;"><a href="#">Instructions</a></div>
-                              <div style="float: right; padding: 30px;">
+                        <div style="" class="submit-area">
+                            <div class="submit-inst"><a href="#">Instructions</a></div>
+                              <div class="submit-btns">
                                   <input id="submitexam" type="button" name="" value="Submit" class="tcl-btn"/>
                         </div>
 
