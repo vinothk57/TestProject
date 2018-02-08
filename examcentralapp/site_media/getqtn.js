@@ -317,7 +317,7 @@ function viewResult() {
                json: JSON.stringify(JSONdata)
          },
          success: function(result) {
-             $("#content-div").html("<h3> Result </h3> \
+             $("#content-div").html("<h4> Result </h4> \
                                      <table class=\"table table-striped\"> \
                                        <thead> \
                                          <tr> \

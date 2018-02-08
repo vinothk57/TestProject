@@ -13,7 +13,51 @@
                     <input type="hidden" id="attemptid" value="{{ attemptid }}" />
                 </div>
 
-                <div id="content-div" class="row">
+                <div class="row">
+                    <div class="col-md-12" style="text-align:center;">
+                        <div>
+                            <div id="content-div" style="width:60%; height: 280px; border:none solid #ccc; float:left; border-right:none;"></div>
+                            <div style="width:40%; border:1px solid #ccc;float:right; margin-top:50px; border-top:none;">
+                              <table class="table border-top" >
+                                <thead>
+
+                                </thead>
+
+                                <tbody>
+                                  <tr>
+                                    <th style="text-align:left;"><span class="glyphicon glyphicon-ok marginright-10"></span>Exam Name</th>
+                                    <td style="text-align:left;">{{ examname }}</td>
+                                  </tr>
+                                   <tr>
+                                    <th style="text-align:left;"><span class="glyphicon glyphicon-ok marginright-10"></span>Total Secured Score</th>
+                                    <td style="text-align:left;">{{ markscored }}/{{ totalmarks }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th style="text-align:left;"><span class="glyphicon glyphicon-th-list marginright-10"></span>No Of Attempt</th>
+                                    <td style="text-align:left;">{{ attemptid }}</td>
+                                  </tr>
+                                   <tr>
+                                    <th style="text-align:left;"><span class="glyphicon glyphicon-time marginright-10"></span>Total Time Taken</th>
+                                    <td style="text-align:left;">{{ timetaken }}</td>
+                                  </tr>
+                                   <tr>
+                                    <th style="text-align:left;"><span class="glyphicon glyphicon-th-list marginright-10"></span>Total No of Question</th>
+                                    <td style="text-align:left;">{{ totalqtns }}</td>
+                                  </tr>
+                                   <tr>
+                                    <th style="text-align:left;"><span class="glyphicon glyphicon-book marginright-10"></span>Total Answered</th>
+                                    <td style="text-align:left;">{{ totalanswered }}</td>
+                                  </tr>
+                                  <tr>
+                                    <th style="text-align:left;"><span class="glyphicon glyphicon-book marginright-10"></span>Correct Answers</th>
+                                    <td style="text-align:left;">{{ correctans }}</td>
+                                  </tr>
+                                   
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 <div> <br><br><br></div>

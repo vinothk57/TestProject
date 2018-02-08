@@ -19,8 +19,7 @@ function success(gdata) {
   var data = google.visualization.arrayToDataTable(graphdata);
 
   var options = {
-    pieHole: 0.4,
-    height: 400
+    pieHole: 0.5,
   };
 
   var chart = new google.visualization.PieChart(document.getElementById('content-div'));

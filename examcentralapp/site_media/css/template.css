@@ -548,6 +548,7 @@ margin-bottom:10px;
 .footer-ems {
     background-color: #3EBB8C;
     height: 60px;
+    position: fixed;
     width: 100%;
     bottom:0;
 }
@@ -606,11 +607,11 @@ margin-bottom:10px;
     }
     .footer-tcl {
     background-color: #3EBB8C;
-    position: fixed;
     width: 100%;
     min-height: 60px;
     height: auto;
     bottom:0;
+    position:fixed; 
 }
 .margin-bottom-20{
   margin-bottom: 20px;
@@ -1212,3 +1213,7 @@ button{
     width: 100%;
 }
 }
+.marginright-10{
+    margin-right:7px;
+}
+

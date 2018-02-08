@@ -1,4 +1,6 @@
 import os
+import datetime as DT
+import re
 from django.shortcuts import render
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -639,8 +641,11 @@ def showresult_page(request):
         resultdict = {}
         resultdict['examname'] = str(scoresheet.examname)
         resultdict['attemptid'] = str(scoresheet.attemptid)
-        resultdict['start_time'] = str(scoresheet.start_time)
-        resultdict['end_time'] = str(scoresheet.end_time)
+        p = re.compile(r'[0-9]+\-[0-9]+\-[0-9]+ [0-9]+\:[0-9]+\:[0-9]+')
+        starttime = p.search(str(scoresheet.start_time))
+        resultdict['start_time'] = starttime.group()
+        endtime = p.search(str(scoresheet.end_time))
+        resultdict['end_time'] = endtime.group()
         resultdict['totalqtns'] = str(scoresheet.total_questions)
         resultdict['answered_questions'] = str(scoresheet.answered_questions)
         resultdict['correctly_answered'] = str(scoresheet.correctly_answered)
@@ -877,10 +882,21 @@ def analyzegraphs_page(request):
         examname = ExamName.objects.get(id=request.GET.get('examid', "")).examname
 
         totalqtns = ExamName.objects.get(id=request.GET.get('examid', "")).total_questions
-        userAttemptCount = UserScoreSheet.objects.filter(
+
+        userscoresheet = UserScoreSheet.objects.filter(
                          user_id=request.user.id,
-                         examname_id=request.GET.get('examid', "")
-                       ).count()
+                         examname_id=request.GET.get('examid', "0"),
+                         attemptid=request.GET.get('attemptid', "0")
+                       )
+
+        totalanswered = userscoresheet[0].answered_questions;
+        correctans = userscoresheet[0].correctly_answered;
+        markscored = userscoresheet[0].mark;
+        timediff = userscoresheet[0].end_time - userscoresheet[0].start_time
+        p = re.compile(r'[0-9]+\:[0-9]+\:[0-9]+');
+        duration = p.search(str(timediff));
+        timetaken= duration.group();
+        totalmarks = ExamName.objects.get(id=request.GET.get('examid', "")).total_questions * ExamName.objects.get(id=request.GET.get('examid', "")).mark_per_qtn
         variables = RequestContext(request, {
           'examid': request.GET.get('examid', ""),
           'quploaded': range(1, totalqtn + 1),
@@ -894,7 +910,12 @@ def analyzegraphs_page(request):
           'quploaded': range(1, totalqtn + 1),
           'examname': examname,
           'attemptid': request.GET.get('attemptid', ""),
-          'totalqtns': totalqtn
+          'totalqtns': totalqtn,
+          'totalmarks': totalmarks,
+          'totalanswered': totalanswered,
+          'markscored': markscored,
+          'timetaken': timetaken,
+          'correctans': correctans
         })
 
       else:
