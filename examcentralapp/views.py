@@ -110,6 +110,7 @@ def user_page(request, username):
   })
 
 
+@login_required
 def profile_page(request):
 
   if request.method == 'POST':
