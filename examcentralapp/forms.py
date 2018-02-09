@@ -60,7 +60,7 @@ class UpdateProfileForm(forms.Form):
     widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'PIN/ZIP Code'}), required=False
   )
   phone = forms.RegexField(regex=r'^\+?1?\d{9,15}$', required=False)
-  aboutme = forms.CharField(label='About Me', max_length=1000, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell everyone how cool you are!'}), required=False)
+  aboutme = forms.CharField(label='About Me', max_length=1000, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell everyone how cool you are!', 'rows': 2}), required=False)
 
   def clean_phone(self):
     phone = self.cleaned_data['phone']
