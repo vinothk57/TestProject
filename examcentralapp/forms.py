@@ -167,7 +167,7 @@ class DocumentForm(forms.Form):
 
 
 class PasswordResetRequestForm(forms.Form):
-    email_or_username = forms.CharField(label='', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Email or Username'}))
+    email_or_username = forms.CharField(label='', widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'margin-top:15px',  'placeholder': 'Enter Email or Username'}))
 
 class SetPasswordForm(forms.Form):
     """
@@ -179,7 +179,7 @@ class SetPasswordForm(forms.Form):
         }
 
     new_password1 = forms.CharField(label='',
-            widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter new password'}))
+            widget=forms.PasswordInput(attrs={'class': 'form-control', 'style': 'margin-top:15px', 'placeholder': 'Enter new password'}))
     new_password2 = forms.CharField(label='',
             widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Re-enter new password'}))
     def clean_new_password2(self):

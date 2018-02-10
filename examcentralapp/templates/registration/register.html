@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Exam Central</title>
+    <title>ExamCentral</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/site_media/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -22,7 +22,7 @@
 <body class="bg-img">
     <header>
             <div class="navbar navbar-default-ems navbar-fixed-top">
-                <div class="container"><a href="/" class="navbar-brand slogan">Exam Central</a></div>
+                <div class="container"><a href="/" class="navbar-brand slogan">ExamCentral</a></div>
             </div>
             <div style="clear:both;"></div>
     </header>
@@ -36,7 +36,7 @@
                                 <form method="post" action".">
                                 {% if form.non_field_errors %}
                                   <div class="isa_error">
-                                    <i class="fa fa-times-circle"></i>
+                                      <!--<i class="fa fa-times-circle"></i> -->
                                       {{ form.non_field_errors|striptags }}
                                   </div>
                                 {% endif %}
@@ -47,7 +47,7 @@
                                     </div>
                                     {% if form.username.errors %}
                                       <div class="isa_error">
-                                        <i class="fa fa-times-circle"></i>
+                                          <!--<i class="fa fa-times-circle"></i> -->
                                           {{ form.username.errors }}
                                       </div>
                                     {% endif %}
@@ -57,7 +57,7 @@
                                     </div>
                                     {% if form.firstname.errors %}
                                       <div class="isa_error">
-                                        <i class="fa fa-times-circle"></i>
+                                          <!--<i class="fa fa-times-circle"></i> -->
                                           {{ form.firstname.errors }}
                                       </div>
                                     {% endif %}
@@ -66,7 +66,7 @@
                                     </div>
                                     {% if form.lastname.errors %}
                                       <div class="isa_error">
-                                        <i class="fa fa-times-circle"></i>
+                                          <!--<i class="fa fa-times-circle"></i> -->
                                           {{ form.lastname.errors }}
                                       </div>
                                     {% endif %}
@@ -75,7 +75,7 @@
                                     </div>
                                     {% if form.email.errors %}
                                       <div class="isa_error">
-                                        <i class="fa fa-times-circle"></i>
+                                          <!-- <i class="fa fa-times-circle"></i>-->
                                           {{ form.email.errors }}
                                       </div>
                                     {% endif %}
@@ -84,7 +84,7 @@
                                     </div>
                                     {% if form.password1.errors %}
                                       <div class="isa_error">
-                                        <i class="fa fa-times-circle"></i>
+                                          <!--<i class="fa fa-times-circle"></i> -->
                                           {{ form.password1.errors }}
                                       </div>
                                     {% endif %}
@@ -93,7 +93,7 @@
                                     </div>
                                     {% if form.password2.errors %}
                                       <div class="isa_error">
-                                        <i class="fa fa-times-circle"></i>
+                                         <!-- <i class="fa fa-times-circle"></i>-->
                                           {{ form.password2.errors }}
                                       </div>
                                     {% endif %}

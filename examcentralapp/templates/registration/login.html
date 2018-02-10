@@ -29,9 +29,17 @@
     <nav class="navbar navbar-default-ems navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand slogan">Exam Central</a>
+          <a href="/" class="navbar-brand slogan">ExamCentral</a>
         </div>
       </div>
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-success alert-dismissable">
+                       <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                       <strong>{{ message }}</strong>
+                  </div>
+                {% endfor %}
+              {% endif %}
     </nav>
     <div class="container">
         <div class="row">
