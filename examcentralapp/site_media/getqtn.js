@@ -2,6 +2,7 @@ var currqtnno = 1;
 var lastqtnno = 1;
 var totalqtn = $("#totalqtns").val();
 var loadQuestionAt = "#genList";
+var loadQInfoAt = "#genqtninfo";
 var getLastQtn = false;
 var JSONAnswerData = {};
 JSONAnswerData['ansList'] = {};
@@ -17,24 +18,28 @@ function showCorrectTab() {
         $('.nav-tabs a[href="#general"]').tab('show');
         if(loadQuestionAt != "#genList") {
           loadQuestionAt = "#genList";
+          loadQInfoAt = "#genqtninfo";
           loadqtn = false;
         }
       } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "2") {
         $('.nav-tabs a[href="#analysis"]').tab('show');
         if(loadQuestionAt != "#analysisList") {
           loadQuestionAt = "#analysisList";
+          loadQInfoAt = "#analysisqtninfo";
           loadqtn = false;
         }
       } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "3") {
         $('.nav-tabs a[href="#language"]').tab('show');
         if(loadQuestionAt != "#langList") {
           loadQuestionAt = "#langList";
+          loadQInfoAt = "#langqtninfo";
           loadqtn = false;
         }
       } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "4") {
         $('.nav-tabs a[href="#reasoning"]').tab('show');
         if(loadQuestionAt != "#reasonList") {
           loadQuestionAt = "#reasonList";
+          loadQInfoAt = "#reasoningqtninfo";
           loadqtn = false;
         }
       }
@@ -156,12 +161,16 @@ function showQuestionsOfCategory(category) {
     }
     if(category == "1") {
       loadQuestionAt = "#genList";
+      loadQInfoAt = "#genqtninfo";
     } else if(category == "2") {
       loadQuestionAt = "#analysisList";
+      loadQInfoAt = "#analysisqtninfo";
     } else if(category == "3") {
       loadQuestionAt = "#langList";
+      loadQInfoAt = "#langqtninfo";
     } else if(category == "4") {
       loadQuestionAt = "#reasonList";
+      loadQInfoAt = "#reasoningqtninfo";
     }
 
     if(getLastQtn == true) {
@@ -250,6 +259,15 @@ function loadQuestionData() {
     $(loadQuestionAt).html(
       qstring + options
     );
+
+    var addInfo = "";
+    if ("direction" in qelement) {
+        addInfo = "<h5>" + qelement['direction'] + "</h5>";
+    }
+    if ("imgpath" in qelement) {
+        addInfo += "<img src=" + qelement['imgpath'] + ">";
+    }
+    $(loadQInfoAt).html(addInfo);
 }
 
 function getnextqtnJSON() {

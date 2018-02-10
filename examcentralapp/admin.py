@@ -14,10 +14,16 @@ class UserExamsAdmin(admin.ModelAdmin):
     search_fields = ('user', 'examname')
 
 class ExamQuestionsAdmin(admin.ModelAdmin):
-    list_display = ('examname', 'qno', 'question', 'qpic', 'qtype', 'qcategory', 'answer')
+    list_display = ('examname', 'qno', 'question', 'haspic', 'hasdirection', 'qtype', 'qcategory', 'answer')
     list_filter = ('examname', 'qno')
     ordering = ('qno',)
     search_fields = ('question', 'examname')
+
+class QuestionInfoAdmin(admin.ModelAdmin):
+    list_display = ('examname', 'qid', 'pic', 'direction')
+    list_filter = ('examname', 'qid')
+    ordering = ('examname',)
+    search_fields = ('examname', 'direction')
 
 class OptionAAdmin(admin.ModelAdmin):
     list_display = ('examname', 'qid', 'option', 'isright')
@@ -65,6 +71,7 @@ class UserScoreSheetAdmin(admin.ModelAdmin):
 admin.site.register(ExamName)
 admin.site.register(UserExams, UserExamsAdmin)
 admin.site.register(ExamQuestions, ExamQuestionsAdmin)
+admin.site.register(QuestionInfo, QuestionInfoAdmin)
 admin.site.register(OptionA, OptionAAdmin)
 admin.site.register(OptionB, OptionBAdmin)
 admin.site.register(OptionC, OptionCAdmin)

@@ -158,6 +158,7 @@ def profile_page(request):
 
 def logout_page(request):
   logout(request)
+  messages.info(request, 'You have successfully logged out!')
   return HttpResponseRedirect('/')
 
 def register_page(request):
@@ -196,7 +197,8 @@ def register_page(request):
                   mail_subject, message, to=[to_email]
       )
       email.send()
-      return HttpResponse('Please confirm your email address to complete the registration')
+      messages.info(request, 'Please confirm your email address to complete the registration')
+      return HttpResponseRedirect('/')
   else:
     form = RegistrationForm()
 
@@ -221,9 +223,12 @@ def activate(request, uidb64, token):
         user.save()
         #login(request, user)
         # return redirect('home')
-        return HttpResponse('Thank you for your email confirmation. Now you can login to your ExamCentral account.')
+        #return HttpResponse('Thank you for your email confirmation. Now you can login to your ExamCentral account.')
+        messages.info(request, 'Thank you for your email confirmation. Now you can login to your ExamCentral account.')
+        return HttpResponseRedirect('/')
     else:
-        return HttpResponse('Activation link is invalid!')
+        messages.info(request, 'Activation link is invalid')
+        return HttpResponseRedirect('/')
 
 @login_required
 def examdetails_save_page(request):
@@ -732,6 +737,18 @@ def fetchQuestionPaperJSON(request):
         qdict['type'] = qtn.qtype
         qdict['qcategory'] = qtn.qcategory
         qdict['options'] = [];
+        qdict['haspic'] = qtn.haspic;
+        qdict['hasdirection'] = qtn.hasdirection;
+
+        if qtn.haspic or qtn.hasdirection:
+            qinfo = QuestionInfo.objects.filter(examname_id=examid, qid=qtn.qno)
+
+            if qinfo.exists() and qtn.haspic:
+                qdict['imgpath'] = qinfo[0].pic.url;
+
+            if qinfo.exists() and qtn.hasdirection:
+                qdict['direction'] = qinfo[0].direction;
+
         a = OptionA.objects.filter(examname_id=examid, qid=qtn.qno)
         b = OptionB.objects.filter(examname_id=examid, qid=qtn.qno)
         c = OptionC.objects.filter(examname_id=examid, qid=qtn.qno)
@@ -950,6 +967,19 @@ def fetchSolutionJSON(request):
         qdict['qcategory'] = qtn.qcategory
         qdict['options'] = [];
         qdict['explanation'] = explanation;
+
+        qdict['haspic'] = qtn.haspic;
+        qdict['hasdirection'] = qtn.hasdirection;
+
+        if qtn.haspic or qtn.hasdirection:
+            qinfo = QuestionInfo.objects.filter(examname_id=examid, qid=qtn.qno)
+
+            if qinfo.exists() and qtn.haspic:
+                qdict['imgpath'] = qinfo[0].pic.url;
+
+            if qinfo.exists() and qtn.hasdirection:
+                qdict['direction'] = qinfo[0].direction;
+
         a = OptionA.objects.filter(examname_id=examid, qid=qtn.qno)
         b = OptionB.objects.filter(examname_id=examid, qid=qtn.qno)
         c = OptionC.objects.filter(examname_id=examid, qid=qtn.qno)

@@ -50,12 +50,23 @@ class ExamQuestions(models.Model):
   question = models.TextField()
   qtype = models.IntegerField(choices=QTYPE_CHOICES, default=1)
   qcategory = models.IntegerField(choices=QCATEGORY_CHOICES, default=1)
-  qpic = models.FileField(upload_to=qtn_directory_path, null=True, blank=True)
+  haspic = models.BooleanField(default=False)
+  hasdirection = models.BooleanField(default=False)
   answer = models.TextField(max_length=5000)
   class Admin:
     pass
   def __str__(self):
     return '%s, %s' % (self.question, self.examname.examname)
+
+class QuestionInfo(models.Model):
+  examname = models.ForeignKey(ExamName)
+  qid = models.IntegerField()
+  pic = models.FileField(upload_to=qtn_directory_path, null=True, blank=True)
+  direction = models.TextField()
+  class Admin:
+    pass
+  def __str__(self):
+    return '%s, %s, %s' % (self.examname.examname, self.qid, self.direction)
 
 class OptionA(models.Model):
   examname = models.ForeignKey(ExamName)
