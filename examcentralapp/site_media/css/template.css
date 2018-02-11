@@ -803,12 +803,12 @@ ul, ol {
     width: 17.3% !important;
 }
 }
-.exam-img img{
+/*.exam-img img{
   opacity: 0.3;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   width:256px;
-}
+}*/
 .tag{
   position: absolute; 
   width: 85px; 
@@ -1047,10 +1047,10 @@ text-decoration: none; color: #000;
 }
 @media (min-width: 992px){
 .exam-img img {
-    opacity: 0.3;
+    /*opacity: 0.3;*/
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    width: 230px;
+    /*width: 230px;*/
 }
 .main-cont {
     padding: 5px;

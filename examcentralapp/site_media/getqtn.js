@@ -239,20 +239,20 @@ function loadQuestionData() {
     if(qelement['type'] == 1) {
       for (i = 0; i <  qelement['options'].length; i++) {
         options = options + "<div class=\"form-group radio-pink-gap\">";
-        options = options + "<input type=\"radio\" name=\"option\" class=\"with-gap\" ";
+        options = options + "<input type=\"radio\" name=\"option\" class=\"with-gap\" style=\"vertical-align:top\"";
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
-        options = options + "><label>" + qelement['options'][i]['option'] + "</label></div>";
+        options = options + "><label style=\"padding-left:5px; width:90%\">" + qelement['options'][i]['option'] + "</label></div>";
       }
     } else if (qelement['type'] == 3) {
       for (i = 0; i <  qelement['options'].length; i++) {
         options = options + "<div class=\"form-group radio-pink-gap\">";
-        options = options + "<input type=\"checkbox\" name=\"option\" class=\"with-gap\"";
+        options = options + "<input type=\"checkbox\" name=\"option\" class=\"with-gap\" style=\"vertical-align:top\"";
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
-        options = options + "><label>" + qelement['options'][i]['option'] + "</label></div>";
+        options = options + "><label style=\"padding-left:5px; width:90%\">" + qelement['options'][i]['option'] + "</label></div>";
       }
     }
 

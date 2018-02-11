@@ -1,0 +1,44 @@
+{% if userexams %}
+{% else %}
+  <p>No Exam found.</p>
+{% endif %}
+    <div>
+       <table class="table">
+           <thead>
+           <tr>
+             <th>S.No</th>
+             <th>Exam Name</th>
+             <th>Total Questions</th>
+             <th>Duration</th>
+             <th>Max. Attempts</th>
+             <th>Attempts Remaining</th>
+             <th> </th>
+           </tr>
+           </thead>
+
+           <tbody>
+{% for exam in userexams %}
+           <tr>
+             <td>1</td>
+             <td>{{ exam.examrec.examname }}</td>
+             <td>{{ exam.examrec.examname.total_questions }}</td>
+             <td>{{ exam.examrec.examname.duration }} minutes</td>
+             <td>{{ exam.examrec.examname.attempts_allowed }}</td>
+             <td>{{ exam.rem_attempts }}</td>
+  
+             <td>        
+               <form id="takeexam-form" method="post" action="/takeexam/">
+                 {% csrf_token %}
+                 <input type="hidden" name="examid" value="{{ exam.examrec.examname.id }}" />
+                 <button id="{{exam.examrec.id}}takeexambtn" class="ln active" type="submit" value="takeexam">Take Exam</button>
+               </form>
+             </td>
+             <!--<td><button id="{{ exam.id }}examdetailbtn" type="button" class="ln active" data-toggle="modal" data-target="#myModal">Enroll Now</button></td>-->
+           </tr>
+
+{% endfor %}
+           </tbody>
+       </table>
+    </div>
+
+

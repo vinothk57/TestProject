@@ -98,6 +98,20 @@ def user_page(request, username):
   user = get_object_or_404(User, username=username)
   exams = user.userexams_set.order_by('-id')
 
+  userexams = []
+  for exam in exams:
+      detailsdict = {}
+      detailsdict['examrec'] = exam
+
+      usedAttempts = UserScoreSheet.objects.filter(user_id=request.user.id,
+                         examname_id=exam.examname.id
+                          ).count()
+      attemptsremaining = exam.examname.attempts_allowed - usedAttempts
+      detailsdict['rem_attempts'] = attemptsremaining
+
+      userexams.append(detailsdict)
+
+
   variables = RequestContext(request, {
     'username': username,
     'userexams': exams,
@@ -105,7 +119,7 @@ def user_page(request, username):
   })
   return render(request, 'user_page.html', {
     'username': username,
-    'userexams': exams,
+    'userexams': userexams,
     'show_tags': True
   })
 
@@ -1073,7 +1087,7 @@ class ResetPasswordRequestView(FormView):
                         c = {
                             'email': user.email,
                             'domain': request.META['HTTP_HOST'],
-                            'site_name': 'your site',
+                            'site_name': 'ExamCentral.com',
                             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                             'user': user,
                             'token': default_token_generator.make_token(user),
@@ -1118,7 +1132,7 @@ class ResetPasswordRequestView(FormView):
                     email = loader.render_to_string(email_template_name, c)
                     send_mail(subject, email, 'from@example.com' , [user.email], fail_silently=False)
                 result = self.form_valid(form)
-                messages.success(request, 'Email has been sent to ' + data +"'s email address. Please check its inbox to continue reseting password.")
+                messages.success(request, 'Email has been sent to the email address associated with the username \'' + data +"\'. Please check its inbox to continue reseting password.")
                 return result
             result = self.form_invalid(form)
             messages.error(request, 'This username does not exist in the system.')
@@ -1150,10 +1164,10 @@ class PasswordResetConfirmView(FormView):
                 new_password= form.cleaned_data['new_password2']
                 user.set_password(new_password)
                 user.save()
-                messages.success(request, 'Password has been reset. Login with your new password.')
+                messages.success(request, 'Password reset successfully. Login with your new password.')
                 return self.form_valid(form)
             else:
-                messages.error(request, 'Password reset has not been successful.')
+                messages.error(request, 'Password reset failed.')
                 return self.form_invalid(form)
         else:
             messages.error(request,'The reset password link is no longer valid.')
