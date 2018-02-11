@@ -1010,7 +1010,7 @@ text-decoration: none; color: #000;
   border-top: 1px solid #e5e5e5;
 }
 .modal-header{
-  background: #e2e2e2;
+  background: #fff;
 }
 .exam-table th, td{
   padding: 5px;
@@ -1217,3 +1217,10 @@ button{
     margin-right:7px;
 }
 
+pre {
+    font-size: 15px !important;
+}
+
+.glyphicon {
+    padding-right:5px;
+}

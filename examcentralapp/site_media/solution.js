@@ -243,7 +243,7 @@ function loadQuestionData() {
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
-        options = options + "><label style=\"padding-left:5px; width:90%\">" + qelement['options'][i]['option'] + "</label><div style=\"float:right;\">";
+        options = options + "><label style=\"padding-left:5px; width:90%; font-weight:normal;\">" + qelement['options'][i]['option'] + "</label><div style=\"float:right;\">";
 
         if(qelement['options'][i]['isright']) {
           options = options + "<i class=\"fas fa-check-circle fa-lg green\"></i></div>"
@@ -258,7 +258,7 @@ function loadQuestionData() {
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
-        options = options + "><label style=\"padding-left:5px; width:90%\">" + qelement['options'][i]['option'] + "</label><div style=\"float:right;\">";
+        options = options + "><label style=\"padding-left:5px; width:90%; font-weight:normal;\">" + qelement['options'][i]['option'] + "</label><div style=\"float:right;\">";
 
         if(qelement['options'][i]['isright']) {
           options = options + "<i class=\"fas fa-check-circle fa-lg green\"></i></div>"

@@ -243,7 +243,7 @@ function loadQuestionData() {
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
-        options = options + "><label style=\"padding-left:5px; width:90%\">" + qelement['options'][i]['option'] + "</label></div>";
+        options = options + "><label style=\"padding-left:5px; width:90%; font-weight:normal;\">" + qelement['options'][i]['option'] + "</label></div>";
       }
     } else if (qelement['type'] == 3) {
       for (i = 0; i <  qelement['options'].length; i++) {
@@ -252,7 +252,7 @@ function loadQuestionData() {
         if(qelement['options'][i]['checked'] == "true") {
           options = options + "checked = \"checked\" ";
         }
-        options = options + "><label style=\"padding-left:5px; width:90%\">" + qelement['options'][i]['option'] + "</label></div>";
+        options = options + "><label style=\"padding-left:5px; width:90%; font-weight:normal;\">" + qelement['options'][i]['option'] + "</label></div>";
       }
     }
 
