@@ -35,6 +35,14 @@
       })();
       
       </script>
+    
+      <script type="text/javascript">// <![CDATA[
+        function loading(){
+            $("#loading").show();
+            $("#content-div").hide();       
+            $("#timer").hide();       
+        }
+      // ]]></script>
 {% endblock %}
 {% block content %}
 
@@ -53,7 +61,9 @@
     </div>
   </div>
 --!>
-                <div class="row">
+
+                <div id="loading" class="col-md-12 cont-head"></div>
+                <div id="timer" class="row">
                     <div class="col-md-12 cont-head"><div class="pull-left"><h4>{{ examname }}</h4></div><div id="countdown" class="pull-right"></div></div>
                 </div>
 
@@ -125,7 +135,7 @@
                         <div style="" class="submit-area">
                             <div class="submit-inst"><a href="#">Instructions</a></div>
                               <div class="submit-btns">
-                                  <input id="submitexam" type="button" name="" value="Submit" class="tcl-btn"/>
+                                  <input id="submitexam" type="button" name="" value="Submit" class="tcl-btn"  onclick="loading();"/>
                         </div>
 
                     </div>

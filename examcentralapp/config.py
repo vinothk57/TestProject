@@ -1,2 +1,3 @@
+#ACTUAL SALT AND KEY BELOW
 SALT = 'fwPp0fkkRC'
 KEY = 'F6lQlpyw'

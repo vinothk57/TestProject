@@ -1224,3 +1224,12 @@ pre {
 .glyphicon {
     padding-right:5px;
 }
+
+#loading {
+    width: 85px;
+    height: 85px;
+    display: none;
+    background: url(/site_media/images/loadinganimation.gif) no-repeat;
+    cursor: wait;
+    border: none;
+}

@@ -1203,7 +1203,7 @@ def payment(request):
     hash_string = get_hash_string(request, txnid, examid, exam_price, examname)
     # use constants file to store constant values.
     # use test URL for testing
-    data["action"] = constants.PAYMENT_URL_LIVE 
+    data["action"] = constants.PAYMENT_URL_TEST 
     data["amount"] = float(exam_price)
     data["productinfo"]  = examname
     data["key"] = config.KEY
@@ -1255,14 +1255,6 @@ def payment_success(request):
     data = {}
     examname_id=request.POST.get("udf1", "")
     data['examid'] = examname_id
-    return render(request, "payment/success.html", data)
- 
-# no csrf token require to go to Failure page. This page displays the message and reason of failure.
-@csrf_exempt
-def payment_failure(request):
-    data = {}
-    examname_id=request.POST.get("udf1", "")
-    data['examid'] = examname_id
     userexam, created = UserExams.objects.get_or_create(
         user_id=request.user.id,
         examname_id=data['examid']
@@ -1284,7 +1276,17 @@ def payment_failure(request):
         uexamattemptinfo.attempt_available = new_attempts
         uexamattemptinfo.save()
 
-    messages.info(request, "Payment Failed as this is test! Exam added to your account.")
+    messages.info(request, "Payment Successful! Exam added to your account.")
+    return render(request, "payment/success.html", data)
+ 
+# no csrf token require to go to Failure page. This page displays the message and reason of failure.
+@csrf_exempt
+def payment_failure(request):
+    data = {}
+    examname_id=request.POST.get("udf1", "")
+    data['examid'] = examname_id
+
+    messages.info(request, "Payment Failed! Please try again.")
     return render(request, "payment/failure.html", data)
 
 
