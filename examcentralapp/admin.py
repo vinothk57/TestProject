@@ -13,6 +13,12 @@ class UserExamsAdmin(admin.ModelAdmin):
     ordering = ('user', )
     search_fields = ('user', 'examname')
 
+class UserExamAttemptInfoAdmin(admin.ModelAdmin):
+    list_display = ('userexam', 'attempt_available')
+    list_filter = ('userexam', 'attempt_available')
+    ordering = ('userexam',)
+    search_fields = ('userexam',)
+
 class ExamQuestionsAdmin(admin.ModelAdmin):
     list_display = ('examname', 'qno', 'question', 'haspic', 'hasdirection', 'qtype', 'qcategory', 'answer')
     list_filter = ('examname', 'qno')
@@ -80,3 +86,4 @@ admin.site.register(ExamSolution, ExamSolutionAdmin)
 admin.site.register(UserAnswerSheet, UserAnswerSheetAdmin)
 admin.site.register(UserScoreSheet, UserScoreSheetAdmin)
 admin.site.register(UserDetails, UserDetailsAdmin)
+admin.site.register(UserExamAttemptInfo, UserExamAttemptInfoAdmin)

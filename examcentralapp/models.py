@@ -43,6 +43,12 @@ class UserExams(models.Model):
   def __str__(self):
     return '%s, %s' % (self.user.username, self.examname.examname)
 
+class UserExamAttemptInfo(models.Model):
+    userexam = models.ForeignKey(UserExams)
+    attempt_available = models.IntegerField()
+    def __str__(self):
+        return '%s, %s, %s' % (self.userexam.user.username, self.userexam.examname.examname, self.attempt_available)
+
 #qtype values: 0-multiple choice, 1-true or false, 2- descriptive
 class ExamQuestions(models.Model):
   examname = models.ForeignKey(ExamName)

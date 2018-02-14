@@ -58,6 +58,12 @@ urlpatterns = [
     url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', activate, name='activate'),
 
+    # Payment
+
+    url(r'^payment/$', payment, name="payment"),
+    url(r'^payment/success$', payment_success, name="payment_success"),
+    url(r'^payment/failure$', payment_failure, name="payment_failure"),
+
     # Admin interface
     #url(r'^admin/', include('django.contrib.admin.urls')),
 ]

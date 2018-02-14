@@ -1,7 +1,7 @@
 import os
 import datetime as DT
 import re
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -44,6 +44,13 @@ from .token import account_activation_token
 from django.core.mail import EmailMessage
 from django.core.mail import EmailMultiAlternatives
 from email.mime.image import MIMEImage
+
+import logging, traceback
+import examcentralapp.constants as constants
+import examcentralapp.config as config
+import hashlib
+from random import randint
+from django.core.urlresolvers import reverse
 
 def main_page(request):
   
@@ -90,7 +97,8 @@ def main_page(request):
 def user_loggedin(request):
   if request.user.is_authenticated():
     username = request.user.username
-  redirect_url = '/user/' + username
+  redirect_url = '/'
+  #redirect_url = '/user/' + username
   return HttpResponseRedirect(redirect_url)
 
 @login_required
@@ -103,10 +111,14 @@ def user_page(request, username):
       detailsdict = {}
       detailsdict['examrec'] = exam
 
+      uexamattemptinfo = UserExamAttemptInfo.objects.get(userexam_id=exam.id)
+      max_attempts_for_user = uexamattemptinfo.attempt_available
       usedAttempts = UserScoreSheet.objects.filter(user_id=request.user.id,
                          examname_id=exam.examname.id
                           ).count()
-      attemptsremaining = exam.examname.attempts_allowed - usedAttempts
+      attemptsremaining = max_attempts_for_user - usedAttempts
+
+      detailsdict['max_user_attempts'] = max_attempts_for_user
       detailsdict['rem_attempts'] = attemptsremaining
 
       userexams.append(detailsdict)
@@ -470,7 +482,8 @@ def takeexam_page(request):
         totalqtn = ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count()
         examname = ExamName.objects.get(id=request.POST.get("examid", "")).examname
 
-        allowedAttempt = ExamName.objects.get(id=request.POST.get("examid", "")).attempts_allowed
+        #allowedAttempt = ExamName.objects.get(id=request.POST.get("examid", "")).attempts_allowed
+        allowedAttempt = UserExamAttemptInfo.objects.get(userexam_id=userexam[0].id).attempt_available
         totalqtns = ExamName.objects.get(id=request.POST.get("examid", "")).total_questions
         duration = ExamName.objects.get(id=request.POST.get("examid", "")).duration
         userAttemptCount = UserScoreSheet.objects.filter(
@@ -503,7 +516,9 @@ def takeexam_page(request):
           })
 
         else:
-          return HttpResponseRedirect('/myaccount')
+          messages.info(request, "You ran out of attempts. Please purchase.");
+          next = request.POST.get('next', '/')
+          return HttpResponseRedirect(next)
 
   return HttpResponseRedirect('/myaccount')
 
@@ -1173,6 +1188,109 @@ class PasswordResetConfirmView(FormView):
             messages.error(request,'The reset password link is no longer valid.')
             return self.form_invalid(form)
 
+'''
+===Payment ===
+'''
+
+def payment(request):   
+    data = {}
+
+    examid = request.POST.get("examid", 0)
+    exam_price = ExamName.objects.get(id=request.POST.get("examid", "")).price
+    examname = ExamName.objects.get(id=request.POST.get("examid", "")).examname
+    txnid = get_transaction_id()
+    hash_ = generate_hash(request, txnid, examid, exam_price, examname)
+    hash_string = get_hash_string(request, txnid, examid, exam_price, examname)
+    # use constants file to store constant values.
+    # use test URL for testing
+    data["action"] = constants.PAYMENT_URL_LIVE 
+    data["amount"] = float(exam_price)
+    data["productinfo"]  = examname
+    data["key"] = config.KEY
+    data["txnid"] = txnid
+    data["hash"] = hash_
+    data["hash_string"] = hash_string
+    data["firstname"] = request.user.username
+    data["email"] = request.user.email
+    data["phone"] = "9123456780"
+    data["service_provider"] = constants.SERVICE_PROVIDER
+    data["udf1"] = examid
+    data["furl"] = request.build_absolute_uri(reverse("payment_failure"))
+    data["surl"] = request.build_absolute_uri(reverse("payment_success"))
+    
+    return render(request, "payment/payment_form.html", data)        
+    
+# generate the hash
+def generate_hash(request, txnid, examid, exam_price, examname):
+    try:
+        # get keys and SALT from dashboard once account is created.
+        # hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
+        hash_string = get_hash_string(request,txnid, examid, exam_price, examname)
+        generated_hash = hashlib.sha512(hash_string.encode('utf-8')).hexdigest().lower()
+        return generated_hash
+    except Exception as e:
+        # log the error here.
+        logging.getLogger("error_logger").error(traceback.format_exc())
+        return None
+ 
+# create hash string using all the fields
+def get_hash_string(request, txnid, examid, exam_price, examname):
+    hash_string = config.KEY+"|"+txnid+"|"+str(float(exam_price))+"|"+examname+"|"
+    hash_string += request.user.username+"|"+request.user.email+"|"
+    hash_string += examid + "||||||||||"+config.SALT
+ 
+    return hash_string
+ 
+# generate a random transaction Id.
+def get_transaction_id():
+    hash_object = hashlib.sha256(str(randint(0,9999)).encode("utf-8"))
+    # take approprite length
+    txnid = hash_object.hexdigest().lower()[0:32]
+    return txnid
+ 
+# no csrf token require to go to Success page. 
+# This page displays the success/confirmation message to user indicating the completion of transaction.
+@csrf_exempt
+def payment_success(request):
+    data = {}
+    examname_id=request.POST.get("udf1", "")
+    data['examid'] = examname_id
+    return render(request, "payment/success.html", data)
+ 
+# no csrf token require to go to Failure page. This page displays the message and reason of failure.
+@csrf_exempt
+def payment_failure(request):
+    data = {}
+    examname_id=request.POST.get("udf1", "")
+    data['examid'] = examname_id
+    userexam, created = UserExams.objects.get_or_create(
+        user_id=request.user.id,
+        examname_id=data['examid']
+    )
+
+    attempts_per_purchase = ExamName.objects.get(id=examname_id).attempts_allowed
+
+    if created:
+        #create userexamattemptinfo with attempts per purchase from examname
+        uexam_attempt, dummy = UserExamAttemptInfo.objects.get_or_create(
+                userexam_id = userexam.id,
+                attempt_available = attempts_per_purchase
+            )
+    else:
+        #update userexamattemptinfo with additional attempts per purchase from examname
+        uexamattemptinfo = UserExamAttemptInfo.objects.get(userexam_id=userexam.id)
+        current_available_attempts = uexamattemptinfo.attempt_available
+        new_attempts = attempts_per_purchase + current_available_attempts
+        uexamattemptinfo.attempt_available = new_attempts
+        uexamattemptinfo.save()
+
+    messages.info(request, "Payment Failed as this is test! Exam added to your account.")
+    return render(request, "payment/failure.html", data)
+
+
+'''
+===Payment End===
+'''
 '''
     JSONObjSample = {
       "qlist" : [

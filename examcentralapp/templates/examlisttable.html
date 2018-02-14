@@ -10,7 +10,8 @@
              <th>Exam Name</th>
              <th>No of Question</th>
              <th>Duration</th>
-             <th>No of Attempts</th>
+             <th>Price (Rs.)</th>
+             <th>Attempts Per Purchase</th>
              <th> </th>
            </tr>
            </thead>
@@ -22,6 +23,7 @@
              <td>{{ exam.examname }}</td>
              <td>{{ exam.total_questions }}</td>
              <td>{{ exam.duration }} minutes</td>
+             <td>{{ exam.price }}</td>
              <td>{{ exam.attempts_allowed }}</td>
              <td><button id="{{ exam.id }}examdetailbtn" type="button" class="ln active" data-toggle="modal" data-target="#myModal">Enroll Now</button></td>
            </tr>
@@ -38,14 +40,26 @@
              $("#myModal").find(".modal-body").find("#totalmark").text(marks.toString());
 
              {% if user.username %}
-                $("#myModal").find(".modal-footer").html( "  <form id=\"addexam-form\" method=\"post\" action=\"/addexam/\"> \
+               var price = {{ exam.price }}
+               if ( price > 0 ) {
+                 $("#myModal").find(".modal-footer").html( "  <form id=\"addexam-form\" method=\"post\" \
+                                                                action=\"/payment/\"> \
                                                       {% csrf_token %} \
                                                       <input type=\"hidden\" name=\"examid\" value=\"{{ exam.id }}\" /> \
-                                                      <button type=\"submit\" value=\"addexam\">Subscribe </button> \
+                                                      <button type=\"submit\" value=\"addexam\"> Pay & Add </button> \
                                                     </form> \
                                                     " );
-                $("#myModal").find(".modal-footer").find("button").attr("id", "{{ exam.id}}addexambtn");
-                $("#myModal").find(".modal-footer").find("button").attr("class", "addtoaccount");
+               } else {
+                 $("#myModal").find(".modal-footer").html( "  <form id=\"addexam-form\" method=\"post\" \
+                                                                action=\"/addexam/\"> \
+                                                      {% csrf_token %} \
+                                                      <input type=\"hidden\" name=\"examid\" value=\"{{ exam.id }}\" /> \
+                                                      <button type=\"submit\" value=\"addexam\">Add </button> \
+                                                    </form> \
+                                                    " );
+               }
+               $("#myModal").find(".modal-footer").find("button").attr("id", "{{ exam.id}}addexambtn");
+               $("#myModal").find(".modal-footer").find("button").attr("class", "addtoaccount");
              {% endif %}
             });
            </script>
