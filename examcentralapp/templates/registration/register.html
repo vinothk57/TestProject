@@ -42,7 +42,8 @@
                                 {% endif %}
 
                                     {% csrf_token %}
-                                    <div class="form-group">
+                                    <div class="form-group inner-addon left-addon">
+                                        <i class="glyphicon glyphicon-user"></i>
                                        {{ form.username }}
                                     </div>
                                     {% if form.username.errors %}
@@ -52,7 +53,8 @@
                                       </div>
                                     {% endif %}
 
-                                    <div class="form-group">
+                                    <div class="form-group inner-addon left-addon">
+                                        <i class="glyphicon glyphicon-user"></i>
                                        {{ form.firstname }}
                                     </div>
                                     {% if form.firstname.errors %}
@@ -61,7 +63,8 @@
                                           {{ form.firstname.errors }}
                                       </div>
                                     {% endif %}
-                                    <div class="form-group">
+                                    <div class="form-group inner-addon left-addon">
+                                        <i class="glyphicon glyphicon-user"></i>
                                        {{ form.lastname }}
                                     </div>
                                     {% if form.lastname.errors %}
@@ -70,7 +73,8 @@
                                           {{ form.lastname.errors }}
                                       </div>
                                     {% endif %}
-                                    <div class="form-group">
+                                    <div class="form-group inner-addon left-addon">
+                                        <span class="glyphicon glyphicon-envelope"></span>
                                        {{ form.email }}
                                     </div>
                                     {% if form.email.errors %}
@@ -79,7 +83,8 @@
                                           {{ form.email.errors }}
                                       </div>
                                     {% endif %}
-                                    <div class="form-group">
+                                    <div class="form-group inner-addon left-addon">
+                                        <span class="glyphicon glyphicon-lock"></span>
                                        {{ form.password1 }}
                                     </div>
                                     {% if form.password1.errors %}
@@ -88,7 +93,8 @@
                                           {{ form.password1.errors }}
                                       </div>
                                     {% endif %}
-                                    <div class="form-group">
+                                    <div class="form-groupi inner-addon left-addon">
+                                        <span class="glyphicon glyphicon-lock"></span>
                                        {{ form.password2 }}
                                     </div>
                                     {% if form.password2.errors %}

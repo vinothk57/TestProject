@@ -17,7 +17,7 @@ class RegistrationForm(forms.Form):
   )
   password2 = forms.CharField(
      label='Confirm Password* ',
-     widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'})
+     widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'})
   )
 
   def clean_password2(self):
