@@ -482,13 +482,32 @@ $(document).ready(function () {
                json: JSON.stringify(JSONAnswerData)
          },
          success: function(result) {
-             $("#content-div").html("<h4>Exam Submitted successfully</h4><br> \
+/*             $("#content-div").html("<h4>Exam Submitted successfully</h4><br> \
                           <input type=\"hidden\" id=\"examid\" value=\"" + result["examid"] + "\" /> \
                           <input type=\"hidden\" id=\"attemptid\" value=\"" + result["attemptid"] + "\" /> \
-                        <button type=\"button\" onclick=\"viewResult()\" class=\"exam-btn info\">View Result</button><br><br>");
+                        <button type=\"button\" onclick=\"viewResult()\" class=\"exam-btn info\">View Result</button><br><br>");*/
+
+             var form = $(document.createElement('form'));
+             $(form).attr("action", "/analyzeexam/");
+             $(form).attr("method", "GET");
+
+             var input1 = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "examid")
+               .val(result["examid"]);
+
+             var input2 = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "attemptid")
+               .val(result["attemptid"]);
+
+             $(form).append($(input1));
+             $(form).append($(input2));
+             form.appendTo( document.body )
+             $(form).submit();
+
             $("#loading").hide();
-            $("#timer").show();
-            $("#content-div").show();
+            JSONObj = {};
          },
          error: function(data){
              alert('error; ' + JSON.stringify(data));
