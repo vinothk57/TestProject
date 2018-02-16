@@ -268,7 +268,7 @@ function loadQuestionData() {
       }
     }
 
-    var explanation = "<div><h5 style=\"border-bottom:1px solid #ccc; padding-bottom:10px;\">Correct Answer is </h5></div><div class=\"form-group radio-pink-gap\"><h6>" + qelement['explanation'] + "</h6></div>";
+    var explanation = "<div><h5 style=\"border-bottom:1px solid #ccc; padding-bottom:10px;padding-top:20px\">Explanation </h5></div><div class=\"form-group radio-pink-gap\"><h6>" + qelement['explanation'] + "</h6></div>";
     
     $(loadQuestionAt).html(
       qstring + options + explanation

@@ -4,10 +4,53 @@
 
   {% if user.is_authenticated %}
     <div class="row">
-        <div class="col-md-12 cont-head"><h4>Payment Information</h4></div>
+        <div class="col-md-12 cont-head"><h4>Order status</h4></div>
     </div>
     <div class="row">
-        <h4>Payment Failed! Please try again.</h4>
+        <h4 style="padding-bottom:20px;padding-top:20px;">Your payment failed! Please try again.</h4>
+
+      <div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            Amount : {{amount}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            Purpose : {{productinfo}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            Name : {{ firstname }}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            Email : {{email}}
+        </div>
+      </div>            
+      <!--<div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            Mobile : {{phone}}
+        </div>
+      </div>
+      -->
+      <div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            Transaction ID : {{txnid}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-12 col-sm-12" style="padding-bottom:20px;padding-top:20px;">
+            You can select the exam and retry the payment by clicking below:
+        </div>
+      </div>
+    
+      <div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            <a href="/"><input type="button" class="exam-btn info" style="width:130px;" value="Go Back"></a>
+        </div>
+      </div>
     </div>
   {% else %}
     <p>User not logged in! Please login again!</p>

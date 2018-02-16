@@ -4,10 +4,10 @@
 
   {% if user.is_authenticated %}
     <div class="row">
-        <div class="col-md-12 cont-head"><h4>Payment confirmation</h4></div>
+        <div class="col-md-12 cont-head"><h4>Order confirmation</h4></div>
     </div>
     <div class="row">
-        <h4>Payment Successful!</h4>
+        <h4 style="padding-bottom:20px;padding-top:20px;">Your payment is successful!</h4>
 
       <div class="form-group">
         <div class="col-md-12 col-sm-12">
@@ -48,7 +48,7 @@
     
       <div class="form-group">
         <div class="col-md-12 col-sm-12">
-            <a href="/user/{{user.username}}"><input type="button" class="exam-btn" style="width:130px;" value="Go to My-Exams"></a>
+            <a href="/user/{{user.username}}"><input type="button" class="exam-btn info" style="width:130px;" value="Go to My-Exams"></a>
         </div>
       </div>
     </div>

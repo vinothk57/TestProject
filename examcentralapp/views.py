@@ -1302,6 +1302,21 @@ def payment_failure(request):
     data = {}
     examname_id=request.POST.get("udf1", "")
     data['examid'] = examname_id
+    data['amount'] = request.POST.get("amount", "")
+    data['txnid'] = request.POST.get("txnid", "")
+    data['productinfo'] = request.POST.get("productinfo", "")
+    data['email'] = request.POST.get("email", "")
+    data['firstname'] = request.POST.get("firstname", "")
+    data['examname'] = ExamName.objects.get(id=examname_id).examname
+
+    #send mail
+    msg_html = render_to_string('payment/payfail_mail.html', data);
+    subject = 'ExamCentral - Order Status'
+    msg = EmailMultiAlternatives(subject, msg_html, "vinoth.k.kumar@gmail.com", [request.user.email], reply_to=["noreply@examcentral.com"])
+    msg.content_subtype = 'html'  # Main content is text/html  
+    msg.mixed_subtype = 'related'  # This is critical, otherwise images will be displayed as attachments!
+    msg.send()
+
 
     messages.info(request, "Payment Failed! Please try again.")
     return render(request, "payment/failure.html", data)
