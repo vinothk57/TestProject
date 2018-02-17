@@ -19,7 +19,7 @@
            <tbody>
 {% for exam in userexams %}
            <tr>
-             <td>1</td>
+               <td>{{ forloop.counter }}</td>
              <td>{{ exam.examrec.examname }}</td>
              <td>{{ exam.examrec.examname.total_questions }}</td>
              <td>{{ exam.examrec.examname.duration }} minutes</td>

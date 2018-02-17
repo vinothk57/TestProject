@@ -356,12 +356,35 @@ def model_form_upload(request):
 @login_required
 def addexam_page(request):
   if request.method == 'POST':
-      #Create userexam
-      userexam, dummy = UserExams.objects.get_or_create(
+    #Create userexam
+    userexam, created = UserExams.objects.get_or_create(
         user_id=request.user.id,
         examname_id=request.POST.get("examid", "")
-      )
-      return HttpResponseRedirect('/myaccount')
+    )
+
+    examid = request.POST.get("examid","")
+    attempts_per_purchase = ExamName.objects.get(id=examid).attempts_allowed
+
+    if created:
+        #create userexamattemptinfo with attempts per purchase from examname
+        uexam_attempt, dummy = UserExamAttemptInfo.objects.get_or_create(
+                userexam_id = userexam.id,
+                attempt_available = attempts_per_purchase
+            )
+    else:
+        #update userexamattemptinfo with additional attempts per purchase from examname
+        uexamattemptinfo = UserExamAttemptInfo.objects.get(userexam_id=userexam.id)
+        current_available_attempts = uexamattemptinfo.attempt_available
+        new_attempts = attempts_per_purchase + current_available_attempts
+        uexamattemptinfo.attempt_available = new_attempts
+        uexamattemptinfo.save()
+
+        messages.info(request, "Exam added to your account.")
+        redirect_url = '/user/' + request.user.username
+        return HttpResponseRedirect(redirect_url)
+
+    messages.info(request, "Adding exam added to account failed.")
+    return HttpResponseRedirect('/myaccount')
 
 @login_required
 def removeexam_page(request):
