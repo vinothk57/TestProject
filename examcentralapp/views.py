@@ -258,6 +258,8 @@ def activate(request, uidb64, token):
 
 @login_required
 def examdetails_save_page(request):
+  if not request.user.is_staff:
+      return HttpResponseRedirect('/')
   if request.method == 'POST':
     form = ExamDetailsSaveForm(request.POST)
     if form.is_valid():
@@ -265,7 +267,8 @@ def examdetails_save_page(request):
       examname, created = ExamName.objects.get_or_create(
         examname=form.cleaned_data['examname'], total_questions=form.cleaned_data['total_questions'],
         attempts_allowed=form.cleaned_data['attempts_allowed'], duration=form.cleaned_data['duration'],
-        start_time=form.cleaned_data['start_time'], end_time=form.cleaned_data['end_time'], price=form.cleaned_data['price'],
+        start_time=form.cleaned_data['start_time'], end_time=form.cleaned_data['end_time'], mark_per_qtn=form.cleaned_data['mark_per_qtn'],
+        negative_per_qtn=form.cleaned_data['neg_per_qtn'], price=form.cleaned_data['price'],
         published=False
       )
 
@@ -371,6 +374,9 @@ def addexam_page(request):
                 userexam_id = userexam.id,
                 attempt_available = attempts_per_purchase
             )
+        messages.info(request, "Exam added to your account.")
+        redirect_url = '/user/' + request.user.username
+        return HttpResponseRedirect(redirect_url)
     else:
         #update userexamattemptinfo with additional attempts per purchase from examname
         uexamattemptinfo = UserExamAttemptInfo.objects.get(userexam_id=userexam.id)
@@ -383,7 +389,7 @@ def addexam_page(request):
         redirect_url = '/user/' + request.user.username
         return HttpResponseRedirect(redirect_url)
 
-    messages.info(request, "Adding exam added to account failed.")
+    messages.info(request, "Adding exam to account failed.")
     return HttpResponseRedirect('/myaccount')
 
 @login_required
@@ -402,36 +408,36 @@ def removeexam_page(request):
 @login_required
 def addquestions_page(request):
   if request.method == 'POST':
-    form = QuestionDetailsSaveForm(request.POST)
+    form = QuestionDetailsSaveForm(request.POST, request.FILES)
     if form.is_valid():
       right_options = ""
       # Add question
       examquestion, created = ExamQuestions.objects.get_or_create(
         examname_id=request.POST.get("examid", ""), qno=form.cleaned_data['qno'], question=form.cleaned_data['question'],
-        qtype=form.cleaned_data['qtype'], qcategory=form.cleaned_data['qcategory'],
-        answer=form.cleaned_data['answer']
+        qtype=form.cleaned_data['qtype'], qcategory=form.cleaned_data['qcategory'], haspic=form.cleaned_data['haspic'],
+        hasdirection=form.cleaned_data['hasdirection'], answer=form.cleaned_data['answer']
       )
 
-      isOptionA = request.POST.get('isOptionA', 0)
+      isOptionA = form.cleaned_data['isOptionA']
       optionA, created = OptionA.objects.get_or_create(
         examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionA'],
         isright = isOptionA
       )
 
-      isOptionB = request.POST.get('isOptionB', 0)
+      isOptionB = form.cleaned_data['isOptionB']
       optionB, created = OptionB.objects.get_or_create(
         examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionB'],
         isright = isOptionB
       )
 
-      isOptionC = request.POST.get('isOptionC', 0)
+      isOptionC = form.cleaned_data['isOptionC']
       if request.POST.get("optionC", ""):
         optionC, created = OptionC.objects.get_or_create(
           examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionC'],
           isright = isOptionC
         )
 
-      isOptionD = request.POST.get('isOptionD', 0)
+      isOptionD = form.cleaned_data['isOptionD']
       if request.POST.get("optionD", ""):
         optionD, created = OptionD.objects.get_or_create(
           examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionD'],
@@ -447,6 +453,11 @@ def addquestions_page(request):
       if isOptionD:
         right_options += " 4"
 
+      if form.cleaned_data['haspic'] or form.cleaned_data['hasdirection']:
+          qinfo, created = QuestionInfo.objects.get_or_create(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'],
+                                                              direction=form.cleaned_data['direction'],
+                                                              pic=request.FILES['pic']
+                                                            )
       solution, created = ExamSolution.objects.get_or_create(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'],
                                                              correct_options = right_options, explanation = form.cleaned_data['answer']
                                                             )
@@ -489,8 +500,10 @@ def publishexam_page(request):
   if request.method == 'POST':
     examid = request.POST.get("examid", "")
     examname = ExamName.objects.filter(id=examid).update(published=1)
+    messages.info(request, 'Exam published!')
     return HttpResponseRedirect('/')
   else:
+    messages.info(request, 'Error in publishing exam!')
     return HttpResponseRedirect('/')
 
 @login_required

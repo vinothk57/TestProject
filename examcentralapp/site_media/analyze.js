@@ -13,8 +13,8 @@ function success(gdata) {
   graphdata = [
      ['Section', 'Mark'],
      ['Unanswered', gdata['unanswered']],
-     ['Correct Answers', gdata['correctanswers']],
      ['Wrong Answers', gdata['wronganswers']],
+     ['Correct Answers', gdata['correctanswers']],
   ];
   var data = google.visualization.arrayToDataTable(graphdata);
 

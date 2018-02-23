@@ -276,7 +276,7 @@ function loadQuestionData() {
 
     var addInfo = "";
     if ("direction" in qelement) {
-        addInfo = "<h5>" + qelement['direction'] + "</h5>";
+        addInfo = "<h5 style=\"line-height: 21px; text-align: justify;\">" + qelement['direction'] + "</h5>";
     }
     if ("imgpath" in qelement) {
         addInfo += "<img src=" + qelement['imgpath'] + ">";

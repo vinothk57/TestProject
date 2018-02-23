@@ -94,13 +94,21 @@ class ExamDetailsSaveForm(forms.Form):
   )
   attempts_allowed = forms.IntegerField(
     label='', min_value = 1,
-    widget=forms.TextInput(attrs={'id': 'attempts-allowed', 'class': 'form-control', 'placeholder': 'Attempts allowed per user'})
+    widget=forms.TextInput(attrs={'id': 'attempts-allowed', 'class': 'form-control', 'placeholder': 'Attempts allowed per purchase'})
   )
 
   duration = forms.IntegerField(label='', min_value = 1, widget=forms.TextInput(attrs={'id': 'duration', 'class': 'form-control', 'placeholder': 'Exam duration in minutes'}))
 
   start_time = forms.DateTimeField(label='', widget=forms.DateTimeInput(attrs={'id': 'start-time', 'class': 'form-control', 'placeholder': 'Start Time'}))
   end_time = forms.DateTimeField(label ='', widget=forms.DateTimeInput(attrs={'id': 'end-time', 'class': 'form-control', 'placeholder': 'End Time'}))
+  mark_per_qtn = forms.IntegerField(
+          label='', min_value = 1,
+          widget=forms.TextInput(attrs={'id': 'markperqtn', 'class': 'form-control', 'placeholder': 'Mark per question'})
+          )
+  neg_per_qtn = forms.DecimalField(
+          label='', min_value = 0,
+          widget=forms.TextInput(attrs={'id': 'negperqtn', 'class': 'form-control', 'placeholder': 'Negative mark per question'})
+          )
   price = forms.FloatField(
     label='', min_value = 0,
     widget=forms.TextInput(attrs={'id': 'price', 'class': 'form-control', 'placeholder': 'Price'})
@@ -136,24 +144,32 @@ class QuestionDetailsSaveForm(forms.Form):
         )
   qtype = forms.ChoiceField(choices=QTYPE_CHOICES, required=False)
   qcategory = forms.ChoiceField(choices=QCATEGORY_CHOICES)
+  haspic = forms.BooleanField(label='Question Has Picture?', initial=False, required=False)
+  pic = forms.ImageField(initial=False, required=False)
+  hasdirection = forms.BooleanField(label='Question Has Direction?', initial=False, required=False,
+          widget=forms.CheckboxInput(attrs={'id': 'hasdirection'})
+          )
+  direction = forms.CharField(label='', required=False,
+          widget=forms.TextInput(attrs={'id': 'direction','class': 'form-control', 'style': 'display:none', 'placeholder': 'Enter Directions for the question'})
+          )
   optionA = forms.CharField(label='',
           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option A'})
         )
-  isOptionA = forms.BooleanField(label='Is Option A correct', initial=False, required=False)
+  isOptionA = forms.BooleanField(label='Is Option A Correct?', initial=False, required=False)
   optionB = forms.CharField(label='',
           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option B'})
         )
-  isOptionB = forms.BooleanField(label='Is Option B correct', initial=False, required=False)
+  isOptionB = forms.BooleanField(label='Is Option B Correct?', initial=False, required=False)
   optionC = forms.CharField(label='',
           required=False,
           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option C'})
         )
-  isOptionC = forms.BooleanField(label='Is Option C correct', initial=False, required=False)
+  isOptionC = forms.BooleanField(label='Is Option C Correct?', initial=False, required=False)
   optionD = forms.CharField(label='',
           required=False,
           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option D'})
         )
-  isOptionD = forms.BooleanField(label='Is Option D correct', initial=False, required=False)
+  isOptionD = forms.BooleanField(label='Is Option D Correct?', initial=False, required=False)
   answer = forms.CharField(
      label='',
      widget=forms.TextInput(attrs={'id': 'answer', 'class': 'form-control', 'placeholder': 'Enter Answer'})
