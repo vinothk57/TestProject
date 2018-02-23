@@ -41,12 +41,12 @@
                               <li><a href="/profile"><i class="glyphicon glyphicon-user" style="padding-right:10px"></i>User Profile</a></li>
                               <li class="divider"></li>
                               {% if user.is_staff %}
-                              <li><a href="/createexam"><i class="fa fa-pencil-square-o" style="padding-right:10px"></i>Create Exam</a></li>
+                              <li><a href="/createexam"><i class="glyphicon glyphicon-edit" style="padding-right:10px"></i>Create Exam</a></li>
                               <li class="divider"></li>
                               {% else %}
                               <li><a href="/history"><i class="glyphicon glyphicon-th-list" style="padding-right:10px"></i>Past Exams</a></li>
                               <li class="divider"></li>
-                              <li><a href="/analysis"><i class="glyphicon glyphicon-cog" style="padding-right:10px"></i>Analytics</a></li>
+                              <li><a href="/analysis"><i class="glyphicon glyphicon-stats" style="padding-right:10px"></i>Analytics</a></li>
                               <li class="divider"></li>
                               <li>
                               <a href="/user/{{user.username}}"><i class="glyphicon glyphicon-list-alt" style="padding-right:10px"></i>My Exams</a>

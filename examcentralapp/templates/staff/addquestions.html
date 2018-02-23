@@ -104,15 +104,9 @@ $(document).ready(function () {
 
                <input type="hidden" name="examid" value="{{ examid }}" />
                
-             {% if quploaded > 0 %}
-                 <div class="form-group text-center margin-bottom-0">
-                   <button class="tcl-btn" type="submit">Add another question</button>
-                 </div>
-             {% else %}
-                 <div class="form-group text-center margin-bottom-0">
+               <div class="form-group text-center margin-bottom-0">
                    <button class="tcl-btn" type="submit">Add</button>
-                 </div>
-             {% endif %}
+               </div>
              {% if quploaded > 0 %}
                </form>
                  <form method="post" action="/publishexam/">

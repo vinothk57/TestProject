@@ -1,0 +1,44 @@
+{% if examlist %}
+{% else %}
+  <p>No Exam found.</p>
+{% endif %}
+    <div>
+       <table class="table">
+           <thead>
+           <tr>
+             <th>S.No</th>
+             <th>Exam Name</th>
+             <th>No of Question</th>
+             <th>Duration</th>
+             <th>Price (Rs.)</th>
+             <th>Attempts Per Purchase</th>
+             <th> </th>
+           </tr>
+           </thead>
+
+           <tbody>
+{% for exam in examlist %}
+           <tr>
+               <td>{{ forloop.counter }}</td>
+             <td>{{ exam.examname }}</td>
+             <td>{{ exam.total_questions }}</td>
+             <td>{{ exam.duration }} minutes</td>
+             <td>{{ exam.price }}</td>
+             <td>{{ exam.attempts_allowed }}</td>
+             <td>
+                 <form id="examdetail-form" method="get" action="/getexamdetails/">
+                    <input type="hidden" name="examid" value="{{ exam.id }}" />
+                    <input type="submit" class="exam-btn info" style="width:70px; margin-top:0px; font-weight: normal; padding:4px; border:none;" value="View"/>
+                 </form>
+             </td>
+           </tr>
+
+{% endfor %}
+           </tbody>
+       </table>
+       <div class="pagination">
+         <span class="step-links">
+          {{ pagination|safe }}
+         </span>
+       </div>
+    </div>

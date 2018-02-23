@@ -18,7 +18,8 @@
                 <td>{{exam.correctly_answered}}</td>
                 <td>{{exam.mark}}</td>
                 <td>
-                          <form id="analyzeexam-form" method="get" action="/analyzeexam/">
+                          <form id="analyzeexam-form" method="POST" action="/analyzeexam/">
+                              {% csrf_token %}
                               <input type="hidden" name="examid" value="{{ exam.examname.id }}" />
                               <input type="hidden" name="attemptid" value="{{ exam.attemptid }}" />
                               <input type="submit" class="exam-btn info" style="width:70px; margin-top:0px; font-weight: normal; padding:4px; border:none;" value="Analysis" />

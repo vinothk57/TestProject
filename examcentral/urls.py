@@ -65,5 +65,6 @@ urlpatterns = [
     url(r'^payment/failure$', payment_failure, name="payment_failure"),
 
     # Admin interface
+    url(r'^getexamdetails/$', examdetails_page),
     #url(r'^admin/', include('django.contrib.admin.urls')),
 ]

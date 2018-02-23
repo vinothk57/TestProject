@@ -1,0 +1,49 @@
+{% if qtnlist %}
+{% else %}
+  <p>No Question Added</p>
+{% endif %}
+    <div>
+       <table class="table">
+           <thead>
+           <tr>
+             <th>Q.No</th>
+             <th>Question</th>
+             <th>Q.Type</th>
+             <th>Category</th>
+             <th>Has Pic</th>
+             <th>Has Direction</th>
+             <th>Answer</th>
+           </tr>
+           </thead>
+
+           <tbody>
+{% for qtn in qtnlist %}
+           <tr>
+             <td>{{ qtn.qno }}</td>
+             <td>{{ qtn.question }}</td>
+             <td>{{ qtn.qtype }}</td>
+             <td>{{ qtn.qcategory }}</td>
+             {% if qtn.haspic %}
+             <td><i class="fas fa-check-circle fa-lg green"></i></td>
+             {% else %}
+             <td><i class="fas fa-times-circle fa-lg red"></i></td>
+             {% endif %}
+             {% if qtn.hasdirection %}
+             <td><i class="fas fa-check-circle fa-lg green"></i></td>
+             {% else %}
+             <td><i class="fas fa-times-circle fa-lg red"></i></td>
+             {% endif %}
+             <td>{{ qtn.answer }}</td>
+             <td>
+                 <form id="examdetail-form" method="get" action="/getqtn/">
+                    <input type="hidden" name="examid" value="{{ examid }}" />
+                    <input type="hidden" name="qno" value="{{ qtn.qno }}" />
+                    <input type="submit" class="exam-btn info" style="width:70px; margin-top:0px; font-weight: normal; padding:4px; border:none;" value="Edit"/>
+                 </form>
+             </td>
+           </tr>
+
+{% endfor %}
+           </tbody>
+       </table>
+    </div>

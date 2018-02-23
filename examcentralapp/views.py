@@ -57,7 +57,22 @@ def main_page(request):
   if not request.user.is_authenticated():
     return render(request, 'index.html', {})
 
-  examlist = ExamName.objects.filter(published=True)
+  current_page = int(request.GET.get('page' ,1))
+  limit = 10 * current_page
+  offset = limit - 10
+
+  examlist = ExamName.objects.filter(published=True).order_by('-id')[offset:limit]
+  total_list = ExamName.objects.filter(published=True).count()
+
+  total_pages = int(total_list / 10)
+
+  reminder = total_list % 10
+
+  if reminder:
+     total_pages += 1 # adding one more page if the last page will contains less contacts 
+
+  pagination = make_pagination_html(current_page, total_pages)
+
   #variables = RequestContext(request, {'examlist': examlist})
   #return render_to_response(
   #  'main_page.html', variables
@@ -90,7 +105,8 @@ def main_page(request):
     return render(request, 'home_page.html', { 'form': form,
     'examlist': examlist,
     'show_results': show_results,
-    'show_tags': True
+    'show_tags': True,
+    'pagination': pagination
     })
 
 
@@ -103,8 +119,23 @@ def user_loggedin(request):
 
 @login_required
 def user_page(request, username):
+  current_page = int(request.GET.get('page' ,1))
+  limit = 10 * current_page
+  offset = limit - 10
+
   user = get_object_or_404(User, username=username)
-  exams = user.userexams_set.order_by('-id')
+  exams = user.userexams_set.order_by('-id')[offset:limit]
+  total_list = user.userexams_set.order_by('-id').count()
+
+  total_pages = int(total_list / 10)
+
+  reminder = total_list % 10
+
+  if reminder:
+     total_pages += 1 # adding one more page if the last page will contains less contacts 
+
+  pagination = make_pagination_html(current_page, total_pages)
+
 
   userexams = []
   for exam in exams:
@@ -132,7 +163,8 @@ def user_page(request, username):
   return render(request, 'user_page.html', {
     'username': username,
     'userexams': userexams,
-    'show_tags': True
+    'show_tags': True,
+    'pagination': pagination
   })
 
 
@@ -290,7 +322,7 @@ def examdetails_save_page(request):
                      'form': form
                    })
 
-      return render(request, 'addquestions.html', {
+      return render(request, 'staff/addquestions.html', {
                      'examname': examname.examname,
                      'examid': examname.id,
                      'quploaded': 0,
@@ -916,34 +948,34 @@ def analysis_page(request):
 
 @login_required
 def review_page(request):
-  if request.method == 'GET':
+  if request.method == 'POST':
       #Get userexam
       userexam = UserExams.objects.filter(
         user_id=request.user.id,
-        examname_id=request.GET.get('examid', "")
+        examname_id=request.POST.get('examid', "")
       )
       if userexam.exists():
-        totalqtn = ExamQuestions.objects.filter(examname_id=request.GET.get('examid', "")).count()
-        examname = ExamName.objects.get(id=request.GET.get('examid', "")).examname
+        totalqtn = ExamQuestions.objects.filter(examname_id=request.POST.get('examid', "")).count()
+        examname = ExamName.objects.get(id=request.POST.get('examid', "")).examname
 
-        totalqtns = ExamName.objects.get(id=request.GET.get('examid', "")).total_questions
+        totalqtns = ExamName.objects.get(id=request.POST.get('examid', "")).total_questions
         userAttemptCount = UserScoreSheet.objects.filter(
                          user_id=request.user.id,
-                         examname_id=request.GET.get('examid', "")
+                         examname_id=request.POST.get('examid', "")
                        ).count()
         variables = RequestContext(request, {
-          'examid': request.GET.get('examid', ""),
+          'examid': request.POST.get('examid', ""),
           'quploaded': range(1, totalqtn + 1),
           'examname': examname,
-          'attemptid': request.GET.get('attemptid', ""),
+          'attemptid': request.POST.get('attemptid', ""),
           'totalqtns': totalqtn
         })
 
         return render(request, 'reviewexam.html', {
-          'examid': request.GET.get('examid', ""),
+          'examid': request.POST.get('examid', ""),
           'quploaded': range(1, totalqtn + 1),
           'examname': examname,
-          'attemptid': request.GET.get('attemptid', ""),
+          'attemptid': request.POST.get('attemptid', ""),
           'totalqtns': totalqtn
         })
 
@@ -953,23 +985,41 @@ def review_page(request):
   return HttpResponseRedirect('/')
 
 @login_required
+def examdetails_page(request):
+    if request.method == 'GET':
+        exam = ExamName.objects.get(id=request.GET.get('examid', ""))
+        totalqtns = ExamName.objects.get(id=request.GET.get('examid', "")).total_questions
+
+        qlist = ExamQuestions.objects.filter(examname_id=request.GET.get('examid', "")).order_by('qno')
+        return render(request, 'staff/examdetails.html', {
+            'examid': request.GET.get('examid', ""),
+            'examname': exam.examname,
+            'totalqtns': totalqtns,
+            'qtnlist': qlist
+            })
+    else:
+        messages.info(request, 'Invalid Exam!')
+        return HttpResponseRedirect('/')
+
+
+@login_required
 def analyzegraphs_page(request):
-  if request.method == 'GET':
+  if request.method == 'POST':
       #Get userexam
       userexam = UserExams.objects.filter(
         user_id=request.user.id,
-        examname_id=request.GET.get('examid', "")
+        examname_id=request.POST.get('examid', "")
       )
       if userexam.exists():
-        totalqtn = ExamQuestions.objects.filter(examname_id=request.GET.get('examid', "")).count()
-        examname = ExamName.objects.get(id=request.GET.get('examid', "")).examname
+        totalqtn = ExamQuestions.objects.filter(examname_id=request.POST.get('examid', "")).count()
+        examname = ExamName.objects.get(id=request.POST.get('examid', "")).examname
 
-        totalqtns = ExamName.objects.get(id=request.GET.get('examid', "")).total_questions
+        totalqtns = ExamName.objects.get(id=request.POST.get('examid', "")).total_questions
 
         userscoresheet = UserScoreSheet.objects.filter(
                          user_id=request.user.id,
-                         examname_id=request.GET.get('examid', "0"),
-                         attemptid=request.GET.get('attemptid', "0")
+                         examname_id=request.POST.get('examid', "0"),
+                         attemptid=request.POST.get('attemptid', "0")
                        )
 
         totalanswered = userscoresheet[0].answered_questions;
@@ -979,20 +1029,20 @@ def analyzegraphs_page(request):
         p = re.compile(r'[0-9]+\:[0-9]+\:[0-9]+');
         duration = p.search(str(timediff));
         timetaken= duration.group();
-        totalmarks = ExamName.objects.get(id=request.GET.get('examid', "")).total_questions * ExamName.objects.get(id=request.GET.get('examid', "")).mark_per_qtn
+        totalmarks = ExamName.objects.get(id=request.POST.get('examid', "")).total_questions * ExamName.objects.get(id=request.POST.get('examid', "")).mark_per_qtn
         variables = RequestContext(request, {
-          'examid': request.GET.get('examid', ""),
+          'examid': request.POST.get('examid', ""),
           'quploaded': range(1, totalqtn + 1),
           'examname': examname,
-          'attemptid': request.GET.get('attemptid', ""),
+          'attemptid': request.POST.get('attemptid', ""),
           'totalqtns': totalqtn
         })
 
         return render(request, 'analyzeexam.html', {
-          'examid': request.GET.get('examid', ""),
+          'examid': request.POST.get('examid', ""),
           'quploaded': range(1, totalqtn + 1),
           'examname': examname,
-          'attemptid': request.GET.get('attemptid', ""),
+          'attemptid': request.POST.get('attemptid', ""),
           'totalqtns': totalqtn,
           'totalmarks': totalmarks,
           'totalanswered': totalanswered,

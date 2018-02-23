@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="row">
+    {% if user.is_staff %}
+        <div class="col-md-12 cont-head"><h4>Created Exams</h4></div>
+    {% else %}
         <div class="col-md-12 cont-head"><h4>List of Exams</h4></div>
+    {% endif %}
     </div>
     <div class="row">
+    {% if user.is_staff %}
+      {% include 'staff/examlisttable.html' %}
+    {% else %}
       {% include 'examlisttable.html' %}
+    {% endif %}
     </div>
 
 {% endblock %}
