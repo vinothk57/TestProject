@@ -53,6 +53,7 @@ urlpatterns = [
     # Account Management
     url(r'^createexam/$', examdetails_save_page),
     url(r'^addquestions/$', addquestions_page),
+    url(r'^removequestions/$', removequestion_page),
     url(r'^publishexam/$', publishexam_page),
     url(r'^reset_password/$', ResetPasswordRequestView.as_view(), name="reset_password"),
     url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', PasswordResetConfirmView.as_view(),name='password_reset_confirm'),

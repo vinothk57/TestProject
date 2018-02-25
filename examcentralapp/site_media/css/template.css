@@ -1234,3 +1234,78 @@ pre {
     cursor: wait;
     border: none;
 }
+
+.modal { overflow: visible !important; }
+.modal-dialog { overflow-y: visible !important; }
+.modal-content { overflow-y: visible !important; }
+.modal-body {     max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+.remove-bdr td{
+    border-top:none !important;
+}
+.save-btn-margin-left-140{
+    margin-left: 140px;
+    position: absolute;
+}
+.create button {
+    color: #fff;
+    background-color: #3EBB8C;
+    border-radius: 6px;
+    display: block;
+    padding: 10px 30px;
+    border: none;
+}
+.delete button {
+    color: #fff;
+    background-color: #b53d4a;
+    border-radius: 6px;
+    display: block;
+    padding: 5px 20px;
+    border: none;
+}
+.save button {
+    color: #fff;
+    background-color: #3EBB8C;
+    border-radius: 6px;
+    display: block;
+    padding: 5px 20px;
+    border: none;
+}
+.dropdown button {
+    color: #000;
+    background-color: #dfe6e3;
+}
+.upload button {
+    color: #000;
+    background-color: #dfe6e3;
+}
+.add button {
+    color: #000;
+    background-color: #dfe6e3;
+    width:100px;
+}
+.space {
+    padding-top: 80px;
+}
+.addqns{
+    margin-bottom:10px;
+    float:right;
+}
+.edit-model .modal-footer {
+    padding: 15px;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+}
+.edit-model .table>tbody>tr>td{
+    border-top:0px;
+}
+.edit-model .dropdown button {
+    color: #000;
+    background-color: #dfe6e3;
+    width: 163px;
+}
+
+.edit-model .form-control{
+width: 90% !important;
+}

@@ -107,8 +107,8 @@ $(document).ready(function () {
                <div class="form-group text-center margin-bottom-0">
                    <button class="tcl-btn" type="submit">Add</button>
                </div>
-             {% if quploaded > 0 %}
                </form>
+             {% if quploaded > 0 %}
                  <form method="post" action="/publishexam/">
                  {% csrf_token %}
                  <input type="hidden" name="examid" value="{{ examid }}" />

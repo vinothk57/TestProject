@@ -11,22 +11,136 @@
         {% include 'staff/qtnlist.html' %}
       </div>
 
+      <div class="addqns">
+        <button type="button" class="ln active" data-toggle="modal" data-target="#qaddModal">Add question</button>
+      </div>
 
+      <!-- Modal -->
+      <div id="qaddModal" class="modal fade" role="dialog">
+           <div class="modal-dialog">
 
-                 <!-- Modal -->
-                    <div id="qeditModal" class="modal fade" role="dialog">
-                      <div class="modal-dialog">
+           <!-- Modal content-->
+            <div class="modal-content edit-model">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title text-center">Add Question</h4>
+              </div>
+             <div class="modal-body">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title text-center"></h4>
-                          </div>
-                        </div>
+             <form id="addqtn-form" enctype="multipart/form-data" method="post" action="/addquestions/">
+             <table class="table">
+             <tbody>
+               {% csrf_token %}
+                  {% if form.qno.errors %}
+                   <tr><td>{{ form.qno.errors }}</td></tr>
+                  {% endif %}
+                 <tr>
+                   <td colspan="2">{{ form.qno }}</td>
+                   <td></td>
+                 </tr>
+                  {% if form.question.errors %}
+                   <tr><td>{{ form.question.errors }}</td></tr>
+                  {% endif %}
+                 <tr>
+                   <td colspan="2">{{ form.question }}</td>
+                   <td></td>
+                 </tr>
+                  {% if form.qtype.errors %}
+                 <tr> <td>{{ form.qtype.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.qtype.label_tag }}</td>
+                   <td>{{ form.qtype }}</td>
+                 </tr>
+                  {% if form.qcategory.errors %}
+                 <tr><td>{{ form.qcategory.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.qcategory.label_tag }}</td>
+                     <td>{{ form.qcategory }}</td>
+                 </tr>
+                  {% if form.haspic.errors %}
+                 <tr><td>{{ form.haspic.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.haspic.label_tag }}</td>
+                     <td>{{ form.haspic }}</td>
+                 </tr>
+                  {% if form.pic.errors %}
+                 <tr><td>{{ form.pic.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.pic }}</td>
+                 </tr>
+                  {% if form.hasdirection.errors %}
+                 <tr><td>{{ form.hasdirection.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.hasdirection.label_tag }}</td>
+                     <td>{{ form.hasdirection }}</td>
+                 </tr>
+                  {% if form.direction.errors %}
+                 <tr><td>{{ form.direction.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td colspan="2">{{ form.direction }}</td>
+                 </tr>
+                  {% if form.optionA.errors %}
+                 <tr><td>{{ form.optionA.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.optionA }}</td>
+                 </tr>
+                  {% if form.isOptionA.errors %}
+                 <tr><td>{{ form.isOptionA.errors }}</td></tr>
+                  {% endif %}
+                   <tr><td>{{ form.isOptionA.label_tag }}</td>
+                   <td>  {{ form.isOptionA }}</td>
+                 </tr>
+                  {% if form.optionB.errors %}
+                 <tr><td>{{ form.optionB.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.optionB }}</td>
+                 </tr>
+                  {% if form.isOptionB.errors %}
+                 <tr><td>{{ form.isOptionB.errors }}</td></tr>
+                  {% endif %}
+                   <tr><td>{{ form.isOptionB.label_tag }}</td>
+                   <td>  {{ form.isOptionB }}</td>
+                 </tr>
+                  {% if form.optionC.errors %}
+                 <tr><td>{{ form.optionC.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.optionC }}</td>
+                 </tr>
+                  {% if form.isOptionC.errors %}
+                 <tr><td>{{ form.isOptionC.errors }}</td></tr>
+                  {% endif %}
+                   <tr><td>{{ form.isOptionC.label_tag }}</td>
+                   <td>  {{ form.isOptionC }}</td>
+                 </tr>
+                  {% if form.optionD.errors %}
+                 <tr><td>{{ form.optionD.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.optionD }}</td>
+                 </tr>
+                  {% if form.isOptionD.errors %}
+                 <tr><td>{{ form.isOptionD.errors }}</td></tr>
+                  {% endif %}
+                   <tr><td>{{ form.isOptionD.label_tag }}</td>
+                   <td>  {{ form.isOptionD }}</td>
+                 </tr>
+                  {% if form.answer.errors %}
+                 <tr><td>  {{ form.answer.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.answer }}</td>
+                 </tr>
+                </tbody>
+                </table>
+               </div>
 
-                      </div>
-                    </div>
+               <input type="hidden" name="examid" value="{{ examid }}" />
+               
+               <div class="modal-footer">
+                   <button class="addtoaccount" type="submit">Add</button>
+               </div>
+               </form>
+             </div>
+           </div>
+         </div>
                  <!-- Modal end -->
     {% endif %}
 

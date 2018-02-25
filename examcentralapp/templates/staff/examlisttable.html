@@ -13,6 +13,8 @@
              <th>Price (Rs.)</th>
              <th>Attempts Per Purchase</th>
              <th> </th>
+             <th> </th>
+             <th> </th>
            </tr>
            </thead>
 
@@ -26,9 +28,25 @@
              <td>{{ exam.price }}</td>
              <td>{{ exam.attempts_allowed }}</td>
              <td>
-                 <form id="examdetail-form" method="get" action="/getexamdetails/">
+                 <form id="examdetail-form" method="post" action="/getexamdetails/">
+                    {% csrf_token %}
                     <input type="hidden" name="examid" value="{{ exam.id }}" />
                     <input type="submit" class="exam-btn info" style="width:70px; margin-top:0px; font-weight: normal; padding:4px; border:none;" value="View"/>
+                 </form>
+             </td>
+                    {% if exam.published %}
+             <td class="delete">
+                    {% else %}
+             <td class="save">
+                    {% endif %}
+                 <form method="post" action="/publishexam/">
+                    {% csrf_token %}
+                    <input type="hidden" name="examid" value="{{ exam.id }}" />
+                    {% if exam.published %}
+                      <button type="submit" class="ln active">Hide</button>
+                    {% else %}
+                      <button type="submit" class="ln active">Publish</button>
+                    {% endif %}
                  </form>
              </td>
            </tr>

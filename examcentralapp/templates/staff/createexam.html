@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Create Exam{% endblock %}
+{% block external %}
+<script src="/site_media/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+
+  $.datetimepicker.setLocale('en');
+
+  $('#start-time').datetimepicker({format: 'Y-m-d H:i', value:'',step:5});
+  $('#end-time').datetimepicker({format: 'Y-m-d H:i', value:'',step:5});
+</script>
+
+{% endblock %}
+{% block content %}
+                <div class="row">
+                     <div class="col-md-12 cont-head"><h4>Create Exam</h4></div>
+                </div>
+                <div>
+                          <table class="table remove-bdr create" >
+                            <tbody>
+                            <form id="createexam-form" method="post" action=".">
+                                 {% csrf_token %}
+                              <tr>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                     {{ form.examname.errors }}
+                                     {{ form.examname }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                        {{ form.total_questions.errors }}
+                                        {{ form.total_questions }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                        {{ form.attempts_allowed.errors }}
+                                        {{ form.attempts_allowed }}
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                        {{ form.duration.errors }}
+                                        {{ form.duration }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                        {{ form.start_time.errors }}
+                                        {{ form.start_time }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group inner-addon">                                     
+                                        {{ form.end_time.errors }}
+                                        {{ form.end_time }}
+                                    </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                        {{ form.mark_per_qtn.errors }}
+                                        {{ form.mark_per_qtn }}
+                                    </div>
+                                </td>
+                                <td>
+                                   <div class="form-group inner-addon">
+                                        {{ form.neg_per_qtn.errors }}
+                                        {{ form.neg_per_qtn }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                        {{ form.price.errors }}
+                                        {{ form.price }}
+                                    </div>
+                                </td>
+                              </tr>
+                              <tr style="text-align:center;">
+                                <td>
+                                </td>
+                                <td class="save-btn-margin-left-140">
+                                    <div class="form-group inner-addon">
+                                        <button  type="submit" class="ln active">Save</button>
+                                    </div>
+                                </td>
+                                <td>
+                                </td>
+                              </tr>
+                             </form>
+                            </tbody>
+                          </table>
+                </div>
+
+{% endblock %}
