@@ -76,28 +76,68 @@
                  </div>
              </td>
              <td class="save">
-                 <form id="examdetail-form" method="get" action="/getqtn/">
-                    <input type="hidden" name="examid" value="{{ examid }}" />
-                    <input type="hidden" name="qno" value="{{ qtn.qno }}" />
-                    <button type="submit" class="ln active">Edit </button>
-                 </form>
+                 <button id="{{ qtn.qno }}editqtn" type="button" class="ln active">Edit</button>
              </td>
              <td class="save">
-                 <form id="examdetail-form" method="post" action="/getqtn/">
-                    <input type="hidden" name="examid" value="{{ examid }}" />
-                    <input type="hidden" name="qno" value="{{ qtn.qno }}" />
-                    <button type="submit" class="ln active">Preview </button>
-                 </form>
+                 <button id="{{ qtn.qno }}previewqtn" type="button" class="ln active">Preview</button>
              </td>
              <td class="delete">
-                 <form id="remqtn-form" method="post" action="/removequestions/">
-                     {% csrf_token %}
-                    <input type="hidden" name="examid" value="{{ examid }}" />
-                    <input type="hidden" name="qno" value="{{ qtn.qno }}" />
-                    <button type="submit" class="ln active">Delete </button>
-                 </form>
+                 <button id="{{ qtn.qno }}delqtn" type="button" class="ln active" data-toggle="modal" data-target="#delqtnmodal">Delete</button>
              </td>
            </tr>
+           <script>
+                     $("#{{ qtn.qno }}editqtn").click(function(e){
+                           e.preventDefault();
+                           $('#qeditModal').modal('show');
+                           var JSONqtnData = {};
+                           JSONqtnData['examid'] = {{ examid }};
+                           JSONqtnData['qno'] = {{ qtn.qno }};
+                           $.ajax({
+                               url: "/editqtndetail/",
+                               type: "post",
+                               dataType: "json",
+                               data: {
+                                 json: JSON.stringify(JSONqtnData),
+                                 csrfmiddlewaretoken: '{{ csrf_token }}'
+                                  },
+                               success: showqtnedit,
+                               error: function(data){
+                                 console.log('error; ' + JSON.stringify(data));
+                                  }
+                               });
+                          return false;
+                     });
+                     $("#{{ qtn.qno }}previewqtn").click(function(e){
+                           e.preventDefault();
+                           $('#qpreviewModal').modal('show');
+                           var JSONqtnData = {};
+                           JSONqtnData['examid'] = {{ examid }};
+                           JSONqtnData['qno'] = {{ qtn.qno }};
+                           $.ajax({
+                               url: "/editqtndetail/",
+                               type: "post",
+                               dataType: "json",
+                               data: {
+                                 json: JSON.stringify(JSONqtnData),
+                                 csrfmiddlewaretoken: '{{ csrf_token }}'
+                                  },
+                               success: showqtnpreview,
+                               error: function(data){
+                                 console.log('error; ' + JSON.stringify(data));
+                                  }
+                               });
+                          return false;
+                     });
+                     $("#{{ qtn.qno }}delqtn").click(function(){
+                        $("#delqtnmodal").find(".modal-footer").html( "  <form id=\"remqtn-form\" method=\"post\" action=\"/removequestions/\"> \
+                                                      {% csrf_token %} \
+                                                      <input type=\"hidden\" name=\"examid\" value=\"{{ examid }}\" /> \
+                                                      <input type=\"hidden\" name=\"qno\" value=\"{{ qtn.qno }}\" /> \
+                                                      <button type=\"submit\" class=\"addtoaccount margin-left-220\" style=\"float:left\">Yes</button> \
+                                                      </form> \
+                                                      <button type=\"button\" class=\"addtoaccount margin-right-220\" data-dismiss=\"modal\" style=\"float:right\">No</button>");
+                     });
+           </script>
 
 {% endfor %}
            </tbody>

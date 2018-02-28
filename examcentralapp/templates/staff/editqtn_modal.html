@@ -1,34 +1,12 @@
-{% extends "base.html" %}
-{% block external %}
-      <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-      <script type="text/javascript" src="/site_media/editqtn.js">
-      </script>
-{% endblock %}
-{% block content %}
-    {% if user.is_staff %}
-      <div class="row">
-        <div class="col-md-12 cont-head"><h4>Exam Details - {{ examname }}</h4></div>
-      </div>
-                 {% include 'staff/deleteqtn_modal.html' %}
-                 {% include 'staff/editqtn_modal.html' %}
-                 {% include 'staff/previewqtn_modal.html' %}
-      <div class="row">
-        {% include 'staff/qtnlist.html' %}
-      </div>
-
-      <div class="addqns">
-        <button type="button" class="ln active" data-toggle="modal" data-target="#qaddModal">Add question</button>
-      </div>
-
       <!-- Modal -->
-      <div id="qaddModal" class="modal fade" role="dialog">
+      <div id="qeditModal" class="modal fade" role="dialog">
            <div class="modal-dialog">
 
            <!-- Modal content-->
             <div class="modal-content edit-model">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title text-center">Add Question</h4>
+                <h4 class="modal-title text-center">Edit Question</h4>
               </div>
              <div class="modal-body">
 
@@ -120,13 +98,10 @@
                <input type="hidden" name="examid" value="{{ examid }}" />
                
                <div class="modal-footer">
-                   <button class="addtoaccount" type="submit">Add</button>
+                   <button class="addtoaccount" type="submit">Save</button>
                </div>
                </form>
              </div>
            </div>
          </div>
                  <!-- Modal end -->
-    {% endif %}
-
-{% endblock %}

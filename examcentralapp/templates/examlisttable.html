@@ -19,7 +19,7 @@
            <tbody>
 {% for exam in examlist %}
            <tr>
-               <td>{{ forloop.counter }}</td>
+             <td>{{ forloop.counter|add:offset }}</td>
              <td>{{ exam.examname }}</td>
              <td>{{ exam.total_questions }}</td>
              <td>{{ exam.duration }} minutes</td>

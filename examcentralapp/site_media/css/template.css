@@ -1309,3 +1309,24 @@ pre {
 .edit-model .form-control{
 width: 90% !important;
 }
+.margin-left-220{
+    margin-left:220px;
+}
+.margin-right-220{
+    margin-right:220px;
+}
+.text-align-center{
+    text-align:center;
+}
+#delqtnmodal .modal-header{
+    background: #e2e2e2;
+}
+#qaddModal .modal-header{
+    background: #e2e2e2;
+}
+#qpreviewModal .modal-header{
+    background: #e2e2e2;
+}
+#qeditModal .modal-header{
+    background: #e2e2e2;
+}
