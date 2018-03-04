@@ -13,6 +13,9 @@
              <th>Has Pic</th>
              <th>Has Direction</th>
              <th>Answer</th>
+             <th></th>
+             <th></th>
+             <th></th>
            </tr>
            </thead>
 
@@ -20,9 +23,43 @@
 {% for qtn in qtnlist %}
            <tr>
              <td>{{ qtn.qno }}</td>
-             <td>{{ qtn.question }}</td>
-             <td>{{ qtn.qtype }}</td>
-             <td>{{ qtn.qcategory }}</td>
+             <td>
+                 <div class="form-group inner-addon">
+                     <input type="text"  placeholder="{{ qtn.question }}"  class="form-control" name=""/>
+                 </div>
+             </td>
+             <td>
+                <div class="dropdown">
+                 {% if qtn.qtype == 1 %}
+                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Either or Choice <span class="caret"></span></button>
+                 {% endif %}
+                 {% if qtn.qtype == 2 %}
+                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">True or False <span class="caret"></span></button>
+                 {% endif %}
+                 {% if qtn.qtype == 3 %}
+                 <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Multiple selection <span class="caret"></span></button>
+                 {% endif %}
+                 {% if qtn.qtype == 4 %}
+                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Descriptive <span class="caret"></span></button>
+                 {% endif %}
+                </div>
+             </td>
+             <td>
+                <div class="dropdown">
+                 {% if qtn.qcategory == 1 %}
+                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">General <span class="caret"></span></button>
+                 {% endif %}
+                 {% if qtn.qcategory == 2 %}
+                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Data Analysis <span class="caret"></span></button>
+                 {% endif %}
+                 {% if qtn.qcategory == 3 %}
+                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Language <span class="caret"></span></button>
+                 {% endif %}
+                 {% if qtn.qcategory == 4 %}
+                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Logical Reasoning <span class="caret"></span></button>
+                 {% endif %}
+                </div>
+             </td>
              {% if qtn.haspic %}
              <td><i class="fas fa-check-circle fa-lg green"></i></td>
              {% else %}
@@ -33,15 +70,74 @@
              {% else %}
              <td><i class="fas fa-times-circle fa-lg red"></i></td>
              {% endif %}
-             <td>{{ qtn.answer }}</td>
              <td>
-                 <form id="examdetail-form" method="get" action="/getqtn/">
-                    <input type="hidden" name="examid" value="{{ examid }}" />
-                    <input type="hidden" name="qno" value="{{ qtn.qno }}" />
-                    <input type="submit" class="exam-btn info" style="width:70px; margin-top:0px; font-weight: normal; padding:4px; border:none;" value="Edit"/>
-                 </form>
+                 <div class="form-group inner-addon">
+                     <input type="text"  placeholder="{{ qtn.answer }}"  class="form-control" name=""/>
+                 </div>
+             </td>
+             <td class="save">
+                 <button id="{{ qtn.qno }}editqtn" type="button" class="ln active">Edit</button>
+             </td>
+             <td class="save">
+                 <button id="{{ qtn.qno }}previewqtn" type="button" class="ln active">Preview</button>
+             </td>
+             <td class="delete">
+                 <button id="{{ qtn.qno }}delqtn" type="button" class="ln active" data-toggle="modal" data-target="#delqtnmodal">Delete</button>
              </td>
            </tr>
+           <script>
+                     $("#{{ qtn.qno }}editqtn").click(function(e){
+                           e.preventDefault();
+                           $('#qeditModal').modal('show');
+                           var JSONqtnData = {};
+                           JSONqtnData['examid'] = {{ examid }};
+                           JSONqtnData['qno'] = {{ qtn.qno }};
+                           $.ajax({
+                               url: "/editqtndetail/",
+                               type: "post",
+                               dataType: "json",
+                               data: {
+                                 json: JSON.stringify(JSONqtnData),
+                                 csrfmiddlewaretoken: '{{ csrf_token }}'
+                                  },
+                               success: showqtnedit,
+                               error: function(data){
+                                 console.log('error; ' + JSON.stringify(data));
+                                  }
+                               });
+                          return false;
+                     });
+                     $("#{{ qtn.qno }}previewqtn").click(function(e){
+                           e.preventDefault();
+                           $('#qpreviewModal').modal('show');
+                           var JSONqtnData = {};
+                           JSONqtnData['examid'] = {{ examid }};
+                           JSONqtnData['qno'] = {{ qtn.qno }};
+                           $.ajax({
+                               url: "/editqtndetail/",
+                               type: "post",
+                               dataType: "json",
+                               data: {
+                                 json: JSON.stringify(JSONqtnData),
+                                 csrfmiddlewaretoken: '{{ csrf_token }}'
+                                  },
+                               success: showqtnpreview,
+                               error: function(data){
+                                 console.log('error; ' + JSON.stringify(data));
+                                  }
+                               });
+                          return false;
+                     });
+                     $("#{{ qtn.qno }}delqtn").click(function(){
+                        $("#delqtnmodal").find(".modal-footer").html( "  <form id=\"remqtn-form\" method=\"post\" action=\"/removequestions/\"> \
+                                                      {% csrf_token %} \
+                                                      <input type=\"hidden\" name=\"examid\" value=\"{{ examid }}\" /> \
+                                                      <input type=\"hidden\" name=\"qno\" value=\"{{ qtn.qno }}\" /> \
+                                                      <button type=\"submit\" class=\"addtoaccount margin-left-220\" style=\"float:left\">Yes</button> \
+                                                      </form> \
+                                                      <button type=\"button\" class=\"addtoaccount margin-right-220\" data-dismiss=\"modal\" style=\"float:right\">No</button>");
+                     });
+           </script>
 
 {% endfor %}
            </tbody>

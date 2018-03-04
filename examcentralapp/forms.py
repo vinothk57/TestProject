@@ -150,7 +150,7 @@ class QuestionDetailsSaveForm(forms.Form):
           widget=forms.CheckboxInput(attrs={'id': 'hasdirection'})
           )
   direction = forms.CharField(label='', required=False,
-          widget=forms.TextInput(attrs={'id': 'direction','class': 'form-control', 'style': 'display:none', 'placeholder': 'Enter Directions for the question'})
+          widget=forms.Textarea(attrs={'id': 'direction','class': 'form-control', 'rows':'4', 'cols':'65', 'placeholder': 'Enter Directions for the question'})
           )
   optionA = forms.CharField(label='',
           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option A'})

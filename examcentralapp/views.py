@@ -1,4 +1,5 @@
 import os
+from django.conf import settings
 import datetime as DT
 import re
 from django.shortcuts import render, redirect
@@ -61,7 +62,12 @@ def main_page(request):
   limit = 10 * current_page
   offset = limit - 10
 
-  examlist = ExamName.objects.filter(published=True).order_by('-id')[offset:limit]
+  examlist = []
+  if not request.user.is_staff:
+      examlist = ExamName.objects.filter(published=True).order_by('-id')[offset:limit]
+  else:
+      examlist = ExamName.objects.all().order_by('-id')[offset:limit]
+
   total_list = ExamName.objects.filter(published=True).count()
 
   total_pages = int(total_list / 10)
@@ -106,7 +112,8 @@ def main_page(request):
     'examlist': examlist,
     'show_results': show_results,
     'show_tags': True,
-    'pagination': pagination
+    'pagination': pagination,
+    'offset': offset
     })
 
 
@@ -164,7 +171,8 @@ def user_page(request, username):
     'username': username,
     'userexams': userexams,
     'show_tags': True,
-    'pagination': pagination
+    'pagination': pagination,
+    'offset': offset
   })
 
 
@@ -322,19 +330,21 @@ def examdetails_save_page(request):
                      'form': form
                    })
 
-      return render(request, 'staff/addquestions.html', {
-                     'examname': examname.examname,
-                     'examid': examname.id,
-                     'quploaded': 0,
-                     'form': form
-                   })
+      #return render(request, 'staff/addquestions.html', {
+      #               'examname': examname.examname,
+      #               'examid': examname.id,
+      #               'quploaded': 0,
+      #               'form': form
+      #             })
 
+      messages.info(request, 'Exam Created Successfully. Add Questions!')
+      return HttpResponseRedirect('/')
   else:
     form = ExamDetailsSaveForm()
   variables = RequestContext(request, {
     'form': form
   })
-  return render(request, 'examdetail_save.html',  {
+  return render(request, 'staff/createexam.html',  {
     'form': form
   })
 
@@ -444,37 +454,85 @@ def addquestions_page(request):
     if form.is_valid():
       right_options = ""
       # Add question
-      examquestion, created = ExamQuestions.objects.get_or_create(
-        examname_id=request.POST.get("examid", ""), qno=form.cleaned_data['qno'], question=form.cleaned_data['question'],
-        qtype=form.cleaned_data['qtype'], qcategory=form.cleaned_data['qcategory'], haspic=form.cleaned_data['haspic'],
-        hasdirection=form.cleaned_data['hasdirection'], answer=form.cleaned_data['answer']
-      )
+      examquestionobject = ExamQuestions.objects.filter(examname_id=request.POST.get("examid", ""), qno=form.cleaned_data['qno'])
+
+      if examquestionobject.exists():
+          examquestion = examquestionobject[0]
+          examquestion.question = form.cleaned_data['question']
+          examquestion.qtype = form.cleaned_data['qtype']
+          examquestion.qcategory=form.cleaned_data['qcategory']
+          examquestion.answer=form.cleaned_data['answer']
+          examquestion.haspic = form.cleaned_data['haspic']
+          examquestion.hasdirection=form.cleaned_data['hasdirection']
+          examquestion.save()
+      else:
+          examquestion, created = ExamQuestions.objects.get_or_create(
+            examname_id=request.POST.get("examid", ""), qno=form.cleaned_data['qno'], question=form.cleaned_data['question'],
+            qtype=form.cleaned_data['qtype'], qcategory=form.cleaned_data['qcategory'], haspic=form.cleaned_data['haspic'],
+            hasdirection=form.cleaned_data['hasdirection'], answer=form.cleaned_data['answer']
+          )
 
       isOptionA = form.cleaned_data['isOptionA']
-      optionA, created = OptionA.objects.get_or_create(
-        examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionA'],
-        isright = isOptionA
-      )
+      optionAobject = OptionA.objects.filter(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'])
+
+      if optionAobject.exists():
+          optionA = optionAobject[0]
+          optionA.option = form.cleaned_data['optionA']
+          optionA.isright = isOptionA
+          optionA.save()
+      else:
+          optionA, created = OptionA.objects.get_or_create(
+            examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionA'],
+           isright = isOptionA
+          )
 
       isOptionB = form.cleaned_data['isOptionB']
-      optionB, created = OptionB.objects.get_or_create(
-        examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionB'],
-        isright = isOptionB
-      )
+      optionBobject = OptionB.objects.filter(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'])
+
+      if optionBobject.exists():
+          optionB = optionBobject[0]
+          optionB.option = form.cleaned_data['optionB']
+          optionB.isright = isOptionB
+          optionB.save()
+      else:
+          optionB, created = OptionB.objects.get_or_create(
+            examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionB'],
+            isright = isOptionB
+          )
 
       isOptionC = form.cleaned_data['isOptionC']
+      optionCobject = OptionC.objects.filter(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'])
       if request.POST.get("optionC", ""):
-        optionC, created = OptionC.objects.get_or_create(
-          examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionC'],
-          isright = isOptionC
-        )
+          if optionCobject.exists():
+              optionC = optionCobject[0]
+              optionC.option = form.cleaned_data['optionC']
+              optionC.isright = isOptionC
+              optionC.save()
+          else:
+              optionC, created = OptionC.objects.get_or_create(
+                      examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionC'],
+                      isright = isOptionC
+                      )
+      else:
+          if optionCobject.exists():
+              optionCobject.delete()
 
       isOptionD = form.cleaned_data['isOptionD']
+      optionDobject = OptionD.objects.filter(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'])
       if request.POST.get("optionD", ""):
-        optionD, created = OptionD.objects.get_or_create(
-          examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionD'],
-          isright = isOptionD
-        )
+          if optionDobject.exists():
+              optionD = optionDobject[0]
+              optionD.option = form.cleaned_data['optionD']
+              optionD.isright = isOptionD
+              optionD.save()
+          else:
+              optionD, created = OptionD.objects.get_or_create(
+                      examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionD'],
+                      isright = isOptionD
+                      )
+      else:
+          if optionDobject.exists():
+              optionDobject.delete()
 
       if isOptionA:
         right_options += "1"
@@ -485,12 +543,58 @@ def addquestions_page(request):
       if isOptionD:
         right_options += " 4"
 
-      if form.cleaned_data['haspic'] or form.cleaned_data['hasdirection']:
-          qinfo, created = QuestionInfo.objects.get_or_create(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'],
-                                                              direction=form.cleaned_data['direction'],
-                                                              pic=request.FILES['pic']
+      qinfoObject = QuestionInfo.objects.filter(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'])
+      if qinfoObject.exists():
+          qinfo = qinfoObject[0]
+
+          if form.cleaned_data['haspic']:
+              if qinfo.pic.name:
+                  try:
+                      os.remove(os.path.join(settings.MEDIA_ROOT, qinfo.pic.name))
+                  except OSError:
+                      messages.info(request, 'Error removing file')
+                      pass
+              if 'pic' in request.FILES:
+                  qinfo.pic=request.FILES['pic']
+                  qinfo.direction=form.cleaned_data['direction']
+                  qinfo.save()
+          elif form.cleaned_data['hasdirection']:
+              if qinfo.pic.name:
+                  try:
+                      os.remove(os.path.join(settings.MEDIA_ROOT, qinfo.pic.name))
+                  except OSError:
+                      pass
+              qinfo.pic.name=""
+              qinfo.direction=form.cleaned_data['direction']
+              qinfo.save()
+          else:
+              if qinfo.pic.name:
+                  try:
+                      os.remove(os.path.join(settings.MEDIA_ROOT, qinfo[0].pic.name))
+                  except OSError:
+                      pass
+              qinfo.delete()
+      #if no qinfo entry
+      else:
+
+          if form.cleaned_data['haspic'] or form.cleaned_data['hasdirection']:
+              qinfo, created = QuestionInfo.objects.get_or_create(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'],
+                                                              direction=form.cleaned_data['direction']
                                                             )
-      solution, created = ExamSolution.objects.get_or_create(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'],
+              
+              if form.cleaned_data['haspic']:
+                  qinfo.pic=request.FILES['pic']
+                  qinfo.save()
+
+      solutionobject = ExamSolution.objects.filter(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'])
+
+      if solutionobject.exists():
+          solution = solutionobject[0]
+          solution.correct_options = right_options
+          solution.explanation = form.cleaned_data['answer']
+          solution.save()
+      else:
+          solution, created = ExamSolution.objects.get_or_create(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'],
                                                              correct_options = right_options, explanation = form.cleaned_data['answer']
                                                             )
 
@@ -504,7 +608,19 @@ def addquestions_page(request):
                      'form': form
                    }
 
-      return render(request, 'addquestions.html', variables)
+      #return render(request, 'addquestions.html', variables)
+      messages.info(request, 'Question added successfully!')
+      exam = ExamName.objects.get(id=request.POST.get('examid', ""))
+      totalqtns = ExamName.objects.get(id=request.POST.get('examid', "")).total_questions
+
+      qlist = ExamQuestions.objects.filter(examname_id=request.POST.get('examid', "")).order_by('qno')
+      return render(request, 'staff/examdetails.html', {
+            'examid': request.POST.get('examid', ""),
+            'examname': exam.examname,
+            'totalqtns': totalqtns,
+            'qtnlist': qlist,
+            'form': form
+            })
     #if form is not valid
     else:
       variables = {
@@ -513,26 +629,143 @@ def addquestions_page(request):
                      'quploaded': ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count(),
                      'form': form
                    }
-      return render(request, 'addquestions.html', variables)
+      #return render(request, 'addquestions.html', variables)
+      messages.info(request, 'Error in adding question')
+      return HttpResponseRedirect('')
 
   #if request is not POST
   else:
+      return HttpResponseRedirect('')
+
+@login_required
+def removequestion_page(request):
+  if request.method == 'POST':
+    examid = request.POST.get("examid", "")
+    qno = request.POST.get("qno", "")
+    examquestion = ExamQuestions.objects.filter(examname_id=examid, qno=qno)
+
+    optionA = OptionA.objects.filter(examname_id = examid, qid=qno)
+    if optionA.exists():
+        optionA.delete()
+
+    optionB = OptionB.objects.filter(examname_id = examid, qid=qno)
+    if optionB.exists():
+        optionB.delete()
+
+    optionC = OptionC.objects.filter(examname_id = examid, qid=qno)
+    if optionC.exists():
+        optionC.delete()
+
+    optionD = OptionD.objects.filter(examname_id = examid, qid=qno)
+    if optionD.exists():
+        optionD.delete()
+
+    qinfo = QuestionInfo.objects.filter(examname_id = examid, qid=qno)
+    if qinfo.exists():
+      if examquestion[0].haspic:
+        try:
+          os.remove(os.path.join(settings.MEDIA_ROOT, qinfo[0].pic.name))
+        except OSError:
+          pass
+      qinfo.delete()
+
+    solution = ExamSolution.objects.filter(examname_id = examid, qid=qno)
+    if solution.exists():
+        solution.delete()
+
+    if examquestion.exists():
+        examquestion.delete()
+    messages.info(request, 'Question deleted successfully.')
+
+    #redirect to question list page
+    exam = ExamName.objects.get(id=examid)
+    totalqtns = ExamName.objects.get(id=examid).total_questions
     form = QuestionDetailsSaveForm()
 
-  variables = {
-                 'examname': examname.examname,
-                 'examid': examname.id,
-                 'quploaded': 0,
-                 'form': form
-              }
-  return render(request, 'addquestions.html', variables)
+    qlist = ExamQuestions.objects.filter(examname_id=examid).order_by('qno')
+    return render(request, 'staff/examdetails.html', {
+            'examid': examid,
+            'examname': exam.examname,
+            'totalqtns': totalqtns,
+            'qtnlist': qlist,
+            'form': form
+            })
+  #if request is not POST
+  else:
+      return HttpResponseRedirect('/')
+
+@login_required
+def editqtndetail_page(request):
+  if request.method == 'POST':
+    posted_json = request.POST.get("json", "")
+    my_dict = json.loads(posted_json)
+    examid = my_dict['examid']
+    qno = my_dict['qno']
+    resultdict = {}
+
+    examquestion = ExamQuestions.objects.filter(examname_id=examid, qno=qno)
+
+    optionA = OptionA.objects.filter(examname_id = examid, qid=qno)
+    if optionA.exists():
+      resultdict['optionA'] = optionA[0].option
+      resultdict['isOptionA'] = optionA[0].isright
+    else:
+      resultdict['optionA'] = ""
+      resultdict['isOptionA'] = False
+
+    optionB = OptionB.objects.filter(examname_id = examid, qid=qno)
+    if optionB.exists():
+      resultdict['optionB'] = optionB[0].option
+      resultdict['isOptionB'] = optionB[0].isright
+    else:
+      resultdict['optionB'] = ""
+      resultdict['isOptionB'] = False
+
+    optionC = OptionC.objects.filter(examname_id = examid, qid=qno)
+    if optionC.exists():
+      resultdict['optionC'] = optionC[0].option
+      resultdict['isOptionC'] = optionC[0].isright
+    else:
+      resultdict['optionC'] = ""
+      resultdict['isOptionC'] = False
+
+    optionD = OptionD.objects.filter(examname_id = examid, qid=qno)
+    if optionD.exists():
+      resultdict['optionD'] = optionD[0].option
+      resultdict['isOptionD'] = optionD[0].isright
+    else:
+      resultdict['optionD'] = ""
+      resultdict['isOptionD'] = False
+
+    qinfo = QuestionInfo.objects.filter(examname_id = examid, qid=qno)
+    if qinfo.exists():
+      resultdict['picpath'] = qinfo[0].pic.url
+      resultdict['direction'] = qinfo[0].direction
+
+    resultdict['examid'] = str(examid)
+    resultdict['qno'] = str(examquestion[0].qno)
+    resultdict['question'] = str(examquestion[0].question)
+    resultdict['qtype'] = str(examquestion[0].qtype)
+    resultdict['qcategory'] = str(examquestion[0].qcategory)
+    resultdict['haspic'] = examquestion[0].haspic
+    resultdict['hasdirection'] = examquestion[0].hasdirection
+    resultdict['answer'] = str(examquestion[0].answer)
+
+    return HttpResponse(json.dumps(resultdict), content_type="application/json")
+  #if request is not POST
+  else:
+      return HttpResponseRedirect('/')
 
 @login_required
 def publishexam_page(request):
   if request.method == 'POST':
     examid = request.POST.get("examid", "")
-    examname = ExamName.objects.filter(id=examid).update(published=1)
-    messages.info(request, 'Exam published!')
+    cur_val = ExamName.objects.get(id=examid).published
+    examname = ExamName.objects.filter(id=examid).update(published= (not cur_val))
+    if not cur_val:
+       messages.info(request, 'Exam published! Users can now see the exam to add to their account')
+    else:
+       messages.info(request, 'Exam hidden. Users will not see the exam to add to their account.')
     return HttpResponseRedirect('/')
   else:
     messages.info(request, 'Error in publishing exam!')
@@ -902,7 +1135,8 @@ def history_page(request):
   })
   return render(request, 'history_page.html', {
     'historylist': historylist,
-    'pagination': pagination
+    'pagination': pagination,
+    'offset': offset
   })
 
 def make_pagination_html(current_page, total_pages):
@@ -986,16 +1220,18 @@ def review_page(request):
 
 @login_required
 def examdetails_page(request):
-    if request.method == 'GET':
-        exam = ExamName.objects.get(id=request.GET.get('examid', ""))
-        totalqtns = ExamName.objects.get(id=request.GET.get('examid', "")).total_questions
+    if request.method == 'POST':
+        exam = ExamName.objects.get(id=request.POST.get('examid', ""))
+        totalqtns = ExamName.objects.get(id=request.POST.get('examid', "")).total_questions
 
-        qlist = ExamQuestions.objects.filter(examname_id=request.GET.get('examid', "")).order_by('qno')
+        qlist = ExamQuestions.objects.filter(examname_id=request.POST.get('examid', "")).order_by('qno')
+        form = QuestionDetailsSaveForm()
         return render(request, 'staff/examdetails.html', {
-            'examid': request.GET.get('examid', ""),
+            'examid': request.POST.get('examid', ""),
             'examname': exam.examname,
             'totalqtns': totalqtns,
-            'qtnlist': qlist
+            'qtnlist': qlist,
+            'form': form
             })
     else:
         messages.info(request, 'Invalid Exam!')
