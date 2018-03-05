@@ -53,6 +53,9 @@ import hashlib
 from random import randint
 from django.core.urlresolvers import reverse
 
+def web_page(request):
+    return render(request, 'web.html', {})
+
 def main_page(request):
   
   if not request.user.is_authenticated():
@@ -241,17 +244,17 @@ def register_page(request):
       user.is_active = False
       user.save()
       #send_mail(
-      #  'ExamCentral - Account Registration',
+      #  'QuizBuzz - Account Registration',
       #  'Hi,\n\n\
-      #   Your Email Id is registered with ExamCentral.com.\n\
-      #   Your Username: ' + form.cleaned_data['username'] + '\n\nThanks,\nExamCentral Team.',
+      #   Your Email Id is registered with QuizBuzz.in.\n\
+      #   Your Username: ' + form.cleaned_data['username'] + '\n\nThanks,\nQuizBuzz Team.',
       #  'from@example.com',
       #  [form.cleaned_data['email']],
       #  fail_silently=False,
       #)
       #return HttpResponseRedirect('/')
       
-      mail_subject = 'Account Activation - ExamCentral'
+      mail_subject = 'Account Activation - QuizBuzz'
       message = render_to_string('acc_active_email.html', {
                 'user': user,
                 'domain': request.META['HTTP_HOST'],
@@ -289,8 +292,8 @@ def activate(request, uidb64, token):
         user.save()
         #login(request, user)
         # return redirect('home')
-        #return HttpResponse('Thank you for your email confirmation. Now you can login to your ExamCentral account.')
-        messages.info(request, 'Thank you for your email confirmation. Now you can login to your ExamCentral account.')
+        #return HttpResponse('Thank you for your email confirmation. Now you can login to your QuizBuzz account.')
+        messages.info(request, 'Thank you for your email confirmation. Now you can login to your QuizBuzz account.')
         return HttpResponseRedirect('/')
     else:
         messages.info(request, 'Activation link is invalid')
@@ -930,19 +933,19 @@ def evalexam_page(request):
 
         msg_html = render_to_string('result_mail.html', {'username': request.user.first_name, 'examid': scoresheet.examname.id, 'attemptid': scoresheet.attemptid, 'examname': scoresheet.examname.examname, 'userscore': scoresheet.mark, 'maxscore': totalqtns * ExamName.objects.get(id=my_dict["examid"]).mark_per_qtn});
         #send_mail(
-        #  'ExamCentral - Result :' + str(scoresheet.examname.examname) + ' - Attempt: ' + str(scoresheet.attemptid),
+        #  'QuizBuzz - Result :' + str(scoresheet.examname.examname) + ' - Attempt: ' + str(scoresheet.attemptid),
         #  'Hi ' + str(request.user.first_name) + ',\n\n\
         #   Your score is: ' + str(scoresheet.mark) + '.\n\
         #   Total questions: ' + str(totalqtns) + '.\n\
         #   Answered questions: ' + str(resultdict['answered_questions']) + '.\n\
-        #   Correct answers: ' + str(rightcount) + '.\n\nRegards,\nExamCentral Team.',
+        #   Correct answers: ' + str(rightcount) + '.\n\nRegards,\nQuizBuzz Team.',
         #  'from@example.com',
         #  [request.user.email],
         #  fail_silently=False,
         #  html_message=msg_html,
         #)
-        subject = 'ExamCentral - Result :' + str(scoresheet.examname.examname) + ' - Attempt: ' + str(scoresheet.attemptid)
-        msg = EmailMultiAlternatives(subject, msg_html, "vinoth.k.kumar@gmail.com", [request.user.email], reply_to=["noreply@examcentral.com"])
+        subject = 'QuizBuzz - Result :' + str(scoresheet.examname.examname) + ' - Attempt: ' + str(scoresheet.attemptid)
+        msg = EmailMultiAlternatives(subject, msg_html, "support@quizbuzz.in", [request.user.email], reply_to=["noreply@quizbuzz.in"])
         msg.content_subtype = 'html'  # Main content is text/html  
         msg.mixed_subtype = 'related'  # This is critical, otherwise images will be displayed as attachments!
 
@@ -1424,7 +1427,7 @@ class ResetPasswordRequestView(FormView):
                         c = {
                             'email': user.email,
                             'domain': request.META['HTTP_HOST'],
-                            'site_name': 'ExamCentral.com',
+                            'site_name': 'QuizBuzz.in',
                             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                             'user': user,
                             'token': default_token_generator.make_token(user),
@@ -1454,8 +1457,8 @@ class ResetPasswordRequestView(FormView):
                 for user in associated_users:
                     c = {
                         'email': user.email,
-                        'domain': 'kumarinba.pythonanywhere.com', #or your domain eg:example.com
-                        'site_name': 'ExamCentral',
+                        'domain': 'quizbuzz.in', #or your domain eg:example.com
+                        'site_name': 'QuizBuzz',
                         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                         'user': user,
                         'token': default_token_generator.make_token(user),
@@ -1587,8 +1590,8 @@ def payment_success(request):
 
     #send mail
     msg_html = render_to_string('payment/paysuccess_mail.html', data);
-    subject = 'ExamCentral - Order Confirmation'
-    msg = EmailMultiAlternatives(subject, msg_html, "vinoth.k.kumar@gmail.com", [request.user.email], reply_to=["noreply@examcentral.com"])
+    subject = 'QuizBuzz - Order Confirmation'
+    msg = EmailMultiAlternatives(subject, msg_html, "support@quizbuzz.in", [request.user.email], reply_to=["noreply@quizbuzz.in"])
     msg.content_subtype = 'html'  # Main content is text/html  
     msg.mixed_subtype = 'related'  # This is critical, otherwise images will be displayed as attachments!
     msg.send()
@@ -1633,8 +1636,8 @@ def payment_failure(request):
 
     #send mail
     msg_html = render_to_string('payment/payfail_mail.html', data);
-    subject = 'ExamCentral - Order Status'
-    msg = EmailMultiAlternatives(subject, msg_html, "vinoth.k.kumar@gmail.com", [request.user.email], reply_to=["noreply@examcentral.com"])
+    subject = 'QuizBuzz - Order Status'
+    msg = EmailMultiAlternatives(subject, msg_html, "support@quizbuzz.in", [request.user.email], reply_to=["noreply@quizbuzz.in"])
     msg.content_subtype = 'html'  # Main content is text/html  
     msg.mixed_subtype = 'related'  # This is critical, otherwise images will be displayed as attachments!
     msg.send()
