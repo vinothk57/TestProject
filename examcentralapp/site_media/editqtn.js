@@ -2,6 +2,7 @@ function showqtnedit(result) {
     console.log(JSON.stringify(result));
     $('#id_examid').val(result['examid']);
     $('#id_qno').val(result['qno']);
+    $('#id_qno').attr("disabled", true);
     $('#id_question').val(result['question']);
     $('#id_qtype').val(result['qtype']);
     $('#id_qcategory').val(result['qcategory'].toString());

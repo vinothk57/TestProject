@@ -53,6 +53,8 @@ import hashlib
 from random import randint
 from django.core.urlresolvers import reverse
 
+HOME_PAGE_PATH = "/demo"
+
 def web_page(request):
     return render(request, 'web.html', {})
 
@@ -123,7 +125,8 @@ def main_page(request):
 def user_loggedin(request):
   if request.user.is_authenticated():
     username = request.user.username
-  redirect_url = '/'
+  #redirect_url = '/'
+  redirect_url = HOME_PAGE_PATH
   #redirect_url = '/user/' + username
   return HttpResponseRedirect(redirect_url)
 
@@ -228,7 +231,8 @@ def profile_page(request):
 def logout_page(request):
   logout(request)
   messages.info(request, 'You have successfully logged out!')
-  return HttpResponseRedirect('/')
+  #return HttpResponseRedirect('/')
+  return HttpResponseRedirect(HOME_PAGE_PATH)
 
 def register_page(request):
   if request.method == 'POST':
@@ -267,7 +271,8 @@ def register_page(request):
       )
       email.send()
       messages.info(request, 'Please confirm your email address to complete the registration')
-      return HttpResponseRedirect('/')
+      #return HttpResponseRedirect('/')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
   else:
     form = RegistrationForm()
 
@@ -294,15 +299,18 @@ def activate(request, uidb64, token):
         # return redirect('home')
         #return HttpResponse('Thank you for your email confirmation. Now you can login to your QuizBuzz account.')
         messages.info(request, 'Thank you for your email confirmation. Now you can login to your QuizBuzz account.')
-        return HttpResponseRedirect('/')
+        #return HttpResponseRedirect('/')
+        return HttpResponseRedirect(HOME_PAGE_PATH)
     else:
         messages.info(request, 'Activation link is invalid')
-        return HttpResponseRedirect('/')
+        #return HttpResponseRedirect('/')
+        return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
 def examdetails_save_page(request):
   if not request.user.is_staff:
-      return HttpResponseRedirect('/')
+      #return HttpResponseRedirect('/')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
   if request.method == 'POST':
     form = ExamDetailsSaveForm(request.POST)
     if form.is_valid():
@@ -341,7 +349,8 @@ def examdetails_save_page(request):
       #             })
 
       messages.info(request, 'Exam Created Successfully. Add Questions!')
-      return HttpResponseRedirect('/')
+      #return HttpResponseRedirect('/')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
   else:
     form = ExamDetailsSaveForm()
   variables = RequestContext(request, {
@@ -592,7 +601,7 @@ def addquestions_page(request):
           else:
               if qinfo.pic.name:
                   try:
-                      os.remove(os.path.join(settings.MEDIA_ROOT, qinfo[0].pic.name))
+                      os.remove(os.path.join(settings.MEDIA_ROOT, qinfo.pic.name))
                   except OSError:
                       pass
               qinfo.delete()
@@ -718,7 +727,8 @@ def removequestion_page(request):
             })
   #if request is not POST
   else:
-      return HttpResponseRedirect('/')
+      #return HttpResponseRedirect('/')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
 def editqtndetail_page(request):
@@ -794,7 +804,8 @@ def editqtndetail_page(request):
     return HttpResponse(json.dumps(resultdict), content_type="application/json")
   #if request is not POST
   else:
-      return HttpResponseRedirect('/')
+      #return HttpResponseRedirect('/')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
 def publishexam_page(request):
@@ -806,10 +817,12 @@ def publishexam_page(request):
        messages.info(request, 'Exam published! Users can now see the exam to add to their account')
     else:
        messages.info(request, 'Exam hidden. Users will not see the exam to add to their account.')
-    return HttpResponseRedirect('/')
+    #return HttpResponseRedirect('/')
+    return HttpResponseRedirect(HOME_PAGE_PATH)
   else:
     messages.info(request, 'Error in publishing exam!')
-    return HttpResponseRedirect('/')
+    #return HttpResponseRedirect('/')
+    return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
 def takeexam_page(request):
@@ -858,7 +871,8 @@ def takeexam_page(request):
 
         else:
           messages.info(request, "You ran out of attempts. Please purchase.");
-          next = request.POST.get('next', '/')
+          #next = request.POST.get('next', '/')
+          next = request.POST.get('next', HOME_PAGE_PATH)
           return HttpResponseRedirect(next)
 
   return HttpResponseRedirect('/myaccount')
@@ -1261,9 +1275,11 @@ def review_page(request):
         })
 
       else:
-        return HttpResponseRedirect('/')
+        #return HttpResponseRedirect('/')
+        return HttpResponseRedirect(HOME_PAGE_PATH)
 
-  return HttpResponseRedirect('/')
+  #return HttpResponseRedirect('/')
+  return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
 def examdetails_page(request):
