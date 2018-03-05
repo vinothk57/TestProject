@@ -114,6 +114,16 @@ class OptionD(models.Model):
   def __str__(self):
     return '%s, %s, %s, %s' % (self.examname.examname, self.qid, self.option, self.isright)
 
+class OptionE(models.Model):
+  examname = models.ForeignKey(ExamName)
+  qid = models.IntegerField()
+  option = models.TextField(max_length=5000)
+  isright = models.BooleanField(default=False)
+  class Admin:
+    pass
+  def __str__(self):
+    return '%s, %s, %s, %s' % (self.examname.examname, self.qid, self.option, self.isright)
+
 class ExamSolution(models.Model):
   examname = models.ForeignKey(ExamName)
   qid = models.IntegerField()

@@ -10,6 +10,9 @@
   {% if optiond %}
     <input type="radio" name="option"/> {{ optiond.option}}<br>
   {% endif %}
+  {% if optione %}
+    <input type="radio" name="option"/> {{ optione.option}}<br>
+  {% endif %}
 </form>
 {% else %}
 <form>
@@ -20,6 +23,9 @@
   {% endif %}
   {% if optiond %}
     <input type="checkbox" name="option"/> {{ optiond.option}}<br>
+  {% endif %}
+  {% if optione %}
+    <input type="checkbox" name="option"/> {{ optione.option}}<br>
   {% endif %}
 </form>
 {% endif %}

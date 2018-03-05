@@ -55,6 +55,12 @@ class OptionDAdmin(admin.ModelAdmin):
     ordering = ('examname',)
     search_fields = ('qid',)
 
+class OptionEAdmin(admin.ModelAdmin):
+    list_display = ('examname', 'qid', 'option', 'isright')
+    list_filter = ('examname', 'qid', 'option', 'isright')
+    ordering = ('examname',)
+    search_fields = ('qid',)
+
 class ExamSolutionAdmin(admin.ModelAdmin):
     list_display = ('examname', 'qid', 'correct_options', 'explanation')
     list_filter = ('examname', 'qid')
@@ -82,6 +88,7 @@ admin.site.register(OptionA, OptionAAdmin)
 admin.site.register(OptionB, OptionBAdmin)
 admin.site.register(OptionC, OptionCAdmin)
 admin.site.register(OptionD, OptionDAdmin)
+admin.site.register(OptionE, OptionEAdmin)
 admin.site.register(ExamSolution, ExamSolutionAdmin)
 admin.site.register(UserAnswerSheet, UserAnswerSheetAdmin)
 admin.site.register(UserScoreSheet, UserScoreSheetAdmin)

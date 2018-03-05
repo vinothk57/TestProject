@@ -170,6 +170,11 @@ class QuestionDetailsSaveForm(forms.Form):
           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option D'})
         )
   isOptionD = forms.BooleanField(label='Is Option D Correct?', initial=False, required=False)
+  optionE = forms.CharField(label='',
+          required=False,
+          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option E'})
+        )
+  isOptionE = forms.BooleanField(label='Is Option E Correct?', initial=False, required=False)
   answer = forms.CharField(
      label='',
      widget=forms.TextInput(attrs={'id': 'answer', 'class': 'form-control', 'placeholder': 'Enter Answer'})

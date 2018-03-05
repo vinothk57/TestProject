@@ -534,6 +534,23 @@ def addquestions_page(request):
           if optionDobject.exists():
               optionDobject.delete()
 
+      isOptionE = form.cleaned_data['isOptionE']
+      optionEobject = OptionE.objects.filter(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'])
+      if request.POST.get("optionE", ""):
+          if optionEobject.exists():
+              optionE = optionEobject[0]
+              optionE.option = form.cleaned_data['optionE']
+              optionE.isright = isOptionE
+              optionE.save()
+          else:
+              optionE, created = OptionE.objects.get_or_create(
+                      examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'], option=form.cleaned_data['optionE'],
+                      isright = isOptionE
+                      )
+      else:
+          if optionEobject.exists():
+              optionEobject.delete()
+
       if isOptionA:
         right_options += "1"
       if isOptionB:
@@ -542,6 +559,8 @@ def addquestions_page(request):
         right_options += " 3"
       if isOptionD:
         right_options += " 4"
+      if isOptionE:
+        right_options += " 5"
 
       qinfoObject = QuestionInfo.objects.filter(examname_id = request.POST.get("examid", ""), qid=form.cleaned_data['qno'])
       if qinfoObject.exists():
@@ -660,6 +679,10 @@ def removequestion_page(request):
     if optionD.exists():
         optionD.delete()
 
+    optionE = OptionE.objects.filter(examname_id = examid, qid=qno)
+    if optionE.exists():
+        optionE.delete()
+
     qinfo = QuestionInfo.objects.filter(examname_id = examid, qid=qno)
     if qinfo.exists():
       if examquestion[0].haspic:
@@ -736,6 +759,14 @@ def editqtndetail_page(request):
     else:
       resultdict['optionD'] = ""
       resultdict['isOptionD'] = False
+
+    optionE = OptionE.objects.filter(examname_id = examid, qid=qno)
+    if optionE.exists():
+      resultdict['optionE'] = optionE[0].option
+      resultdict['isOptionE'] = optionE[0].isright
+    else:
+      resultdict['optionE'] = ""
+      resultdict['isOptionE'] = False
 
     qinfo = QuestionInfo.objects.filter(examname_id = examid, qid=qno)
     if qinfo.exists():
@@ -832,6 +863,7 @@ def getqtn_page(request):
   optionb = None;
   optionc = None;
   optiond = None;
+  optione = None;
   if 'examid' in request.GET:
     examid = request.GET['examid'].strip()
   if 'qid' in request.GET:
@@ -841,6 +873,7 @@ def getqtn_page(request):
     b = OptionB.objects.filter(examname_id=examid, qid=qno)
     c = OptionC.objects.filter(examname_id=examid, qid=qno)
     d = OptionD.objects.filter(examname_id=examid, qid=qno)
+    e = OptionE.objects.filter(examname_id=examid, qid=qno)
 
     if a.exists():
       optiona = a[0];
@@ -850,6 +883,8 @@ def getqtn_page(request):
       optionc = c[0];
     if d.exists():
       optiond = d[0];
+    if e.exists():
+      optione = e[0];
     
     variables = RequestContext(request, {
       'qdetails': qdetails,
@@ -857,6 +892,7 @@ def getqtn_page(request):
       'optionb': optionb,
       'optionc': optionc,
       'optiond': optiond,
+      'optione': optione,
       'examid': examid,
       'qno': qno
     })
@@ -868,6 +904,7 @@ def getqtn_page(request):
       'optionb': optionb,
       'optionc': optionc,
       'optiond': optiond,
+      'optione': optione,
       'examid': examid,
       'qno': qno
     })
@@ -1083,6 +1120,7 @@ def fetchQuestionPaperJSON(request):
         b = OptionB.objects.filter(examname_id=examid, qid=qtn.qno)
         c = OptionC.objects.filter(examname_id=examid, qid=qtn.qno)
         d = OptionD.objects.filter(examname_id=examid, qid=qtn.qno)
+        e = OptionE.objects.filter(examname_id=examid, qid=qtn.qno)
 
         if a.exists():
           opta = {}
@@ -1335,6 +1373,7 @@ def fetchSolutionJSON(request):
         b = OptionB.objects.filter(examname_id=examid, qid=qtn.qno)
         c = OptionC.objects.filter(examname_id=examid, qid=qtn.qno)
         d = OptionD.objects.filter(examname_id=examid, qid=qtn.qno)
+        e = OptionE.objects.filter(examname_id=examid, qid=qtn.qno)
 
         if a.exists():
           opta = {}
