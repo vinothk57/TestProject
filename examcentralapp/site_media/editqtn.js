@@ -9,10 +9,12 @@ function showqtnedit(result) {
     $('#id_optionB').val(result['optionB']);
     $('#id_optionC').val(result['optionC']);
     $('#id_optionD').val(result['optionD']);
+    $('#id_optionE').val(result['optionE']);
     $('#id_isOptionA').prop("checked", result['isOptionA']);
     $('#id_isOptionB').prop("checked", result['isOptionB']);
     $('#id_isOptionC').prop("checked", result['isOptionC']);
     $('#id_isOptionD').prop("checked", result['isOptionD']);
+    $('#id_isOptionE').prop("checked", result['isOptionE']);
     $('#id_haspic').prop("checked", result['haspic']);
     $('#hasdirection').prop("checked", result['hasdirection']);
     $('#answer').val(result['answer']);
@@ -70,6 +72,15 @@ function showqtnpreview(result) {
         }
         options = options + "><label style=\"padding-left:5px; width:90%; font-weight:normal;\">" + result['optionD'] + "</label></div>";
         }
+
+        if(result['optionE'] != "") {
+          options = options + "<div class=\"form-group radio-pink-gap\">";
+          options = options + "<input type=\"radio\" name=\"option\" class=\"with-gap\" style=\"vertical-align:top\"";
+        if(result['isOptionE']) {
+          options = options + "checked = \"checked\" ";
+        }
+        options = options + "><label style=\"padding-left:5px; width:90%; font-weight:normal;\">" + result['optionE'] + "</label></div>";
+        }
     } else if (result['qtype'] == "3") {
         if(result['optionA'] != "") {
           options = options + "<div class=\"form-group radio-pink-gap\">";
@@ -105,6 +116,15 @@ function showqtnpreview(result) {
           options = options + "checked = \"checked\" ";
         }
         options = options + "><label style=\"padding-left:5px; width:90%; font-weight:normal;\">" + result['optionD'] + "</label></div>";
+        }
+
+        if(result['optionE'] != "") {
+          options = options + "<div class=\"form-group radio-pink-gap\">";
+          options = options + "<input type=\"checkbox\" name=\"option\" class=\"with-gap\" style=\"vertical-align:top\"";
+        if(result['isOptionE']) {
+          options = options + "checked = \"checked\" ";
+        }
+        options = options + "><label style=\"padding-left:5px; width:90%; font-weight:normal;\">" + result['optionE'] + "</label></div>";
         }
     }
     $('#subqns').html(qstring + options);

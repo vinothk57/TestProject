@@ -108,6 +108,12 @@
                  <tr><td>{{ form.optionD }}</td>
                      <td>{{ form.isOptionD.label_tag }} {{ form.isOptionD }}</td>
                  </tr>
+                  {% if form.optionE.errors %}
+                 <tr><td>{{ form.optionE.errors }}</td></tr>
+                  {% endif %}
+                 <tr><td>{{ form.optionE }}</td>
+                     <td>{{ form.isOptionE.label_tag }} {{ form.isOptionE }}</td>
+                 </tr>
                   {% if form.answer.errors %}
                  <tr><td>  {{ form.answer.errors }}</td></tr>
                   {% endif %}
