@@ -773,8 +773,14 @@ def editqtndetail_page(request):
 
     qinfo = QuestionInfo.objects.filter(examname_id = examid, qid=qno)
     if qinfo.exists():
-      resultdict['picpath'] = qinfo[0].pic.url
-      resultdict['direction'] = qinfo[0].direction
+        if examquestion[0].haspic:
+            try:
+                resultdict['picpath'] = qinfo[0].pic.url
+            except:
+                resultdict['picpath'] = ""
+        else:
+            resultdict['picpath'] = ""
+        resultdict['direction'] = qinfo[0].direction
 
     resultdict['examid'] = str(examid)
     resultdict['qno'] = str(examquestion[0].qno)
