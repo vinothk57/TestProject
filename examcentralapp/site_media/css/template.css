@@ -653,7 +653,8 @@ margin-bottom:10px;
 .topmenu li a:hover{color: #000 !important;}
 .topmenu li:hover{background:#fff;color: #000;}
 .main-cont{padding: 5px; border:1px solid #c8c8c8; width: 256px; text-align: center; border-bottom-left-radius:10px;border-bottom-right-radius:10px; box-shadow: 0px 12px  1px #888888;}
-.footer-cont h4, p{color: #fff;}
+.footer-cont h4,
+.footer-cont p {color: #fff;}
 .footer-list ul li{list-style-type: none;}
 .footer-list ul li a{color:#fff;}
 .footer-list ul li a:hover{color:#fff; text-decoration: none;}
@@ -1330,4 +1331,7 @@ width: 90% !important;
 }
 #qeditModal .modal-header{
     background: #e2e2e2;
+}
+.modal-body p{
+    color: #000000;
 }

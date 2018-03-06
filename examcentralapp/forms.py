@@ -4,6 +4,11 @@ import re
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from examcentralapp.choices import *
+from tinymce.widgets import TinyMCE
+
+class TinyMCEWidget(TinyMCE):
+    def use_required_attribute(self, *args):
+        return False
 
 #SignUp page Form
 class RegistrationForm(forms.Form):
@@ -150,7 +155,8 @@ class QuestionDetailsSaveForm(forms.Form):
           widget=forms.CheckboxInput(attrs={'id': 'hasdirection'})
           )
   direction = forms.CharField(label='', required=False,
-          widget=forms.Textarea(attrs={'id': 'direction','class': 'form-control', 'rows':'4', 'cols':'65', 'placeholder': 'Enter Directions for the question'})
+          #widget=forms.Textarea(attrs={'id': 'direction','class': 'form-control', 'rows':'4', 'cols':'65', 'placeholder': 'Enter Directions for the question'})
+          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'4', 'cols':'65', 'placeholder': 'Enter Directions for the question'})
           )
   optionA = forms.CharField(label='',
           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option A'})
@@ -177,7 +183,7 @@ class QuestionDetailsSaveForm(forms.Form):
   isOptionE = forms.BooleanField(label='Is Option E Correct?', initial=False, required=False)
   answer = forms.CharField(
      label='',
-     widget=forms.TextInput(attrs={'id': 'answer', 'class': 'form-control', 'placeholder': 'Enter Answer'})
+     widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Answer'})
    )
 
 class DocumentForm(forms.Form):

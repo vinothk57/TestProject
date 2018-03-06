@@ -654,19 +654,15 @@ def addquestions_page(request):
             })
     #if form is not valid
     else:
-      variables = {
-                     'examname': ExamName.objects.get(id=request.POST.get("examid", "")).examname,
-                     'examid': request.POST.get("examid", ""),
-                     'quploaded': ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count(),
-                     'form': form
-                   }
       #return render(request, 'addquestions.html', variables)
       messages.info(request, 'Error in adding question')
-      return HttpResponseRedirect('')
+      messages.info(request, form.errors.as_data())
+      return HttpResponseRedirect(HOME_PAGE_PATH)
 
   #if request is not POST
   else:
-      return HttpResponseRedirect('')
+      messages.info(request, 'Wrong method!')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
 def removequestion_page(request):
@@ -936,7 +932,6 @@ def getqtn_page(request):
     return HttpResponseRedirect('/myaccount')
 
 @login_required
-@csrf_exempt
 def evalexam_page(request):
   if request.method == 'POST':
 
@@ -1015,7 +1010,8 @@ def evalexam_page(request):
         msg.send()
         return HttpResponse(json.dumps(resultdict))
 
-  return HttpResponseRedirect('/myaccount')
+  #return HttpResponseRedirect('/myaccount')
+  return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
 @csrf_exempt
@@ -1048,7 +1044,8 @@ def showresult_page(request):
         resultdict['mark'] = str(scoresheet.mark)
         return HttpResponse(json.dumps(resultdict))
 
-  return HttpResponseRedirect('/myaccount')
+  #return HttpResponseRedirect('/myaccount')
+  return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
 def get_graph_data(request):
@@ -1165,6 +1162,11 @@ def fetchQuestionPaperJSON(request):
           optd['option'] = d[0].option;
           optd['checked'] = "false";
           qdict['options'].append(optd);
+        if e.exists():
+          opte = {}
+          opte['option'] = e[0].option;
+          opte['checked'] = "false";
+          qdict['options'].append(opte);
         JSONObj['qlist'].append(qdict)
 
 
@@ -1448,6 +1450,18 @@ def fetchSolutionJSON(request):
             optd['checked'] = "false";
           optd['isright'] = d[0].isright;
           qdict['options'].append(optd);
+        if e.exists():
+          opte = {}
+          opte['option'] = e[0].option;
+          if userAnswerObject.exists():
+            if "5" in str(userAnswerObject[0].user_choices):
+              opte['checked'] = "true";
+            else:
+              opte['checked'] = "false";
+          else:
+            opte['checked'] = "false";
+          opte['isright'] = e[0].isright;
+          qdict['options'].append(opte);
         JSONObj['qlist'].append(qdict)
 
 
