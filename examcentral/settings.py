@@ -26,7 +26,7 @@ DEBUG = True
 
 #TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['13.126.104.9', 'quizbuzz.in']
 
 TEMPLATES = [
     {
@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'examcentralapp',
+    'tinymce',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -76,12 +77,12 @@ MEDIA_URL = '/media/'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'examcentraldb',
-        'USER': 'vinoth',
-        'PASSWORD': 'vinoth',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'quizbuzzmaindb',
+        'USER': 'quizbuzzdbadmin',
+        'PASSWORD': 'qbdbadminpass',
+        'HOST': 'qbmysqldbinstance.ctlpwe1tv7ia.ap-south-1.rds.amazonaws.com',
+        'PORT': '3306',
     }
 }
 #DATABASES = {
@@ -96,7 +97,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -109,6 +110,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 
 LOGIN_REDIRECT_URL = '/myaccount'
 LOGIN_URL = '/login/'
@@ -120,12 +122,13 @@ AUTHENTICATION_BACKENDS = [
 
 #SOCIALACCOUNT_QUERY_EMAIL = True
 
+DEFAULT_FROM_EMAIL="support@quizbuzz.in"
 EMAIL_USE_TLS = True
 
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.zoho.com'
 
-EMAIL_HOST_USER = 'vinoth.k.kumar@gmail.com'
+EMAIL_HOST_USER = 'support@quizbuzz.in'
 
-EMAIL_HOST_PASSWORD = 'mjrrigdfunouesil'
+EMAIL_HOST_PASSWORD = 'welcome1'
 
 EMAIL_PORT = 587

@@ -23,6 +23,7 @@ urlpatterns = [
     # url(r'^$', 'examcentral.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^$', web_page),
+    url(r'^tinymce/', include('tinymce.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^register/$', register_page),
