@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from examcentralapp.choices import *
 from examcentralapp.storage import OverwriteStorage
+from tinymce.models import HTMLField
 
 def user_directory_path(instance, filename):
   return 'user_%s/profilepic/profile.png' % (instance.user.id)
@@ -68,7 +69,8 @@ class QuestionInfo(models.Model):
   examname = models.ForeignKey(ExamName)
   qid = models.IntegerField()
   pic = models.FileField(upload_to=qtn_directory_path, null=True, blank=True)
-  direction = models.TextField()
+  #direction = models.TextField()
+  direction = HTMLField()
   class Admin:
     pass
   def __str__(self):

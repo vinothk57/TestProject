@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Add Questions{% endblock %}
 {% block external %}
+<!--Tinymce Text-Editor (Must be in Head Tag) -->
+<script src="/site_media/js/tinymce/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="/site_media/js/tinymce/js/tinymce/custom.js" ></script>
 <script>
 $(document).ready(function () {
             $('#hasdirection').change(function () {

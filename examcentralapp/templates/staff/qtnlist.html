@@ -89,6 +89,7 @@
                      $("#{{ qtn.qno }}editqtn").click(function(e){
                            e.preventDefault();
                            $('#qeditModal').modal('show');
+                           tinymce.get("id_direction").execCommand('mceSetContent', false, '');
                            var JSONqtnData = {};
                            JSONqtnData['examid'] = {{ examid }};
                            JSONqtnData['qno'] = {{ qtn.qno }};

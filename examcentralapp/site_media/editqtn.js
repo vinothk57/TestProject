@@ -2,7 +2,7 @@ function showqtnedit(result) {
     console.log(JSON.stringify(result));
     $('#id_examid').val(result['examid']);
     $('#id_qno').val(result['qno']);
-    $('#id_qno').attr("disabled", true);
+    $('#id_qno').attr("readonly", true);
     $('#id_question').val(result['question']);
     $('#id_qtype').val(result['qtype']);
     $('#id_qcategory').val(result['qcategory'].toString());
@@ -18,14 +18,19 @@ function showqtnedit(result) {
     $('#id_isOptionE').prop("checked", result['isOptionE']);
     $('#id_haspic').prop("checked", result['haspic']);
     $('#hasdirection').prop("checked", result['hasdirection']);
-    $('#answer').val(result['answer']);
-    $('#direction').val(result['direction']);
+    $('#id_answer').val(result['answer']);
+    if (result['hasdirection']) {
+        tinymce.get("id_direction").execCommand('mceSetContent', false, result['direction']);
+    } else {
+        tinymce.get("id_direction").execCommand('mceSetContent', false, '');
+    }
 }
 
 function showqtnpreview(result) {
     console.log(JSON.stringify(result));
     if(result['hasdirection']) {
-        $('#direction_qview').text(result['direction']);
+        console.log(result['direction']);
+        $('#direction_qview').html(result['direction']);
     } else {
         $('#direction_qview').text('');
     }

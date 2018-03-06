@@ -11,6 +11,24 @@ JSONAnswerData['ansList'] = {};
 var JSONObj = {
 };
 
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
 function showCorrectTab() {
 
   var loadqtn = true;
@@ -388,6 +406,7 @@ function viewResult() {
 }
 
 $(document).ready(function () {
+
 //  $("#getqtn-form").submit(getqtn_submit);
   var examidval = $("#examid").val();
   $.getJSON("/fetchpaper/?ajax&examid=" + encodeURIComponent(examidval), "", success);
@@ -479,7 +498,8 @@ $(document).ready(function () {
          type: "post",
          dataType: "json",
          data: {
-               json: JSON.stringify(JSONAnswerData)
+               json: JSON.stringify(JSONAnswerData),
+               csrfmiddlewaretoken: csrftoken
          },
          success: function(result) {
 /*             $("#content-div").html("<h4>Exam Submitted successfully</h4><br> \
@@ -489,7 +509,7 @@ $(document).ready(function () {
 
              var form = $(document.createElement('form'));
              $(form).attr("action", "/analyzeexam/");
-             $(form).attr("method", "GET");
+             $(form).attr("method", "POST");
 
              var input1 = $("<input>")
                .attr("type", "hidden")
@@ -501,8 +521,14 @@ $(document).ready(function () {
                .attr("name", "attemptid")
                .val(result["attemptid"]);
 
+             var input3 = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "csrfmiddlewaretoken")
+               .val(csrftoken);
+
              $(form).append($(input1));
              $(form).append($(input2));
+             $(form).append($(input3));
              form.appendTo( document.body )
              $(form).submit();
 
