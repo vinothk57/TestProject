@@ -130,6 +130,17 @@
                 {% endfor %}
               {% endif %}
                     });
+      $(document).ready(function () {
+          //Disable cut copy paste
+          $('body').bind('cut copy paste', function (e) {
+              e.preventDefault();
+          });
+   
+          //Disable mouse right click
+          $("body").on("contextmenu",function(e){
+              return false;
+          });
+      });
     </script>
     <!-- Metis Menu Plugin JavaScript -->
     <!--<script src="vendor/metisMenu/metisMenu.min.js"></script>-->
