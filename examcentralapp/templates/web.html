@@ -1,283 +1,366 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>QuizBuzz</title>
-        <meta name="description" content="Online Test Management System" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!--Bootstrap 4-->
-        <link rel="stylesheet" href="site_media/website-css/bootstrap.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-        <!--icons-->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
-    </head>
-    <body>
-        <!--header-->
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top sticky-navigation" style="background:#000;">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="ion-grid icon-sm"></span>
-            </button>
-            <a class="navbar-brand hero-heading" href="#">QuizBuzz</a>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item mr-3">
-                        <a class="nav-link page-scroll" href="#main">Product <span class="sr-only">(current)</span></a>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>QuizBuzz</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="/site_media/web/css/base.css">
+    <link rel="stylesheet" href="/site_media/web/css/vendor.css">
+    <link rel="stylesheet" href="/site_media/web/css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="/site_media/web/js/modernizr.js"></script>
+    <script src="/site_media/web/js/pace.min.js"></script>
+</head>
+
+<body id="top">
+
+    <!-- header
+    ================================================== -->
+    <header class="s-header">
+        <div class="header-logo">
+            <a class="site-logo service-text" href="/">
+                <h3 style="color:#fff;">QuizBuzz</h3>
+            </a>
+        </div>
+
+        <nav class="header-nav">
+            <a href="#0" class="header-nav__close" title="close"><span>Close</span></a>
+            <div class="header-nav__content">
+                <h3>Navigation</h3>
+                <ul class="header-nav__list">
+                    <li class="current"><a class="smoothscroll"  href="#home" title="home">Home</a></li>
+                    <li><a class="smoothscroll"  href="#about" title="about">About</a></li>
+                    <li><a class="smoothscroll"  href="#features" title="features">Features</a></li>
+                    <li><a class="smoothscroll"  href="#exam" title="exam">Exam Model</a></li>
+                    <li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>
+                </ul>
+
+                <p>Take free Online Mock Tests and get real feel of Online Mock Test Environment.</p>
+
+                <ul class="header-nav__social">
+                    <li>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
                     </li>
-                    <li class="nav-item mr-3">
-                        <a class="nav-link page-scroll" href="#features">Features</a>
-                    </li>
-                    <!--<li class="nav-item mr-3">
-                        <a class="nav-link page-scroll" href="#pricing">Pricing</a>
-                    </li> -->
-                    <li class="nav-item mr-3">
-                        <a class="nav-link page-scroll" href="#contact">Contact</a>
+                    <li>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
                     </li>
                 </ul>
-            </div>
-        </nav>
+            </div> <!-- end header-nav__content -->
+        </nav>  <!-- end header-nav -->
 
-		
-		
-        <!--main section-->
-        <section class="bg-texture hero" id="main">
-            <div class="container">
-                <div class="row d-md-flex brand">
-                    <div class="col-md-6 hidden-sm-down wow fadeIn">
-                        <img class="img-fluid mx-auto d-block" src="site_media/images/mac.png"/>
-                    </div>
-                    <div class="col-md-6 col-sm-12 text-white wow fadeIn">
-                        <h2 class="pt-4">Online Test Management System</h2>
-                        <p class="mt-5">QuizBuzz is one of the leading companies striving to enable the various coaching institutes across the country to conduct online exams for their students with a hassle free experience.</p>
-			<p style="color:#333;">We provide Online Test Management System software to various Coaching Institutes to conduct model competitive exams like IBPS PO, SBI PO, UPSC, RBI, IBPS Specialist Officer, SSC CGL, TET among others.</p>
-                        <p class="col-md-12 col-sm-12 mt-5 margin-left-15">
-                            <a href="#contact" class="btn btn-white mb-2 page-scroll">Start your trial version</a>
+        <a class="header-menu-toggle" href="#0">
+            <span class="header-menu-text">Menu</span>
+            <span class="header-menu-icon"></span>
+        </a>
+    </header> <!-- end s-header -->
+
+    <!-- home
+    ================================================== -->
+    <section id="home" class="s-home target-section" data-parallax="scroll" data-image-src="/site_media/web/images/hero-bg.jpg" data-natural-width=3000 data-natural-height=2000 data-position-y=center>
+
+        <div class="overlay"></div>
+        <div class="shadow-overlay"></div>
+        <div class="home-content">
+            <div class="row home-content__main">
+                <h3>Welcome to QuizBuzz</h3>
+                <h1>
+                    Take free Online Mock Test and get real feel of Online Mock Test Environment.
+                </h1>
+
+                <div class="home-content__buttons">
+                    <a href="/register/" class="btn btn--stroke">
+                        SIGN UP
+                    </a>
+                    <a href="/login/" class="btn btn--stroke">
+                        SIGN IN
+                    </a>
+                </div>
+            </div>
+
+            <div class="home-content__scroll">
+                <a href="#about" class="scroll-link smoothscroll">
+                    <span>Scroll Down</span>
+                </a>
+            </div>
+        </div> <!-- end home-content -->
+
+        <ul class="home-social">
+            <li>
+                <a href="#0"><i class="fa fa-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+            </li>
+            <li>
+                <a href="#0"><i class="fa fa-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+            </li>
+        </ul> 
+        <!-- end home-social -->
+    </section> <!-- end s-home -->
+
+    <!-- about
+    ================================================== -->
+    <section id='about' class="s-about">
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead subhead--dark">Lets Talk about</h3>
+                <h1 class="display-1 display-1--light">Who We Are ?</h1>
+            </div>
+        </div> <!-- end section-header -->
+
+
+        <div class="row about-desc" data-aos="fade-up">
+            <div class="col-full">
+                <p>
+                QuizBuzz is one of the largest Online Test Preparation platform. 
+		We provide all latest mock test papers and practise sets based on their respective exam patterns. 
+                </p>
+            </div>
+        </div> <!-- end about-desc -->
+
+        <div class="row about-stats stats block-1-4 block-m-1-2 block-mob-full" data-aos="fade-up">
+            <div class="col-block stats__col ">
+                <div class="stats__count">15</div>
+                <h5>Exam Model</h5>
+            </div>
+            <div class="col-block stats__col">
+                <div class="stats__count">956</div>
+                <h5>No of Question</h5>
+            </div>
+            <div class="col-block stats__col">
+                <div class="stats__count">497</div>
+                <h5>No of Test Taken</h5>
+            </div>
+            <div class="col-block stats__col">
+                <div class="stats__count">356</div>
+                <h5>Duration in hrs</h5> 
+            </div>
+        </div> <!-- end about-stats -->
+    </section> <!-- end s-about -->
+
+    <!-- services
+    ================================================== -->
+    <section id='features' class="s-services">
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead">What We Have</h3>
+                <h1 class="display-2">Top Features of QuizBuzz</h1>
+            </div>
+        </div> <!-- end section-header -->
+        <div class="row services-list block-1-2 block-tab-full">
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="fa fa-book" aria-hidden="true" ></i>
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Unlimited Test Available</h3>
+                    <p>Students can take multiple exams and there is no limit on the number of attempts for now. 
+                       Students can add multiple exams to their account and can take different exams.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="fa fa-check-square" aria-hidden="true" ></i>
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Simple User Interface</h3>
+                    <p>QuizBuzz provides user friendly, easy to use interface for students portal  which able to see all the exams. 
+                       Even they will be able to manage other features like past exam, result etc .
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="fa fa-credit-card" aria-hidden="true" ></i>
+                </div>  
+                <div class="service-text">
+                    <h3 class="h2">Payment Gateway Integration</h3>
+                    <p>QuizBuzz provides integrated Payment Gateway support, so this will help students can purchase exams.
+		       Exams may be free or paid.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="fa fa-book" aria-hidden="true" ></i>
+                </div>
+                <div class="service-text">
+                    <h3 class="h2">Practice Mock Tests</h3>
+                    <p>Take free Online Mock Test and get real feel of Online Mock Test Environment.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="fa fa-file-text" aria-hidden="true" ></i>
+                </div>
+
+                <div class="service-text">
+                    <h3 class="h2">Online Test assessment</h3>
+                    <p>Analytics report will provide you with the insight about the way you answered and help you in improving your weak areas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon"><i class="icon-lego-block"></i></div>
+                <div class="service-text">
+                    <h3 class="h2">Detailed Solutions</h3>
+                    <p> Students can refer detailded solutions for every exam. This will help the students in exploratory learning. 
+                    </p>
+                </div>
+            </div>
+
+        </div> <!-- end services-list -->
+    </section> <!-- end s-services -->
+
+    <!-- clients
+    ================================================== -->
+    <section id="exam" class="s-clients">
+        <div class="row section-header" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead">Our Exam Model</h3>
+                <h1 class="display-2">Top Exam on QuizBuzz and more Exam coming soon! </h1>
+            </div>
+        </div> <!-- end section-header -->
+
+        <div class="row clients-outer" data-aos="fade-up">
+            <div class="col-full">
+                <div class="clients">
+                    <a href="#0" title="" class="clients__slide"><img src="/site_media/web/images/clients/ibps.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="/site_media/web/images/clients/sbi.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="/site_media/web/images/clients/ssc.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="/site_media/web/images/clients/railway.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="/site_media/web/images/clients/bsnl.png" /></a>
+                    <a href="#0" title="" class="clients__slide"><img src="/site_media/web/images/clients/iaf.png" /></a>
+                    <!--<a href="#0" title="" class="clients__slide"><img src="images/clients/joomla.png" /></a>
+
+                    <a href="#0" title="" class="clients__slide"><img src="images/clients/magento.png" /></a>-->
+
+                </div> <!-- end clients -->
+            </div> <!-- end col-full -->
+        </div> <!-- end clients-outer -->
+    </section> <!-- end s-clients -->
+    <!-- contact
+    ================================================== -->
+    <section id="contact" class="s-contact">
+        <div class="overlay"></div>
+        <div class="row section-header" data-aos="fade-up">
+            <div class="col-full">
+                <h3 class="subhead">Contact Us</h3>
+                <h1 class="display-2 display-2--light">Reach out for any query or just say hello</h1>
+            </div>
+        </div>
+        <div class="row contact-content" data-aos="fade-up">
+            <div class="contact-primary">
+                <h3 class="h6">Send Us A Message</h3>
+            </div> <!-- end contact-primary -->
+            <div class="contact-secondary">
+                <div class="contact-info">
+                    <h3 class="h6 hide-on-fullwidth">Contact Info</h3>
+                    <div class="cinfo">
+                        <h5>Email Us At</h5>
+                        <p>
+                            support@quizbuzz.in
                         </p>
                     </div>
+                    <ul class="contact-social">
+                        <li>
+                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                        </li>
+                    </ul> <!-- end contact-social -->
+                </div> <!-- end contact-info -->
+            </div> <!-- end contact-secondary -->
+        </div> <!-- end contact-content -->
+    </section> <!-- end s-contact -->
+
+    <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row footer-bottom">
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright QuizBuzz 2018</span> 
+                    <span><a href="http://quizbuzz.in/">QuizBuzz</a></span>	
+                </div>
+                <div class="go-top">
+                    <a class="smoothscroll" title="Back to Top" href="#top"><i class="icon-arrow-up" aria-hidden="true"></i></a>
                 </div>
             </div>
-        </section>
+        </div> <!-- end footer-bottom -->
+    </footer> <!-- end footer -->
 
-        <!--features-->
-        <section class="bg-light" id="features">
-            <div class="container">
-                <div class="row mb-3">
-                    <div class="col-md-6 col-sm-8 mx-auto text-center wow fadeIn">
-                        <h2 class="text-primary">Amazing Features</h2>
-                        <!--<p class="lead mt-4">
-                            Comply with plenty of awesome features to <br/>wow the viewers.
-                        </p>-->
+    <!-- photoswipe background
+    ================================================== -->
+    <div aria-hidden="true" class="pswp" role="dialog" tabindex="-1">
+        <div class="pswp__bg"></div>
+        <div class="pswp__scroll-wrap">
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+            <div class="pswp__ui pswp__ui--hidden">
+                <div class="pswp__top-bar">
+                    <div class="pswp__counter"></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button> <button class="pswp__button pswp__button--share" title=
+                    "Share"></button> <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button> <button class="pswp__button pswp__button--zoom" title=
+                    "Zoom in/out"></button>
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row mt-5 text-center">
-                    <div class="col-md-4 wow fadeIn">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="icon-box">
-                                    <em class="icon ion-clipboard icon-md"></em>
-                                </div>
-                                <h6>Unlimited Online Exams</h6>
-                                <p>
-                                 Institutes can create multiple number of exams as needed and there is no upper limit. Provides option to publish and hide the exams with just one click.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 wow fadeIn">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="icon-box">
-                                    <em class="icon ion-aperture icon-md"></em>
-                                </div>
-                                <h6>Simple Interface for Admin Portal</h6>
-                                <p>
-                                    QuizBuzz provides user friendly, easy to use interface for Admin(Institute) which enables them to create exams as well as upload questions.
-                                    Even they will be able to manage other features as well, without any technical skill <i class="icon ion-android-happy"></i>.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 wow fadeIn">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="icon-box">
-                                    <em class="icon ion-card icon-md"></em>
-                                </div>
-                                <h6>Payment Gateway Integration</h6>
-                                <p>
-                                    QuizBuzz provides integrated Payment Gateway support, so institutes can provide exam to their students with fee that can be collected online. Free exams can be created as well.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 wow fadeIn">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="icon-box">
-                                    <em class="icon ion-happy icon-md"></em>
-                                </div>
-                                <h6>Customise Option</h6>
-                                <p>
-                                    QuizBuzz provides customised User Interface Design for various competitative online exams to give the students an experience of the real time test environment. 
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 wow fadeIn">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="icon-box">
-                                    <em class="icon ion-locked icon-md"></em>
-                                </div>
-                                <h6>Highly Secure Information</h6>
-                                <p>
-                                    QuizBuzz is 100% responsible to protect client information like content, image, user and institute details. We will not share client information to any third party.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 wow fadeIn">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="icon-box">
-                                    <em class="icon ion-cloud icon-md"></em>
-                                </div>
-                                <h6>High Performance Dedicated Server</h6>
-                                <p>
-                                    QuizBuzz hosts the product in Amazon Web Server(AWS) which enables the institutes to scale the users without much hassle.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div>
+                </div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button> <button class="pswp__button pswp__button--arrow--right" title=
+                "Next (arrow right)"></button>
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
                 </div>
             </div>
-        </section>
-
-        
-
-        <!--pricing-->
-      <!--  <section class="bg-light" id="pricing">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-12 text-center">
-                        <h2 class="text-primary">Pricing</h2>
-                    </div>
-                </div>
-                <div class="row d-md-flex mt-4 text-center">
-                    <div class="col-sm-4 mt-4 wow fadeIn">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title pt-4 text-orange">Basic</h5>
-                                <h3 class="card-title text-primary pt-4">Rs.1500 / Month <br><span style="color: #a29e9e; font-size: 14px;">
-								billed annually + GST</span></h3>
-                                <p class="card-text text-muted pb-3">per month</p>
-                                <ul class="list-unstyled pricing-list">
-                                    <li>Free setup</li>
-                                    <li>Unlimited exams</li>
-                                    <li>Subdomain</li>
-                                    <li>Email support</li>
-									<li>User upto 80</li>
-									<li>Rs.200 per user additionally</li>
-                                </ul>
-                                <a href="#contact" class="btn btn-primary btn-radius">Choose</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 mt-4 wow fadeIn">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title pt-4 text-orange">Standard</h5>
-                                <h3 class="card-title text-primary pt-4">Rs.5000 / Month <br><span style="color: #a29e9e; font-size: 14px;">
-								billed annually + GST</span></h3>
-                                <p class="card-text text-muted pb-3">per month</p>
-                                <ul class="list-unstyled pricing-list">
-                                    <li>Free setup</li>
-                                    <li>Unlimited exams</li>
-                                    <li>Custom domain</li>
-                                    <li>Email support</li>
-									<li>User upto 300</li>
-									<li>Rs.180 per user additionally</li>
-                                </ul>
-                                <a href="#contact" class="btn btn-primary btn-radius">Choose</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 mt-4 wow fadeIn">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title pt-4 text-orange">Advanced</h5>
-                                <h3 class="card-title text-primary pt-4">Rs.18000 / Month <br><span style="color: #a29e9e; font-size: 14px;">
-								billed annually + GST</span></h3>
-                                <p class="card-text text-muted pb-3">per month</p>
-                                <ul class="list-unstyled pricing-list">
-                                    <li>Free setup</li>
-                                    <li>Unlimited exams</li>
-                                    <li>Custom domain</li>
-                                    <li>Email/Phone support</li>
-									<li>User upto 2000</li>
-									<li>Rs.150 per user additionally</li>
-                                </ul>
-                                <a href="#contact" class="btn btn-primary btn-radius">Choose</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div> <!-- end photoSwipe background -->
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader">
+            <div class="line-scale-pulse-out">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
             </div>
-        </section> -->
-
-        
-
-        <!--contact-->
-        <section class="p-0" id="contact">
-        <section class="bg-texture hero" id="main">
-            <div class="container">
-                <div class="row d-md-flex brand">
-                    <div class="col-md-8 hidden-sm-down wow fadeIn">
-                        
-                    </div>
-                    <div class="col-md-4 col-sm-12 text-white wow fadeIn contact">
-                        <h2 class="pt-4">Sales</h2>
-						
-                        <p class="mt-5">
-						
-                           <h4 style="font-weight:normal; font-size:16px;"><em class="icon ion-ios-telephone icon-md"></em>
-							: +91-8618895744</h4>
-						   <h4 style="font-weight:normal; font-size:16px;"><em class="icon ion-ios-email icon-md"></em> : sales&#x00040;quizbuzz.in</h4>
-                        </p><br>
-						 <h2 class="pt-4">Tech Support</h2>
-                        <p class="mt-5">
-                            <h4 style="font-weight:normal; font-size:16px;"><em class="icon ion-ios-email icon-md"></em> : support&#x00040;quizbuzz.in</h4>
-                    </div>
-					
-					   
-                           
-                                
-                               
-                            
-					
-                </div>
-            </div>
-        </section>
-
-
-        <!--footer-->
-        <section class="bg-footer" id="connect">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-12 text-center wow fadeIn">
-                       
-                        <p class="pt-2 text-muted">
-                            &copy; 2018 QuizBuzz.in. All Rights reserved.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
-        <script src="site_media/js/scripts.js"></script>
-    </body>
+        </div>
+    </div>
+    <!-- Java Script
+    ================================================== -->
+    <script src="/site_media/web/js/jquery-3.2.1.min.js"></script>
+    <script src="/site_media/web/js/plugins.js"></script>
+    <script src="/site_media/web/js/main.js"></script>
+</body>
 </html>

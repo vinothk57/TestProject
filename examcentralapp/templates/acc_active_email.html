@@ -1,10 +1,17 @@
+<html>
+<body>
+<p>
 {% autoescape off %}
-Hi {{ user.username }},
+Hi {{ user.username }},</p>
 
-Please click on the following link to confirm your email address and activate your QuizBuzz account.
+<p>Please click on the following link to confirm your email address and activate your QuizBuzz account.</p>
 
-http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 
-Regards,
-Team QuizBuzz.
+<p>http://{{ domain }}{% url 'activate' uidb64=uid token=token %}</p>
+
+<p>Regards,</p>
+<p>Team QuizBuzz.
 {% endautoescape %}
+</p>
+</body>
+</html>

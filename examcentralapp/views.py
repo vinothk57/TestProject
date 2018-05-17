@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime
+from .tasks import send_email_task
 
 # Create your views here.
 from django.http import HttpResponse, Http404
@@ -266,10 +267,11 @@ def register_page(request):
                 'token':account_activation_token.make_token(user),
             })
       to_email = form.cleaned_data.get('email')
-      email = EmailMessage(
-                  mail_subject, message, to=[to_email]
-      )
-      email.send()
+      #email = EmailMessage(
+      #            mail_subject, message, to=[to_email]
+      #)
+      #email.send()
+      send_email_task([to_email], mail_subject, message)
       messages.info(request, 'Please confirm your email address to complete the registration')
       #return HttpResponseRedirect('/')
       return HttpResponseRedirect(HOME_PAGE_PATH)
