@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from examcentralapp.choices import *
 from tinymce.widgets import TinyMCE
+from examcentralapp.models import *
 
 class TinyMCEWidget(TinyMCE):
     def use_required_attribute(self, *args):
@@ -126,6 +127,28 @@ class ExamDetailsSaveForm(forms.Form):
     widget=forms.TextInput(attrs={'id': 'tags', 'class': 'form-control', 'placeholder': 'Space separated tags'})
   )
 
+class ExamSectionInfoForm(forms.Form):
+  section_no = forms.IntegerField(
+    label='', min_value = 1,
+    widget=forms.TextInput(attrs={'id': 'section-no', 'class': 'form-control', 'placeholder': 'Section Number'})
+  )
+  section_name = forms.CharField(
+    label='',
+    widget=forms.TextInput(attrs={'id': 'sectionname', 'class': 'form-control', 'placeholder': 'Section Name'})
+  )
+  section_qcount = forms.IntegerField(
+    label='', min_value = 1,
+    widget=forms.TextInput(attrs={'id': 'section-qcount', 'class': 'form-control', 'placeholder': 'Questions in this section'})
+  )
+  section_mark_per_qtn = forms.IntegerField(
+          label='', min_value = 1,
+          widget=forms.TextInput(attrs={'id': 'markperqtn', 'class': 'form-control', 'placeholder': 'Mark per question in this section'})
+          )
+  section_negative_per_qtn = forms.DecimalField(
+          label='', min_value = 0,
+          widget=forms.TextInput(attrs={'id': 'negperqtn', 'class': 'form-control', 'placeholder': 'Negative mark per question in this section'})
+          )
+
 class SearchForm(forms.Form):
   query = forms.CharField(
       label='Enter a keyword to search for exam:',
@@ -141,6 +164,13 @@ class SearchForm(forms.Form):
 
 #Creating Question Form
 class QuestionDetailsSaveForm(forms.Form):
+  def __init__(self, *args, examid=None, **kwargs):
+    super(QuestionDetailsSaveForm, self).__init__(*args, **kwargs)
+    if examid:
+      self.fields['qcategory'] = forms.ChoiceField(
+            choices = [(str(obj.section_no), str(obj.section_name)) for obj in ExamSectionInfo.objects.filter(examname_id=examid)]
+            )
+
   qno = forms.IntegerField(label='', min_value=1,
           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Question Number'})
         )

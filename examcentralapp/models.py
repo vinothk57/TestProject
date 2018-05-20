@@ -38,6 +38,17 @@ class ExamName(models.Model):
   def __str__(self):
     return self.examname
 
+class ExamSectionInfo(models.Model):
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
+  section_no = models.IntegerField()
+  section_name = models.CharField(max_length=100)
+  section_qcount = models.IntegerField()
+  section_mark_per_qtn = models.IntegerField()
+  section_negative_per_qtn = models.DecimalField(max_digits=6, decimal_places=2)
+
+  def __str__(self):
+    return '%s, %s' % (self.examname, self.section_name)
+
 class UserExams(models.Model):
   user = models.ForeignKey(User)
   examname = models.ForeignKey(ExamName)
@@ -162,6 +173,18 @@ class UserScoreSheet(models.Model):
 
   def __str__(self):
     return '%s, %s, %s, %s, %s, %s, %s' % (self.user.username, self.examname.examname, self.attemptid, self.start_time, self.end_time, self.total_questions, self.mark)
+
+class UserSectionScore(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
+  attemptid = models.IntegerField()
+  section_no = models.IntegerField()
+  section_answered_questions = models.IntegerField()
+  section_correctly_answered = models.IntegerField()
+  section_score = models.DecimalField(max_digits=6, decimal_places=2)
+
+  def __str__(self):
+    return '%s, %s, %s, %s' % (self.user.username, self.examname.examname, self.attemptid, self.section_score)
 
 class Tag(models.Model):
   name = models.CharField(max_length=64, unique=True)

@@ -79,6 +79,18 @@ class UserScoreSheetAdmin(admin.ModelAdmin):
     ordering = ('user', 'examname', 'attemptid')
     search_fields = ('user', 'examname')
 
+class ExamSectionInfoAdmin(admin.ModelAdmin):
+    list_display = ('examname', 'section_no', 'section_name', 'section_qcount', 'section_mark_per_qtn', 'section_negative_per_qtn')
+    list_filter = ('examname', 'section_name')
+    ordering = ('examname', 'section_no')
+    search_fields = ('examname', 'section_name')
+
+class UserSectionScoreAdmin(admin.ModelAdmin):
+    list_display = ('user', 'examname', 'attemptid', 'section_no', 'section_answered_questions', 'section_correctly_answered', 'section_score')
+    list_filter = ('examname', 'user', 'attemptid')
+    ordering = ('examname', 'user', 'attemptid', 'section_no')
+    search_fields = ('user', 'examname', 'attemptid', 'section_no')
+
 # Register your models here.
 admin.site.register(ExamName)
 admin.site.register(UserExams, UserExamsAdmin)
@@ -94,3 +106,6 @@ admin.site.register(UserAnswerSheet, UserAnswerSheetAdmin)
 admin.site.register(UserScoreSheet, UserScoreSheetAdmin)
 admin.site.register(UserDetails, UserDetailsAdmin)
 admin.site.register(UserExamAttemptInfo, UserExamAttemptInfoAdmin)
+admin.site.register(ExamSectionInfo, ExamSectionInfoAdmin)
+admin.site.register(UserSectionScore, UserSectionScoreAdmin)
+
