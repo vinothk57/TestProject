@@ -27,15 +27,40 @@ function success(gdata) {
   chart.draw(data, options);
 }
 
+function success_sectiondata(gdata) {
+
+  var sectionchart = new google.visualization.ColumnChart(document.getElementById('sectionchart-div'));
+  var sdata = new google.visualization.DataTable();
+  sdata.addColumn('string', 'Section Name');
+  sdata.addColumn('number', 'Total');
+  sdata.addColumn('number', 'Answered');
+  sdata.addColumn('number', 'Correctly Answered');
+
+  for(var i =0; i < gdata['dataList'].length; i++)
+    sdata.addRow(gdata['dataList'][i]);
+  var soptions = {
+    title: 'Section-wise performance',
+    colors: ['#4575cd', '#ffd030', '#63ac71'],
+    hAxis: {
+      title: 'Exam Sections'
+    },
+    vAxis: {
+      title: 'Number of Questions',
+    }
+  };
+
+  sectionchart.draw(sdata, soptions);
+}
+
 function drawChart() {
   var examidval = $("#examid").val();
   var attemptidval = $("#attemptid").val();
   $.getJSON("/getgraphdata/?ajax&examid=" + encodeURIComponent(examidval) + "&attemptid=" + encodeURIComponent(attemptidval), "", success);
-
+  $.getJSON("/getsectiondata/?ajax&examid=" + encodeURIComponent(examidval) + "&attemptid=" + encodeURIComponent(attemptidval), "", success_sectiondata);
 }
 
 $(document).ready(function () {
-  google.charts.load('current', {'packages':['corechart']});
+  google.charts.load('current', {'packages':['corechart', 'bar']});
   google.charts.setOnLoadCallback(drawChart);
 
   //drawChart();

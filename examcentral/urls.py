@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'^fetchpaper/$', fetchQuestionPaperJSON),
     url(r'^getprofiledata/$', get_profile_data),
     url(r'^getgraphdata/$', get_graph_data),
+    url(r'^getsectiondata/$', get_section_data),
     url(r'^fetchsolution/$', fetchSolutionJSON),
 
     # Account Management

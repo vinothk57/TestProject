@@ -464,7 +464,7 @@ def removeexam_page(request):
 @login_required
 def addquestions_page(request):
   if request.method == 'POST':
-    form = QuestionDetailsSaveForm(request.POST, request.FILES)
+    form = QuestionDetailsSaveForm(request.POST, request.FILES, examid=None)
     if form.is_valid():
       right_options = ""
       # Add question
@@ -633,7 +633,7 @@ def addquestions_page(request):
 
       examname = ExamName.objects.get(id=request.POST.get("examid", "")).examname
       uploaded_questions = ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count()
-      form = QuestionDetailsSaveForm()
+      form = QuestionDetailsSaveForm(examid=request.POST.get("examid", ""))
       variables =  {
                      'examname': examname,
                      'examid': request.POST.get("examid", ""),
@@ -647,11 +647,13 @@ def addquestions_page(request):
       totalqtns = ExamName.objects.get(id=request.POST.get('examid', "")).total_questions
 
       qlist = ExamQuestions.objects.filter(examname_id=request.POST.get('examid', "")).order_by('qno')
+      section_list = ExamSectionInfo.objects.filter(examname_id=request.POST.get('examid', "")).order_by('section_no')
       return render(request, 'staff/examdetails.html', {
             'examid': request.POST.get('examid', ""),
             'examname': exam.examname,
             'totalqtns': totalqtns,
             'qtnlist': qlist,
+            'section_list': section_list,
             'form': form
             })
     #if form is not valid
@@ -713,14 +715,16 @@ def removequestion_page(request):
     #redirect to question list page
     exam = ExamName.objects.get(id=examid)
     totalqtns = ExamName.objects.get(id=examid).total_questions
-    form = QuestionDetailsSaveForm()
+    form = QuestionDetailsSaveForm(examid=examid)
 
     qlist = ExamQuestions.objects.filter(examname_id=examid).order_by('qno')
+    section_list = ExamSectionInfo.objects.filter(examname_id=examid).order_by('section_no')
     return render(request, 'staff/examdetails.html', {
             'examid': examid,
             'examname': exam.examname,
             'totalqtns': totalqtns,
             'qtnlist': qlist,
+            'section_list': section_list,
             'form': form
             })
   #if request is not POST
@@ -948,15 +952,30 @@ def evalexam_page(request):
       if userexam.exists():
         totalqtns = ExamName.objects.get(id=my_dict["examid"]).total_questions
         rightcount = 0
+        sec_ans_qtns = {}
+        sec_correct_ans = {}
   
         for key, value in my_dict['ansList'].items():
           solution = ExamSolution.objects.filter(examname_id=my_dict["examid"], qid=key)[0].correct_options
+          section_no = ExamQuestions.objects.filter(examname_id=my_dict["examid"], qno=key)[0].qcategory
+          if str(section_no) in sec_ans_qtns:
+            sec_ans_qtns[str(section_no)] += 1
+          else:
+            sec_ans_qtns[str(section_no)] = 1
+
+          if str(section_no) in sec_correct_ans:
+            #nothing
+            print(sec_correct_ans[str(section_no)])
+          else:
+            sec_correct_ans[str(section_no)] = 0
 
           isRightChoice = False
 
           if solution.strip() == value.strip():
             isRightChoice = True
             rightcount = rightcount + 1
+            if str(section_no) in sec_correct_ans:
+              sec_correct_ans[str(section_no)] += 1
 
           useranswer, created = UserAnswerSheet.objects.get_or_create(
               user_id = request.user.id,
@@ -969,12 +988,42 @@ def evalexam_page(request):
                                       attemptid=my_dict["attemptid"],
                                       total_questions=totalqtns
                                   )
+
+        scoresheet.end_time = datetime.now()
+        scoresheet.mark = 0
+
+        #Section-wise score 
+        exam_sections = ExamSectionInfo.objects.filter(examname_id=my_dict["examid"])
+        for section in exam_sections:
+          sectionscoreavailable = UserSectionScore.objects.filter(user_id = request.user.id,
+              examname_id=my_dict["examid"], attemptid=my_dict["attemptid"], section_no=section.section_no
+              )
+
+          if sectionscoreavailable.exists():
+            usersectionscore = sectionscoreavailable[0]
+          else:
+            usersectionscore, created = UserSectionScore.objects.get_or_create(
+                user_id = request.user.id,
+                examname_id=my_dict["examid"], attemptid=my_dict["attemptid"], section_no=section.section_no,
+                section_answered_questions = 0, section_correctly_answered = 0, section_score = 0
+                )
+
+          if str(section.section_no) in sec_ans_qtns:
+            usersectionscore.section_answered_questions = sec_ans_qtns[str(section.section_no)]
+            usersectionscore.section_correctly_answered = sec_correct_ans[str(section.section_no)]
+            usersectionscore.section_score = section.section_mark_per_qtn * sec_correct_ans[str(section.section_no)]
+            usersectionscore.section_score = usersectionscore.section_score - ((sec_ans_qtns[str(section.section_no)] - sec_correct_ans[str(section.section_no)]) * section.section_negative_per_qtn)
+          else:
+            usersectionscore.section_answered_questions = 0
+            usersectionscore.section_correctly_answered = 0
+            usersectionscore.section_score = 0
+          usersectionscore.save()
+          #update the overall score
+          scoresheet.mark = scoresheet.mark + usersectionscore.section_score
+
         scoresheet.answered_questions = len(my_dict['ansList'])
         scoresheet.correctly_answered = rightcount
         scoresheet.issubmitted = True
-        scoresheet.mark = rightcount * ExamName.objects.get(id=my_dict["examid"]).mark_per_qtn
-        scoresheet.mark = scoresheet.mark - ((len(my_dict['ansList']) - rightcount) * ExamName.objects.get(id=my_dict["examid"]).negative_per_qtn)
-        scoresheet.end_time = datetime.now()
         scoresheet.save()
 
         resultdict = {}
@@ -1072,6 +1121,30 @@ def get_graph_data(request):
        JSONObj['correctanswers'] = (userscoresheet[0].correctly_answered);
        JSONObj['wronganswers'] = (userscoresheet[0].answered_questions - userscoresheet[0].correctly_answered);
        return HttpResponse(json.dumps(JSONObj), content_type="application/json")
+
+  return HttpResponse(json.dumps(JSONObj), content_type="application/json")
+
+@login_required
+def get_section_data(request):
+  examid = 0
+  JSONObj = {
+  };
+
+  JSONObj['dataList'] = [];
+
+  if 'examid' in request.GET:
+    examid = request.GET['examid'].strip()
+    sections = ExamSectionInfo.objects.filter(examname_id=examid).order_by('section_no')
+
+    for section in sections:
+      rowdata = []
+      rowdata.append(str(section.section_name))
+      rowdata.append(section.section_qcount)
+
+      usersectionscore = UserSectionScore.objects.filter(user_id=request.user.id, examname_id=examid, attemptid=request.GET.get('attemptid', "0"), section_no=section.section_no)[0]
+      rowdata.append(usersectionscore.section_answered_questions)
+      rowdata.append(usersectionscore.section_correctly_answered)
+      JSONObj['dataList'].append(rowdata)
 
   return HttpResponse(json.dumps(JSONObj), content_type="application/json")
 
@@ -1292,12 +1365,14 @@ def examdetails_page(request):
         totalqtns = ExamName.objects.get(id=request.POST.get('examid', "")).total_questions
 
         qlist = ExamQuestions.objects.filter(examname_id=request.POST.get('examid', "")).order_by('qno')
-        form = QuestionDetailsSaveForm()
+        section_list = ExamSectionInfo.objects.filter(examname_id=request.POST.get('examid', "")).order_by('section_no')
+        form = QuestionDetailsSaveForm(examid=request.POST.get('examid', ""))
         return render(request, 'staff/examdetails.html', {
             'examid': request.POST.get('examid', ""),
             'examname': exam.examname,
             'totalqtns': totalqtns,
             'qtnlist': qlist,
+            'section_list': section_list,
             'form': form
             })
     else:
