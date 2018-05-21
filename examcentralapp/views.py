@@ -54,7 +54,7 @@ import hashlib
 from random import randint
 from django.core.urlresolvers import reverse
 
-HOME_PAGE_PATH = "/demo"
+HOME_PAGE_PATH = "/home"
 
 def web_page(request):
     return render(request, 'web.html', {})
