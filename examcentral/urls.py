@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^showresult/$', showresult_page),
     url(r'^reviewexam/$', review_page),
     url(r'^analyzeexam/$', analyzegraphs_page),
-    url(r'^demo/$', main_page),
+    url(r'^home/$', main_page),
     url(r'^user/(\w+)/$', user_page),
     url(r'^login/$', login, {'authentication_form': LoginForm}),
     url(r'^logout/$', logout_page),
