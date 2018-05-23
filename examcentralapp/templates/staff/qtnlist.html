@@ -46,18 +46,13 @@
              </td>
              <td>
                 <div class="dropdown">
-                 {% if qtn.qcategory == 1 %}
-                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">General <span class="caret"></span></button>
-                 {% endif %}
-                 {% if qtn.qcategory == 2 %}
-                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Data Analysis <span class="caret"></span></button>
-                 {% endif %}
-                 {% if qtn.qcategory == 3 %}
-                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Language <span class="caret"></span></button>
-                 {% endif %}
-                 {% if qtn.qcategory == 4 %}
-                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">Logical Reasoning <span class="caret"></span></button>
-                 {% endif %}
+                   <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">
+                      {% for section in section_list %}
+                        {% if section.section_no == qtn.qcategory %}
+                          {{ section.section_name }}
+                        {% endif %}
+                      {% endfor %}
+                      <span class="caret"></span></button>
                 </div>
              </td>
              {% if qtn.haspic %}

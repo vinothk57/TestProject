@@ -1,8 +1,8 @@
 var currqtnno = 1;
 var lastqtnno = 1;
 var totalqtn = $("#totalqtns").val();
-var loadQuestionAt = "#genList";
-var loadQInfoAt = "#genqtninfo";
+var loadQuestionAt = "#langList";
+var loadQInfoAt = "#langqtninfo";
 var getLastQtn = false;
 var JSONAnswerData = {};
 JSONAnswerData['ansList'] = {};
@@ -14,7 +14,7 @@ var JSONObj = {
 function showCorrectTab() {
 
   var loadqtn = true;
-      if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "1") {
+      if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "4") {
         $('.nav-tabs a[href="#general"]').tab('show');
         if(loadQuestionAt != "#genList") {
           loadQuestionAt = "#genList";
@@ -28,14 +28,14 @@ function showCorrectTab() {
           loadQInfoAt = "#analysisqtninfo";
           loadqtn = false;
         }
-      } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "3") {
+      } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "1") {
         $('.nav-tabs a[href="#language"]').tab('show');
         if(loadQuestionAt != "#langList") {
           loadQuestionAt = "#langList";
           loadQInfoAt = "#langqtninfo";
           loadqtn = false;
         }
-      } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "4") {
+      } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "3") {
         $('.nav-tabs a[href="#reasoning"]').tab('show');
         if(loadQuestionAt != "#reasonList") {
           loadQuestionAt = "#reasonList";
@@ -159,16 +159,16 @@ function showQuestionsOfCategory(category) {
          $("#qno" + qno).hide();
       }
     }
-    if(category == "1") {
+    if(category == "4") {
       loadQuestionAt = "#genList";
       loadQInfoAt = "#genqtninfo";
     } else if(category == "2") {
       loadQuestionAt = "#analysisList";
       loadQInfoAt = "#analysisqtninfo";
-    } else if(category == "3") {
+    } else if(category == "1") {
       loadQuestionAt = "#langList";
       loadQInfoAt = "#langqtninfo";
-    } else if(category == "4") {
+    } else if(category == "3") {
       loadQuestionAt = "#reasonList";
       loadQInfoAt = "#reasoningqtninfo";
     }
@@ -474,13 +474,13 @@ $(document).ready(function () {
       var target = $(e.target).attr("href");
       var showcategory = 1;
       if(target == "#general") {
-        showcategory = 1;
+        showcategory = 4;
       } else if (target == "#analysis") {
         showcategory = 2;
       } else if (target == "#language") {
-        showcategory = 3;
+        showcategory = 1;
       } else if (target == "#reasoning") {
-        showcategory = 4;
+        showcategory = 3;
       }
       showQuestionsOfCategory(showcategory);
     }
