@@ -122,6 +122,13 @@ def main_page(request):
     'offset': offset
     })
 
+def privacy_policy_page(request):
+  
+    return render(request, 'privacy_policy.html', {})
+
+def terms_of_use_page(request):
+  
+    return render(request, 'terms_of_use.html', {})
 
 def user_loggedin(request):
   if request.user.is_authenticated():
