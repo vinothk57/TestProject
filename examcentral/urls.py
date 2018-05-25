@@ -62,6 +62,9 @@ urlpatterns = [
     url(r'^reset_password/$', ResetPasswordRequestView.as_view(), name="reset_password"),
     url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', activate, name='activate'),
+    url(r'^terms-of-use/$', terms_of_use_page),
+    url(r'^privacy-policy/$', privacy_policy_page),
+
 
     # Payment
 
