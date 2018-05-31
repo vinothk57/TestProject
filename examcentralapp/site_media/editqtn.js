@@ -6,11 +6,6 @@ function showqtnedit(result) {
     $('#id_question').val(result['question']);
     $('#id_qtype').val(result['qtype']);
     $('#id_qcategory').val(result['qcategory'].toString());
-    $('#id_optionA').val(result['optionA']);
-    $('#id_optionB').val(result['optionB']);
-    $('#id_optionC').val(result['optionC']);
-    $('#id_optionD').val(result['optionD']);
-    $('#id_optionE').val(result['optionE']);
     $('#id_isOptionA').prop("checked", result['isOptionA']);
     $('#id_isOptionB').prop("checked", result['isOptionB']);
     $('#id_isOptionC').prop("checked", result['isOptionC']);
@@ -24,6 +19,11 @@ function showqtnedit(result) {
     } else {
         tinymce.get("id_direction").execCommand('mceSetContent', false, '');
     }
+    tinymce.get("id_optionA").execCommand('mceSetContent', false, result['optionA']);
+    tinymce.get("id_optionB").execCommand('mceSetContent', false, result['optionB']);
+    tinymce.get("id_optionC").execCommand('mceSetContent', false, result['optionC']);
+    tinymce.get("id_optionD").execCommand('mceSetContent', false, result['optionD']);
+    tinymce.get("id_optionE").execCommand('mceSetContent', false, result['optionE']);
 }
 
 function showqtnpreview(result) {

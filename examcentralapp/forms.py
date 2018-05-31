@@ -189,26 +189,31 @@ class QuestionDetailsSaveForm(forms.Form):
           widget=TinyMCE(attrs={'class': 'form-control', 'rows':'4', 'cols':'65', 'placeholder': 'Enter Directions for the question'})
           )
   optionA = forms.CharField(label='',
-          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option A'})
+          #widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option A'})
+          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'2', 'cols':'65', 'placeholder': 'Enter Option A'})
         )
   isOptionA = forms.BooleanField(label='Is Option A Correct?', initial=False, required=False)
   optionB = forms.CharField(label='',
-          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option B'})
+          #widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option B'})
+          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'2', 'cols':'65', 'placeholder': 'Enter Option B'})
         )
   isOptionB = forms.BooleanField(label='Is Option B Correct?', initial=False, required=False)
   optionC = forms.CharField(label='',
           required=False,
-          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option C'})
+          #widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option C'})
+          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'2', 'cols':'65', 'placeholder': 'Enter Option C'})
         )
   isOptionC = forms.BooleanField(label='Is Option C Correct?', initial=False, required=False)
   optionD = forms.CharField(label='',
           required=False,
-          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option D'})
+          #widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option D'})
+          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'2', 'cols':'65', 'placeholder': 'Enter Option D'})
         )
   isOptionD = forms.BooleanField(label='Is Option D Correct?', initial=False, required=False)
   optionE = forms.CharField(label='',
           required=False,
-          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option E'})
+          #widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option E'})
+          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'2', 'cols':'65', 'placeholder': 'Enter Option E'})
         )
   isOptionE = forms.BooleanField(label='Is Option E Correct?', initial=False, required=False)
   answer = forms.CharField(
