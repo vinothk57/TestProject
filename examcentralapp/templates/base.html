@@ -140,6 +140,7 @@
                 {% endfor %}
               {% endif %}
                     });
+    {% if norightclick %}
     $(document).ready(function () {
         //Disable cut copy paste
         $('body').bind('cut copy paste', function (e) {
@@ -151,6 +152,7 @@
             return false;
         });
     });
+    {% endif %}
     </script>
 </body>
 

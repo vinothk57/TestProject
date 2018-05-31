@@ -84,7 +84,12 @@
                      $("#{{ qtn.qno }}editqtn").click(function(e){
                            e.preventDefault();
                            $('#qeditModal').modal('show');
-                           tinymce.get("id_direction").execCommand('mceSetContent', false, '');
+                           tinymce.get("id_direction").execCommand('mceSetContent', false, 'Enter Direction');
+                           tinymce.get("id_optionA").execCommand('mceSetContent', false, 'Enter Option A');
+                           tinymce.get("id_optionB").execCommand('mceSetContent', false, 'Enter Option B');
+                           tinymce.get("id_optionC").execCommand('mceSetContent', false, 'Enter Option C');
+                           tinymce.get("id_optionD").execCommand('mceSetContent', false, 'Enter Option D');
+                           tinymce.get("id_optionE").execCommand('mceSetContent', false, 'Enter Option E');
                            var JSONqtnData = {};
                            JSONqtnData['examid'] = {{ examid }};
                            JSONqtnData['qno'] = {{ qtn.qno }};

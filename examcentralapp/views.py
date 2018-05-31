@@ -119,16 +119,17 @@ def main_page(request):
     'show_results': show_results,
     'show_tags': True,
     'pagination': pagination,
-    'offset': offset
+    'offset': offset,
+    'norightclick': True
     })
 
 def privacy_policy_page(request):
   
-    return render(request, 'privacy_policy.html', {})
+    return render(request, 'privacy_policy.html', {'norightclick': True})
 
 def terms_of_use_page(request):
   
-    return render(request, 'terms_of_use.html', {})
+    return render(request, 'terms_of_use.html', {'norightclick': True})
 
 def user_loggedin(request):
   if request.user.is_authenticated():
@@ -186,7 +187,8 @@ def user_page(request, username):
     'userexams': userexams,
     'show_tags': True,
     'pagination': pagination,
-    'offset': offset
+    'offset': offset,
+    'norightclick': True
   })
 
 
@@ -232,7 +234,8 @@ def profile_page(request):
 
   return render(request, 'profile.html', {
                 'form': form,
-                'uid' : request.user.id
+                'uid' : request.user.id,
+                'norightclick': True
               })
 
 
@@ -1281,7 +1284,8 @@ def history_page(request):
   return render(request, 'history_page.html', {
     'historylist': historylist,
     'pagination': pagination,
-    'offset': offset
+    'offset': offset,
+    'norightclick': True
   })
 
 def make_pagination_html(current_page, total_pages):
@@ -1322,7 +1326,8 @@ def analysis_page(request):
   })
   return render(request, 'analytics_page.html', {
     'analyticslist': analyticslist,
-    'pagination': pagination
+    'pagination': pagination,
+    'norightclick': True
   })
 
 @login_required
@@ -1355,7 +1360,8 @@ def review_page(request):
           'quploaded': range(1, totalqtn + 1),
           'examname': examname,
           'attemptid': request.POST.get('attemptid', ""),
-          'totalqtns': totalqtn
+          'totalqtns': totalqtn,
+          'norightclick': True
         })
 
       else:
@@ -1433,7 +1439,8 @@ def analyzegraphs_page(request):
           'totalanswered': totalanswered,
           'markscored': markscored,
           'timetaken': timetaken,
-          'correctans': correctans
+          'correctans': correctans,
+          'norightclick': True
         })
 
       else:
