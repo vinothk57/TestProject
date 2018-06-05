@@ -282,6 +282,7 @@ function loadQuestionData() {
         addInfo += "<img src=" + qelement['imgpath'] + ">";
     }
     $(loadQInfoAt).html(addInfo);
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 }
 
 function getnextqtnJSON() {
