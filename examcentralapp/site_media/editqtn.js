@@ -3,7 +3,6 @@ function showqtnedit(result) {
     $('#id_examid').val(result['examid']);
     $('#id_qno').val(result['qno']);
     $('#id_qno').attr("readonly", true);
-    $('#id_question').val(result['question']);
     $('#id_qtype').val(result['qtype']);
     $('#id_qcategory').val(result['qcategory'].toString());
     $('#id_isOptionA').prop("checked", result['isOptionA']);
@@ -13,7 +12,6 @@ function showqtnedit(result) {
     $('#id_isOptionE').prop("checked", result['isOptionE']);
     $('#id_haspic').prop("checked", result['haspic']);
     $('#hasdirection').prop("checked", result['hasdirection']);
-    $('#id_answer').val(result['answer']);
     if (result['hasdirection']) {
         tinymce.get("id_direction").execCommand('mceSetContent', false, result['direction']);
     } else {
@@ -24,6 +22,8 @@ function showqtnedit(result) {
     tinymce.get("id_optionC").execCommand('mceSetContent', false, result['optionC']);
     tinymce.get("id_optionD").execCommand('mceSetContent', false, result['optionD']);
     tinymce.get("id_optionE").execCommand('mceSetContent', false, result['optionE']);
+    tinymce.get("id_question").execCommand('mceSetContent', false, result['question']);
+    tinymce.get("id_answer").execCommand('mceSetContent', false, result['answer']);
     MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 }
 

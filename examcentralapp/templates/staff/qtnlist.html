@@ -90,6 +90,8 @@
                            tinymce.get("id_optionC").execCommand('mceSetContent', false, 'Enter Option C');
                            tinymce.get("id_optionD").execCommand('mceSetContent', false, 'Enter Option D');
                            tinymce.get("id_optionE").execCommand('mceSetContent', false, 'Enter Option E');
+                           tinymce.get("id_question").execCommand('mceSetContent', false, 'Enter Question');
+                           tinymce.get("id_answer").execCommand('mceSetContent', false, 'Enter Explanation');
                            var JSONqtnData = {};
                            JSONqtnData['examid'] = {{ examid }};
                            JSONqtnData['qno'] = {{ qtn.qno }};
