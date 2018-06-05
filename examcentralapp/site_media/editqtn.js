@@ -24,6 +24,7 @@ function showqtnedit(result) {
     tinymce.get("id_optionC").execCommand('mceSetContent', false, result['optionC']);
     tinymce.get("id_optionD").execCommand('mceSetContent', false, result['optionD']);
     tinymce.get("id_optionE").execCommand('mceSetContent', false, result['optionE']);
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 }
 
 function showqtnpreview(result) {
@@ -134,4 +135,5 @@ function showqtnpreview(result) {
         }
     }
     $('#subqns').html(qstring + options);
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 }
