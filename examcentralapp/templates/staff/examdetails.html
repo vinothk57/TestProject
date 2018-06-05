@@ -29,7 +29,6 @@
                 $('#qeditModal').modal('show');
                 $('#id_qno').val('');
                 $('#id_qno').attr("readonly", false);
-                $('#id_question').val('');
                 $('#id_qtype').val('1');
                 $('#id_qcategory').val('1');
                 $('#id_isOptionA').prop("checked", false);
@@ -39,13 +38,14 @@
                 $('#id_isOptionE').prop("checked", false);
                 $('#id_haspic').prop("checked", false);
                 $('#hasdirection').prop("checked", false);
-                $('#id_answer').val('');
                 tinymce.get("id_direction").execCommand('mceSetContent', false, 'Enter Direction');
                 tinymce.get("id_optionA").execCommand('mceSetContent', false, 'Enter Option A');
                 tinymce.get("id_optionB").execCommand('mceSetContent', false, 'Enter Option B');
                 tinymce.get("id_optionC").execCommand('mceSetContent', false, 'Enter Option C');
                 tinymce.get("id_optionD").execCommand('mceSetContent', false, 'Enter Option D');
                 tinymce.get("id_optionE").execCommand('mceSetContent', false, 'Enter Option E');
+                tinymce.get("id_question").execCommand('mceSetContent', false, 'Enter Question');
+                tinymce.get("id_answer").execCommand('mceSetContent', false, 'Enter Explanation');
                 return false;
            });
       </script>

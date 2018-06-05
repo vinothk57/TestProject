@@ -175,7 +175,8 @@ class QuestionDetailsSaveForm(forms.Form):
           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Question Number'})
         )
   question = forms.CharField(label='',
-          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Question'})
+          #widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Question'})
+          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'2', 'cols':'45', 'placeholder': 'Enter Question'})
         )
   qtype = forms.ChoiceField(choices=QTYPE_CHOICES, required=False)
   qcategory = forms.ChoiceField(choices=QCATEGORY_CHOICES)
@@ -186,7 +187,7 @@ class QuestionDetailsSaveForm(forms.Form):
           )
   direction = forms.CharField(label='', required=False,
           #widget=forms.Textarea(attrs={'id': 'direction','class': 'form-control', 'rows':'4', 'cols':'65', 'placeholder': 'Enter Directions for the question'})
-          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'4', 'cols':'65', 'placeholder': 'Enter Directions for the question'})
+          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'2', 'cols':'65', 'placeholder': 'Enter Directions for the question'})
           )
   optionA = forms.CharField(label='',
           #widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Option A'})
@@ -218,7 +219,8 @@ class QuestionDetailsSaveForm(forms.Form):
   isOptionE = forms.BooleanField(label='Is Option E Correct?', initial=False, required=False)
   answer = forms.CharField(
      label='',
-     widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Answer'})
+     #widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Answer'})
+     widget=TinyMCE(attrs={'class': 'form-control', 'rows':'3', 'cols':'45', 'placeholder': 'Enter Explanation'})
    )
 
 class DocumentForm(forms.Form):
