@@ -251,7 +251,7 @@ function getqtn_submit() {
 
 function loadQuestionData() {
     var qelement = JSONObj['qlist'][currqtnno - 1];
-    var qstring = "<h6><pre style=\"white-space: pre-wrap;word-wrap: break-word;white-space: -o-pre-wrap;white-space: -moz-pre-wrap;\">" + qelement['qno'] + ". " + qelement['qtn'] + "</pre></h6>";
+    var qstring = "<h5>Question Number: " + qelement['qno'] + "</h5><div id=subqns><h5>" + qelement['qtn'] + "</h5></div>";
 
     var options = "";
     if(qelement['type'] == 1) {
