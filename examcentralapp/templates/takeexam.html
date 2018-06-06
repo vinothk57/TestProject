@@ -50,6 +50,13 @@
              window.onpageshow=function(evt){if(evt.persisted)noBack();}
              window.onunload=function(){void(0);}
       </script>
+      <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'code'],
+        }
+      });
+      </script>
 {% endblock %}
 {% block content %}
 

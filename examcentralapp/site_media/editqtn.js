@@ -40,7 +40,8 @@ function showqtnpreview(result) {
     } else {
         $('#img_qview').attr("src", "");
     }
-    var qstring = "<h6>" + result['qno'] + ". " + result['question'] + "</h6>";
+    var qno = "<h6>Question number: " + result['qno'].toString() + "</h6>";
+    var qstring = qno + "<h5>" + result['question'] + "</h5>";
 
     var options = "";
     if(result['qtype'] == "1") {
