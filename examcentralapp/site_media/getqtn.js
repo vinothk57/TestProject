@@ -421,6 +421,11 @@ $(document).ready(function () {
 
   $("#next").click(function() {
     //getnextqtn();
+    $("#userinfo").text("Answer saved!");
+    $("#userinfo").show();
+    setTimeout(function() {
+        $("#userinfo").hide();
+    },4000);
     var qid = "qno" + currqtnno;
     $('#' + qid).removeClass("markrew-btn"); 
     saveAnswer();
@@ -464,6 +469,11 @@ $(document).ready(function () {
   });
 
   $("#review").click(function() {
+    $("#userinfo").text("Answer saved!");
+    $("#userinfo").show();
+    setTimeout(function() {
+        $("#userinfo").hide();
+    },4000);
     var qid = "qno" + currqtnno;
     lastqtnno = currqtnno;
     saveAnswer();

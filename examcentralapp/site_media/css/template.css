@@ -1039,6 +1039,10 @@ text-decoration: none; color: #000;
     border-radius: 6px;
     background: #3EBB8C;
     color: #fff;
+    transition-property: background;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+    position: relative;
 }
 .bg-img{
     background-image:    url(../images/cont_bg.jpg);
@@ -1334,4 +1338,19 @@ width: 90% !important;
 }
 .modal-body p{
     color: #000000;
+}
+.addtoaccount:hover {
+  background: #5146E8;
+}
+#review:active {
+  bottom: -1px;
+}
+#clear:active {
+  bottom: -1px;
+}
+#prev:active {
+  bottom: -1px;
+}
+#next:active {
+  bottom: -1px;
 }
