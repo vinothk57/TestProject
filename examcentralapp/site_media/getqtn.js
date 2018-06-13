@@ -97,6 +97,8 @@ function saveAnswer() {
       delete JSONAnswerData['ansList'][currqtnno]
     }
   }
+  answered_str = Object.keys(JSONAnswerData['ansList']).length.toString() + " out of " + totalqtn.toString() + " answered";
+  $('#answeredcount').text(answered_str);
 }
 
 function checkAnswered() {
@@ -325,16 +327,18 @@ function showCorrectBtns() {
       $("#prev").show();
     } 
     if(currqtnno < Number(totalqtn)) {
-      $("#review").prop('value', 'Mark for Review and Next');
-      $("#next").prop('value', 'Save and Next');
+      $("#review").text('Mark for Review and Next');
+      $("#next").text('Save and Next');
     }
     if(currqtnno == Number(totalqtn)) {
-      $("#review").prop('value', 'Mark for Review');
-      $("#next").prop('value', 'Save');
+      $("#review").text('Mark for Review');
+      $("#next").text('Save');
     }
 }
 
 function success(data) {
+  answered_str = Object.keys(JSONAnswerData['ansList']).length.toString() + " out of " + totalqtn.toString() + " answered";
+  $('#answeredcount').text(answered_str);
   JSONObj = data;
   showQuestionsOfCategory(1);
   getFirstQtnOfCategory(1);
