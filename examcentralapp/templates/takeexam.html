@@ -78,7 +78,9 @@
 
                 <div id="loading" class="col-md-12 cont-head"></div>
                 <div id="timer" class="row">
-                    <div class="col-md-12 cont-head"><div class="pull-left"><h4>{{ examname }}</h4></div><div id="countdown" class="pull-right"></div></div>
+                    <div class="col-md-12 cont-head"><div class="pull-left"><h4>{{ examname }}</h4></div>
+                    <div id = "userinfo" class="alert alert-warning col-md-4 col-md-offset-1 collapse" style="text-align:center; height:35px;padding:5px;"></div>
+                    <div id="countdown" class="pull-right"></div></div>
                 </div>
 
                 <div id="content-div" class="row">
@@ -116,10 +118,10 @@
                            </div>
                         </div>
                       </div>
-                        <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="review" class="addtoaccount" value="Mark for Review and Next" /></div>
-                        <div class="col-md-3 margin-top-10 margin-bottom-10 margin-left-20"><input type="button" id="clear" class="addtoaccount" value="Clear Response" /></div>
-                        <div class="col-md-3 margin-top-10 margin-bottom-10"><input type="button" id="prev" class="addtoaccount pull-right" value="Previous" /></div>
-                        <div class="col-md-2 margin-top-10 margin-bottom-10"><input type="button" id="next" class="addtoaccount pull-right" value="Save and Next" /></div>
+                        <div class="col-md-3 margin-top-10 margin-bottom-10"><button id="review" class="addtoaccount">Mark for Review and Next</button></div>
+                        <div class="col-md-3 margin-top-10 margin-bottom-10 margin-left-20"><button id="clear" class="addtoaccount">Clear Response</button></div>
+                        <div class="col-md-3 margin-top-10 margin-bottom-10"><button id="prev" class="addtoaccount pull-right">Previous</button></div>
+                        <div class="col-md-2 margin-top-10 margin-bottom-10"><button id="next" class="addtoaccount pull-right">Save and Next</button></div>
                     </div>
                     <div class="col-md-4 text-center">
                         <div class="btn-border">
