@@ -1,8 +1,8 @@
 var currqtnno = 1;
 var lastqtnno = 1;
 var totalqtn = $("#totalqtns").val();
-var loadQuestionAt = "#langList";
-var loadQInfoAt = "#langqtninfo";
+var loadQuestionAt = "#section1List";
+var loadQInfoAt = "#section1qtninfo";
 var getLastQtn = false;
 var JSONAnswerData = {};
 JSONAnswerData['ansList'] = {};
@@ -31,37 +31,16 @@ var csrftoken = getCookie('csrftoken');
 
 function showCorrectTab() {
 
-  var loadqtn = true;
-      if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "4") {
-        $('.nav-tabs a[href="#general"]').tab('show');
-        if(loadQuestionAt != "#genList") {
-          loadQuestionAt = "#genList";
-          loadQInfoAt = "#genqtninfo";
-          loadqtn = false;
-        }
-      } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "2") {
-        $('.nav-tabs a[href="#analysis"]').tab('show');
-        if(loadQuestionAt != "#analysisList") {
-          loadQuestionAt = "#analysisList";
-          loadQInfoAt = "#analysisqtninfo";
-          loadqtn = false;
-        }
-      } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "1") {
-        $('.nav-tabs a[href="#language"]').tab('show');
-        if(loadQuestionAt != "#langList") {
-          loadQuestionAt = "#langList";
-          loadQInfoAt = "#langqtninfo";
-          loadqtn = false;
-        }
-      } else if(JSONObj['qlist'][currqtnno - 1]['qcategory'] == "3") {
-        $('.nav-tabs a[href="#reasoning"]').tab('show');
-        if(loadQuestionAt != "#reasonList") {
-          loadQuestionAt = "#reasonList";
-          loadQInfoAt = "#reasoningqtninfo";
-          loadqtn = false;
-        }
-      }
-
+   var loadqtn = true;
+   var category = JSONObj['qlist'][currqtnno - 1]['qcategory'];
+   
+   $('.nav-tabs a[href="#section' + category + '"]').tab('show');
+   if(loadQuestionAt != ("#section" + category + "List")) {
+       loadQuestionAt = "#section" + category + "List";
+       loadQInfoAt    = "#section" + category + "qtninfo";
+       loadqtn = false;
+   }
+      
    if(loadqtn) {
       loadQuestionData();
    }
@@ -179,19 +158,8 @@ function showQuestionsOfCategory(category) {
          $("#qno" + qno).show();
       }
     }
-    if(category == "4") {
-      loadQuestionAt = "#genList";
-      loadQInfoAt = "#genqtninfo";
-    } else if(category == "2") {
-      loadQuestionAt = "#analysisList";
-      loadQInfoAt = "#analysisqtninfo";
-    } else if(category == "1") {
-      loadQuestionAt = "#langList";
-      loadQInfoAt = "#langqtninfo";
-    } else if(category == "3") {
-      loadQuestionAt = "#reasonList";
-      loadQInfoAt = "#reasoningqtninfo";
-    }
+    loadQuestionAt = "#section" + category + "List";
+    loadQInfoAt    = "#section" + category + "qtninfo";
 
     if(getLastQtn == true) {
       getLastQtnOfCategory(category);
@@ -490,15 +458,8 @@ $(document).ready(function () {
   $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
       var target = $(e.target).attr("href");
       var showcategory = 1;
-      if(target == "#general") {
-        showcategory = 4;
-      } else if (target == "#analysis") {
-        showcategory = 2;
-      } else if (target == "#language") {
-        showcategory = 1;
-      } else if (target == "#reasoning") {
-        showcategory = 3;
-      }
+
+      showcategory = parseInt(target.substring(8, target.length), 10);
       showQuestionsOfCategory(showcategory);
     }
   );
