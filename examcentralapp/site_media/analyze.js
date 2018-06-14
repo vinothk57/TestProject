@@ -41,11 +41,35 @@ function success_sectiondata(gdata) {
   var soptions = {
     title: 'Section-wise performance',
     colors: ['#4575cd', '#ffd030', '#63ac71'],
+    titleTextStyle: {
+        color: "#d663c2",
+        fontName: 'Arial',
+        bold: false,
+        fontSize: 22
+    },
     hAxis: {
-      title: 'Exam Sections'
+      title: 'Exam Sections',
+      titleTextStyle: {
+        color: "#1653c2",
+        fontName: 'Arial',
+        fontSize: 18
+      },
+      textStyle: {
+        fontName: 'Arial',
+        fontSize: 17
+      }
     },
     vAxis: {
       title: 'Number of Questions',
+      titleTextStyle: {
+        color: "#1653c2",
+        fontName: 'Arial',
+        fontSize: 18
+      },
+      textStyle: {
+        fontName: 'Arial',
+        fontSize: 17
+      }
     }
   };
 
