@@ -1611,7 +1611,7 @@ class ResetPasswordRequestView(FormView):
                         # Email subject *must not* contain newlines
                         subject = ''.join(subject.splitlines())
                         email = loader.render_to_string(email_template_name, c)
-                        send_mail(subject, email, 'from@example.com', [user.email], fail_silently=False)
+                        send_mail(subject, email, 'support@quizbuzz.in', [user.email], fail_silently=False)
                 result = self.form_valid(form)
                 messages.success(request, 'An email has been sent to ' + data +". Please check its inbox to continue reseting password.")
                 return result
@@ -1640,7 +1640,7 @@ class ResetPasswordRequestView(FormView):
                     # Email subject *must not* contain newlines
                     subject = ''.join(subject.splitlines())
                     email = loader.render_to_string(email_template_name, c)
-                    send_mail(subject, email, 'from@example.com' , [user.email], fail_silently=False)
+                    send_mail(subject, email, 'support@quizbuzz.in' , [user.email], fail_silently=False)
                 result = self.form_valid(form)
                 messages.success(request, 'Email has been sent to the email address associated with the username \'' + data +"\'. Please check its inbox to continue reseting password.")
                 return result
