@@ -847,6 +847,7 @@ def takeexam_page(request):
       if userexam.exists():
         totalqtn = ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count()
         examname = ExamName.objects.get(id=request.POST.get("examid", "")).examname
+        sections = ExamSectionInfo.objects.filter(examname_id=request.POST.get("examid", "")).order_by('section_no')
 
         #allowedAttempt = ExamName.objects.get(id=request.POST.get("examid", "")).attempts_allowed
         allowedAttempt = UserExamAttemptInfo.objects.get(userexam_id=userexam[0].id).attempt_available
@@ -878,7 +879,8 @@ def takeexam_page(request):
             'examname': examname,
             'attemptid': userAttemptCount,
             'totalqtns': totalqtn,
-            'duration' : duration
+            'duration' : duration,
+            'sections' : sections
           })
 
         else:
