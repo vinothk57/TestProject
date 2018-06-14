@@ -52,7 +52,7 @@ import examcentralapp.constants as constants
 import examcentralapp.config as config
 import hashlib
 from random import randint
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 HOME_PAGE_PATH = "/home"
 
@@ -61,7 +61,7 @@ def web_page(request):
 
 def main_page(request):
   
-  if not request.user.is_authenticated():
+  if not request.user.is_authenticated:
     return render(request, 'index.html', {})
 
   current_page = int(request.GET.get('page' ,1))
@@ -132,7 +132,7 @@ def terms_of_use_page(request):
     return render(request, 'terms_of_use.html', {'norightclick': True})
 
 def user_loggedin(request):
-  if request.user.is_authenticated():
+  if request.user.is_authenticated:
     username = request.user.username
   #redirect_url = '/'
   redirect_url = HOME_PAGE_PATH
@@ -273,7 +273,7 @@ def register_page(request):
       message = render_to_string('acc_active_email.html', {
                 'user': user,
                 'domain': request.META['HTTP_HOST'],
-                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                 'token':account_activation_token.make_token(user),
             })
       to_email = form.cleaned_data.get('email')

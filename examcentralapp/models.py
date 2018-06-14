@@ -12,7 +12,7 @@ def qtn_directory_path(instance, filename):
 
 # Create your models here.
 class UserDetails(models.Model):
-  user = models.ForeignKey(User)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
   address = models.TextField(max_length=5000, null=True, blank=True)
   city = models.TextField(max_length=500, null=True, blank=True)
   country = models.TextField(max_length=500, null=True, blank=True)
@@ -50,20 +50,20 @@ class ExamSectionInfo(models.Model):
     return '%s, %s' % (self.examname, self.section_name)
 
 class UserExams(models.Model):
-  user = models.ForeignKey(User)
-  examname = models.ForeignKey(ExamName)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   def __str__(self):
     return '%s, %s' % (self.user.username, self.examname.examname)
 
 class UserExamAttemptInfo(models.Model):
-    userexam = models.ForeignKey(UserExams)
+    userexam = models.ForeignKey(UserExams, on_delete=models.CASCADE)
     attempt_available = models.IntegerField()
     def __str__(self):
         return '%s, %s, %s' % (self.userexam.user.username, self.userexam.examname.examname, self.attempt_available)
 
 #qtype values: 0-multiple choice, 1-true or false, 2- descriptive
 class ExamQuestions(models.Model):
-  examname = models.ForeignKey(ExamName)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   qno = models.IntegerField()
   question = models.TextField()
   qtype = models.IntegerField(choices=QTYPE_CHOICES, default=1)
@@ -77,7 +77,7 @@ class ExamQuestions(models.Model):
     return '%s, %s' % (self.question, self.examname.examname)
 
 class QuestionInfo(models.Model):
-  examname = models.ForeignKey(ExamName)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   qid = models.IntegerField()
   pic = models.FileField(upload_to=qtn_directory_path, null=True, blank=True)
   #direction = models.TextField()
@@ -88,7 +88,7 @@ class QuestionInfo(models.Model):
     return '%s, %s, %s' % (self.examname.examname, self.qid, self.direction)
 
 class OptionA(models.Model):
-  examname = models.ForeignKey(ExamName)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   qid = models.IntegerField()
   option = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
@@ -98,7 +98,7 @@ class OptionA(models.Model):
     return '%s, %s, %s, %s' % (self.examname.examname, self.qid, self.option, self.isright)
 
 class OptionB(models.Model):
-  examname = models.ForeignKey(ExamName)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   qid = models.IntegerField()
   option = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
@@ -108,7 +108,7 @@ class OptionB(models.Model):
     return '%s, %s, %s, %s' % (self.examname.examname, self.qid, self.option, self.isright)
 
 class OptionC(models.Model):
-  examname = models.ForeignKey(ExamName)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   qid = models.IntegerField()
   option = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
@@ -118,7 +118,7 @@ class OptionC(models.Model):
     return '%s, %s, %s, %s' % (self.examname.examname, self.qid, self.option, self.isright)
 
 class OptionD(models.Model):
-  examname = models.ForeignKey(ExamName)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   qid = models.IntegerField()
   option = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
@@ -128,7 +128,7 @@ class OptionD(models.Model):
     return '%s, %s, %s, %s' % (self.examname.examname, self.qid, self.option, self.isright)
 
 class OptionE(models.Model):
-  examname = models.ForeignKey(ExamName)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   qid = models.IntegerField()
   option = models.TextField(max_length=5000)
   isright = models.BooleanField(default=False)
@@ -138,7 +138,7 @@ class OptionE(models.Model):
     return '%s, %s, %s, %s' % (self.examname.examname, self.qid, self.option, self.isright)
 
 class ExamSolution(models.Model):
-  examname = models.ForeignKey(ExamName)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   qid = models.IntegerField()
   correct_options = models.TextField(max_length=5000)
   explanation = models.TextField(max_length=5000)
@@ -148,8 +148,8 @@ class ExamSolution(models.Model):
     return '%s, %s, %s, %s' % (self.examname.examname, self.qid, self.correct_options, self.explanation)
 
 class UserAnswerSheet(models.Model):
-  user = models.ForeignKey(User)
-  examname = models.ForeignKey(ExamName)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   attemptid = models.IntegerField()
   qid = models.IntegerField()
   user_choices = models.TextField(max_length=5000)
@@ -160,8 +160,8 @@ class UserAnswerSheet(models.Model):
     return '%s, %s' % (self.user.username, self.examname.examname)
 
 class UserScoreSheet(models.Model):
-  user = models.ForeignKey(User)
-  examname = models.ForeignKey(ExamName)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  examname = models.ForeignKey(ExamName, on_delete=models.CASCADE)
   attemptid = models.IntegerField()
   start_time = models.DateTimeField()
   total_questions = models.IntegerField()
