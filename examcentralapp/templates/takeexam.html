@@ -96,7 +96,11 @@
                         </ul>
                       <div class="tab-content">
                           {% for section in sections %}
+                            {% if forloop.counter == 1 %}
                               <div id="section{{ forloop.counter }}" class="tab-pane fade in active border-radius">
+                            {% else %}
+                              <div id="section{{ forloop.counter }}" class="tab-pane fade in border-radius">
+                            {% endif %}
                                  <div id="section{{ forloop.counter }}qtninfo">
                                  </div>
                                  <div id="section{{ forloop.counter }}List" style="">
