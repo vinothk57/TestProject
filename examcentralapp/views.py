@@ -1598,7 +1598,7 @@ class ResetPasswordRequestView(FormView):
                             'email': user.email,
                             'domain': request.META['HTTP_HOST'],
                             'site_name': 'QuizBuzz.in',
-                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                             'user': user,
                             'token': default_token_generator.make_token(user),
                             'protocol': 'http',
@@ -1629,7 +1629,7 @@ class ResetPasswordRequestView(FormView):
                         'email': user.email,
                         'domain': 'quizbuzz.in', #or your domain eg:example.com
                         'site_name': 'QuizBuzz',
-                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                         'user': user,
                         'token': default_token_generator.make_token(user),
                         'protocol': 'http',
