@@ -1343,6 +1343,7 @@ def review_page(request):
       if userexam.exists():
         totalqtn = ExamQuestions.objects.filter(examname_id=request.POST.get('examid', "")).count()
         examname = ExamName.objects.get(id=request.POST.get('examid', "")).examname
+        sections = ExamSectionInfo.objects.filter(examname_id=request.POST.get("examid", "")).order_by('section_no')
 
         totalqtns = ExamName.objects.get(id=request.POST.get('examid', "")).total_questions
         userAttemptCount = UserScoreSheet.objects.filter(
@@ -1363,7 +1364,8 @@ def review_page(request):
           'examname': examname,
           'attemptid': request.POST.get('attemptid', ""),
           'totalqtns': totalqtn,
-          'norightclick': True
+          'norightclick': True,
+          'sections' : sections
         })
 
       else:
