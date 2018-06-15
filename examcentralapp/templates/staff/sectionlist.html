@@ -1,0 +1,44 @@
+{% if section_list %}
+{% else %}
+  <p>No sections created for the exam.</p>
+{% endif %}
+    <div>
+       <table class="table">
+           <thead>
+           <tr>
+             <th>Section number</th>
+             <th>Section name</th>
+             <th>Total questions in section</th>
+             <th>Mark for each right answer</th>
+             <th>Negative mark for each wrong answer</th>
+             <th></th>
+           </tr>
+           </thead>
+
+           <tbody>
+{% for section in section_list %}
+           <tr>
+             <td>{{ section.section_no }}</td>
+             <td>{{ section.section_name}}</td>
+             <td>{{ section.section_qcount}}</td>
+             <td>{{ section.section_mark_per_qtn}}</td>
+             <td>{{ section.section_negative_per_qtn}}</td>
+             <td class="delete">
+                 <button id="{{ forloop.counter }}delsection" type="button" class="ln active" data-toggle="modal" data-target="#delsectionmodal">Delete</button>
+             </td>
+           </tr>
+           <script>
+                     $("#{{ forloop.counter }}delsection").click(function(){
+                        $("#delsectionmodal").find(".modal-footer").html( "  <form id=\"remqtn-form\" method=\"post\" action=\"/removesections/\"> \
+                                                      {% csrf_token %} \
+                                                      <input type=\"hidden\" name=\"examid\" value=\"{{ examid }}\" /> \
+                                                      <input type=\"hidden\" name=\"sectionno\" value=\"{{ section.section_no }}\" /> \
+                                                      <button type=\"submit\" class=\"addtoaccount margin-left-220\" style=\"float:left\">Yes</button> \
+                                                      </form> \
+                                                      <button type=\"button\" class=\"addtoaccount margin-right-220\" data-dismiss=\"modal\" style=\"float:right\">No</button>");
+                     });
+           </script>
+{% endfor %}
+           </tbody>
+       </table>
+    </div>
