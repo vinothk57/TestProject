@@ -1336,6 +1336,12 @@ width: 90% !important;
 #qeditModal .modal-header{
     background: #e2e2e2;
 }
+#delsectionmodal .modal-header{
+    background: #e2e2e2;
+}
+#seceditModal .modal-header{
+    background: #e2e2e2;
+}
 .modal-body p{
     color: #000000;
 }

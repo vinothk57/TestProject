@@ -644,6 +644,7 @@ def addquestions_page(request):
       examname = ExamName.objects.get(id=request.POST.get("examid", "")).examname
       uploaded_questions = ExamQuestions.objects.filter(examname_id=request.POST.get("examid", "")).count()
       form = QuestionDetailsSaveForm(examid=request.POST.get("examid", ""))
+      sec_form = ExamSectionInfoForm()
       variables =  {
                      'examname': examname,
                      'examid': request.POST.get("examid", ""),
@@ -664,7 +665,8 @@ def addquestions_page(request):
             'totalqtns': totalqtns,
             'qtnlist': qlist,
             'section_list': section_list,
-            'form': form
+            'form': form,
+            'sec_form': sec_form
             })
     #if form is not valid
     else:
@@ -726,6 +728,7 @@ def removequestion_page(request):
     exam = ExamName.objects.get(id=examid)
     totalqtns = ExamName.objects.get(id=examid).total_questions
     form = QuestionDetailsSaveForm(examid=examid)
+    sec_form = ExamSectionInfoForm()
 
     qlist = ExamQuestions.objects.filter(examname_id=examid).order_by('qno')
     section_list = ExamSectionInfo.objects.filter(examname_id=examid).order_by('section_no')
@@ -735,7 +738,93 @@ def removequestion_page(request):
             'totalqtns': totalqtns,
             'qtnlist': qlist,
             'section_list': section_list,
-            'form': form
+            'form': form,
+            'sec_form': sec_form
+            })
+  #if request is not POST
+  else:
+      #return HttpResponseRedirect('/')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
+
+@login_required
+def addsection_page(request):
+  if request.method == 'POST':
+    form = ExamSectionInfoForm(request.POST)
+    if form.is_valid():
+      # Add section
+      examsectionobject = ExamSectionInfo.objects.filter(examname_id=request.POST.get("examid", ""), section_no=form.cleaned_data['section_no'])
+
+      if examsectionobject.exists():
+          examsection = examsectionobject[0]
+          examsection.section_no = form.cleaned_data['section_no']
+          examsection.section_name = form.cleaned_data['section_name']
+          examsection.section_qcount = form.cleaned_data['section_qcount']
+          examsection.section_mark_per_qtn = form.cleaned_data['section_mark_per_qtn']
+          examsection.section_negative_per_qtn = form.cleaned_data['section_negative_per_qtn']
+          examsection.save()
+      else:
+          examsection, created = ExamSectionInfo.objects.get_or_create(
+            examname_id=request.POST.get("examid", ""), section_no=form.cleaned_data['section_no'], section_name=form.cleaned_data['section_name'],
+            section_qcount=form.cleaned_data['section_qcount'], section_mark_per_qtn=form.cleaned_data['section_mark_per_qtn'], section_negative_per_qtn=form.cleaned_data['section_negative_per_qtn']
+          )
+
+      messages.info(request, 'Section added successfully!')
+      examid = request.POST.get("examid", "")
+      #redirect to question list page
+      exam = ExamName.objects.get(id=examid)
+      totalqtns = ExamName.objects.get(id=examid).total_questions
+      form = QuestionDetailsSaveForm(examid=examid)
+      sec_form = ExamSectionInfoForm()
+
+      qlist = ExamQuestions.objects.filter(examname_id=examid).order_by('qno')
+      section_list = ExamSectionInfo.objects.filter(examname_id=examid).order_by('section_no')
+      return render(request, 'staff/examdetails.html', {
+              'examid': examid,
+              'examname': exam.examname,
+              'totalqtns': totalqtns,
+              'qtnlist': qlist,
+              'section_list': section_list,
+              'form': form,
+              'sec_form': sec_form
+              })
+    #if form is not valid
+    else:
+      messages.info(request, 'Error in adding section')
+      messages.info(request, form.errors.as_data())
+      return HttpResponseRedirect(HOME_PAGE_PATH)
+
+  #if request is not POST
+  else:
+      messages.info(request, 'Wrong method.')
+      #return HttpResponseRedirect('/')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
+
+@login_required
+def removesection_page(request):
+  if request.method == 'POST':
+    examid = request.POST.get("examid", "")
+    secno = request.POST.get("sectionno", "")
+    examsection = ExamSectionInfo.objects.filter(examname_id=examid, section_no=secno)
+    if examsection.exists():
+        examsection.delete()
+    messages.info(request, 'Section deleted successfully.')
+
+    #redirect to question list page
+    exam = ExamName.objects.get(id=examid)
+    totalqtns = ExamName.objects.get(id=examid).total_questions
+    form = QuestionDetailsSaveForm(examid=examid)
+    sec_form = ExamSectionInfoForm()
+
+    qlist = ExamQuestions.objects.filter(examname_id=examid).order_by('qno')
+    section_list = ExamSectionInfo.objects.filter(examname_id=examid).order_by('section_no')
+    return render(request, 'staff/examdetails.html', {
+            'examid': examid,
+            'examname': exam.examname,
+            'totalqtns': totalqtns,
+            'qtnlist': qlist,
+            'section_list': section_list,
+            'form': form,
+            'sec_form': sec_form
             })
   #if request is not POST
   else:
@@ -1384,13 +1473,15 @@ def examdetails_page(request):
         qlist = ExamQuestions.objects.filter(examname_id=request.POST.get('examid', "")).order_by('qno')
         section_list = ExamSectionInfo.objects.filter(examname_id=request.POST.get('examid', "")).order_by('section_no')
         form = QuestionDetailsSaveForm(examid=request.POST.get('examid', ""))
+        sec_form = ExamSectionInfoForm()
         return render(request, 'staff/examdetails.html', {
             'examid': request.POST.get('examid', ""),
             'examname': exam.examname,
             'totalqtns': totalqtns,
             'qtnlist': qlist,
             'section_list': section_list,
-            'form': form
+            'form': form,
+            'sec_form': sec_form
             })
     else:
         messages.info(request, 'Invalid Exam!')

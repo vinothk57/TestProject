@@ -12,9 +12,29 @@
       <div class="row">
         <div class="col-md-12 cont-head"><h4>Exam Details - {{ examname }}</h4></div>
       </div>
+                 {% include 'staff/editsection_modal.html' %}
+                 {% include 'staff/deletesection_modal.html' %}
                  {% include 'staff/deleteqtn_modal.html' %}
                  {% include 'staff/editqtn_modal.html' %}
                  {% include 'staff/previewqtn_modal.html' %}
+      <div class="row">
+        {% include 'staff/sectionlist.html' %}
+      </div>
+      <div class="addqns">
+        <button type="button" class="ln active" id="id_addsection">Add section</button>
+      </div>
+      <script>
+           $("#id_addsection").click(function(e){
+                e.preventDefault();
+                $('#seceditModal').modal('show');
+                $('#id_section_no').val('');
+                $('#id_section_name').val('');
+                $('#id_section_qcount').val('');
+                $('#id_section_mark_per_qtn').val('');
+                $('#id_section_negative_per_qtn').val('');
+                return false;
+           });
+      </script>
       <div class="row">
         {% include 'staff/qtnlist.html' %}
       </div>
