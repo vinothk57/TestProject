@@ -5,6 +5,7 @@ var loadQuestionAt = "#section1List";
 var loadQInfoAt = "#section1qtninfo";
 var getLastQtn = false;
 var JSONAnswerData = {};
+var lastHighlightedQtn = 0;
 JSONAnswerData['ansList'] = {};
 
 //Model JSON
@@ -167,6 +168,7 @@ function showQuestionsOfCategory(category) {
 }
 
 function getqtnfromJSON() {
+  window.scrollTo(0,0);
   var examid = $("#examid").val();
   var qno = $("input[type=submit][clicked=true]").val();
   //checkAnswered();
@@ -316,6 +318,13 @@ function showCorrectBtns() {
     //  $("#next").prop('value', 'Save');
       $("#next").hide();
     }
+    if (lastHighlightedQtn != 0) {
+      var id = "qno" + lastHighlightedQtn;
+      $('#' + id).removeClass("addoutline"); 
+    }
+    var qid = "qno" + currqtnno;
+    lastHighlightedQtn = currqtnno;
+    $('#' + qid).addClass("addoutline"); 
 }
 
 function success(data) {
@@ -405,6 +414,7 @@ $(document).ready(function () {
 
   $("#next").click(function() {
     //getnextqtn();
+    window.scrollTo(0,0);
     var qid = "qno" + currqtnno;
     $('#' + qid).removeClass("markrew-btn"); 
     //saveAnswer();
@@ -414,6 +424,7 @@ $(document).ready(function () {
   });
 
   $("#prev").click(function() {
+    window.scrollTo(0,0);
     var examid = $("#examid").val();
     //checkAnswered();
     lastqtnno = currqtnno;

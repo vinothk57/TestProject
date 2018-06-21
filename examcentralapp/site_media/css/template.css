@@ -1360,3 +1360,13 @@ width: 90% !important;
 #next:active {
   bottom: -1px;
 }
+.addoutline {
+  outline: 2px solid black;
+  outline-offset: 1px;
+}
+.btn:focus, .btn:active:focus, .btn.active:focus{
+  outline: 2px solid black;
+  outline-offset: 1px;
+  box-shadow:none;
+  border: none;
+}

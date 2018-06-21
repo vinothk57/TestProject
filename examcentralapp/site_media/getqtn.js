@@ -5,6 +5,7 @@ var loadQuestionAt = "#section1List";
 var loadQInfoAt = "#section1qtninfo";
 var getLastQtn = false;
 var JSONAnswerData = {};
+var lastHighlightedQtn = 0;
 JSONAnswerData['ansList'] = {};
 
 //Model JSON
@@ -169,6 +170,7 @@ function showQuestionsOfCategory(category) {
 }
 
 function getqtnfromJSON() {
+  window.scrollTo(0,0);
   var examid = $("#examid").val();
   var qno = $("input[type=submit][clicked=true]").val();
   checkAnswered();
@@ -302,6 +304,13 @@ function showCorrectBtns() {
       $("#review").text('Mark for Review');
       $("#next").text('Save');
     }
+    if (lastHighlightedQtn != 0) {
+      var id = "qno" + lastHighlightedQtn;
+      $('#' + id).removeClass("addoutline"); 
+    }
+    var qid = "qno" + currqtnno;
+    lastHighlightedQtn = currqtnno;
+    $('#' + qid).addClass("addoutline"); 
 }
 
 function success(data) {
@@ -393,6 +402,7 @@ $(document).ready(function () {
 
   $("#next").click(function() {
     //getnextqtn();
+    window.scrollTo(0,0);
     $("#userinfo").text("Answer saved!");
     $("#userinfo").show();
     setTimeout(function() {
@@ -407,6 +417,7 @@ $(document).ready(function () {
   });
 
   $("#prev").click(function() {
+    window.scrollTo(0,0);
     var examid = $("#examid").val();
     checkAnswered();
     lastqtnno = currqtnno;
@@ -441,6 +452,7 @@ $(document).ready(function () {
   });
 
   $("#review").click(function() {
+    window.scrollTo(0,0);
     $("#userinfo").text("Answer saved!");
     $("#userinfo").show();
     setTimeout(function() {
