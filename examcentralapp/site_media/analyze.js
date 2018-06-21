@@ -52,7 +52,8 @@ function success_sectiondata(gdata) {
       titleTextStyle: {
         color: "#1653c2",
         fontName: 'Arial',
-        fontSize: 18
+        fontSize: 18,
+        italic: false
       },
       textStyle: {
         fontName: 'Arial',
@@ -64,7 +65,8 @@ function success_sectiondata(gdata) {
       titleTextStyle: {
         color: "#1653c2",
         fontName: 'Arial',
-        fontSize: 18
+        fontSize: 18,
+        italic: false
       },
       textStyle: {
         fontName: 'Arial',
