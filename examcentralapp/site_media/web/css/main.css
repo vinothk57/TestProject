@@ -1744,7 +1744,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
     width: 100%;
     height: 100%;
     min-height: 786px;
-    background-color: transparent;
+    background-color: #01011d;
     position: relative;
     display: table;
 }
@@ -2933,7 +2933,6 @@ html.no-csstransitions .home-content__main {
  * ------------------------------------------------------------------- */
 .s-contact {
     background-color: #151515;
-    background-image: url("../images/contact-bg.jpg");
     background-repeat: no-repeat;
     background-position: center, center;
     padding-top: 15rem;

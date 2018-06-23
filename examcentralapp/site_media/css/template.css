@@ -1346,7 +1346,7 @@ width: 90% !important;
     color: #000000;
 }
 .addtoaccount:hover {
-  background: #5146E8;
+  background: #05a067;
 }
 #review:active {
   bottom: -1px;
@@ -1361,11 +1361,11 @@ width: 90% !important;
   bottom: -1px;
 }
 .addoutline {
-  outline: 2px solid black;
+  outline: 1px solid #8c8989;
   outline-offset: 1px;
 }
 .btn:focus, .btn:active:focus, .btn.active:focus{
-  outline: 2px solid black;
+  outline: 1px solid #8c8989;
   outline-offset: 1px;
   box-shadow:none;
   border: none;
