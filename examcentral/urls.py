@@ -51,8 +51,10 @@ urlpatterns = [
     url(r'^getgraphdata/$', get_graph_data),
     url(r'^getsectiondata/$', get_section_data),
     url(r'^fetchsolution/$', fetchSolutionJSON),
+    url(r'^getpost/$', getpost_page),
 
     # Account Management
+    url(r'^createpost/$', createpost_page),
     url(r'^createexam/$', examdetails_save_page),
     url(r'^addquestions/$', addquestions_page),
     url(r'^removequestions/$', removequestion_page),

@@ -91,6 +91,12 @@ class UserSectionScoreAdmin(admin.ModelAdmin):
     ordering = ('examname', 'user', 'attemptid', 'section_no')
     search_fields = ('user', 'examname', 'attemptid', 'section_no')
 
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'text', 'pic')
+    list_filter = ('title', 'pic')
+    ordering = ('time', 'title')
+    search_fields = ('title', 'text')
+
 # Register your models here.
 admin.site.register(ExamName)
 admin.site.register(UserExams, UserExamsAdmin)
@@ -108,4 +114,5 @@ admin.site.register(UserDetails, UserDetailsAdmin)
 admin.site.register(UserExamAttemptInfo, UserExamAttemptInfoAdmin)
 admin.site.register(ExamSectionInfo, ExamSectionInfoAdmin)
 admin.site.register(UserSectionScore, UserSectionScoreAdmin)
+admin.site.register(Post, PostAdmin)
 

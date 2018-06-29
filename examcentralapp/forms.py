@@ -223,6 +223,17 @@ class QuestionDetailsSaveForm(forms.Form):
      widget=TinyMCE(attrs={'class': 'form-control', 'rows':'3', 'cols':'45', 'placeholder': 'Enter Explanation'})
    )
 
+class CreatePostForm(forms.Form):
+  title = forms.CharField(label='',
+          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Title for the post'})
+        )
+  haspic = forms.BooleanField(label='Post Has Picture?', initial=False, required=False)
+  pic = forms.ImageField(initial=False, required=False)
+  text = forms.CharField(label='',
+          required=False,
+          widget=TinyMCE(attrs={'class': 'form-control', 'rows':'4', 'cols':'65', 'placeholder': 'Enter Post Content'})
+        )
+
 class DocumentForm(forms.Form):
   docfile = forms.FileField(
         label='Select a file',

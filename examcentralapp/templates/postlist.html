@@ -1,0 +1,29 @@
+{% if postlist %}
+
+  {% for post in postlist %}
+    {% if forloop.counter != 1%}
+      <hr>
+    {% endif %}
+    <div class="post-title"><h2>{{ post.title }}</h2></div>
+    <h5><span style="background-color: #FFFF00">{{ post.time }}</span></h5>
+    <br>
+    <div>
+      {{ post.text | safe }}
+    </div>
+    {% if post.haspic %}
+      <div>
+        <img src={{ post.pic.url }} width=700px; height=700px;>
+      </div>
+    {% endif %}
+
+  {% endfor %}
+
+  <div class="pagination">
+    <span class="step-links">
+     {{ pagination|safe }}
+    </span>
+  </div>
+{% else %}
+  <p>No new updates.</p>
+{% endif %}
+

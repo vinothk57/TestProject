@@ -319,6 +319,38 @@ def activate(request, uidb64, token):
         return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
+def createpost_page(request):
+  if not request.user.is_staff:
+      return HttpResponseRedirect(HOME_PAGE_PATH)
+  if request.method == 'POST':
+    form = CreatePostForm(request.POST, request.FILES)
+    if form.is_valid():
+      #Create Post
+      post, created = Post.objects.get_or_create(
+                          title=form.cleaned_data['title'], text=form.cleaned_data['text'], haspic=form.cleaned_data['haspic'],
+                          time=datetime.now(), published=False
+                      )
+
+      if form.cleaned_data['haspic']:
+          if post.pic.name:
+              try:
+                  os.remove(os.path.join(settings.MEDIA_ROOT, post.pic.name))
+              except OSError:
+                  messages.info(request, 'Error removing file')
+                  pass
+          if 'pic' in request.FILES:
+              post.pic=request.FILES['pic']
+              post.save()
+      messages.info(request, 'Post Created Successfully!')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
+  else:
+    form = CreatePostForm()
+
+  return render(request, 'staff/createpost.html',  {
+    'form': form
+  })
+
+@login_required
 def examdetails_save_page(request):
   if not request.user.is_staff:
       #return HttpResponseRedirect('/')
@@ -365,9 +397,6 @@ def examdetails_save_page(request):
       return HttpResponseRedirect(HOME_PAGE_PATH)
   else:
     form = ExamDetailsSaveForm()
-  variables = RequestContext(request, {
-    'form': form
-  })
   return render(request, 'staff/createexam.html',  {
     'form': form
   })
@@ -1348,6 +1377,30 @@ def fetchQuestionPaperJSON(request):
 
   if 'ajax' in request.GET:
     return HttpResponse(json.dumps(JSONObj), content_type="application/json")
+
+def getpost_page(request):
+
+  current_page = int(request.GET.get('page' ,1))
+  limit = 5 * current_page
+  offset = limit - 5
+
+  postlist = Post.objects.filter(published=True).order_by('-time')[offset:limit]
+
+  total_list = Post.objects.filter(published=True).count()
+
+  total_pages = int(total_list / 5)
+
+  reminder = total_list % 5
+
+  if reminder:
+     total_pages += 1 # adding one more page if the last page will contains less contacts 
+
+  pagination = make_pagination_html(current_page, total_pages)
+  return render(request, 'post_page.html', {
+    'postlist': postlist,
+    'pagination': pagination,
+    'norightclick': True
+  })
 
 @login_required
 def history_page(request):
