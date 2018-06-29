@@ -45,6 +45,8 @@
                               {% if user.is_staff %}
                               <li><a href="/createexam"><i class="glyphicon glyphicon-edit" style="padding-right:10px"></i>Create Exam</a></li>
                               <li class="divider"></li>
+                              <li><a href="/createpost"><i class="glyphicon glyphicon-bullhorn" style="padding-right:10px"></i>Create Post</a></li>
+                              <li class="divider"></li>
                               {% else %}
                               <li><a href="/history"><i class="glyphicon glyphicon-th-list" style="padding-right:10px"></i>Past Exams</a></li>
                               <li class="divider"></li>
@@ -53,6 +55,8 @@
                               <li>
                               <a href="/user/{{user.username}}"><i class="glyphicon glyphicon-list-alt" style="padding-right:10px"></i>My Exams</a>
                               </li>
+                              <li class="divider"></li>
+                              <li><a href="/getpost"><i class="glyphicon glyphicon-bullhorn" style="padding-right:10px"></i>Announcements</a></li>
                               <li class="divider"></li>
                               {% endif %}
                               <li>

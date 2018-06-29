@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Create Exam{% endblock %}
+{% block external %}
+<!--Tinymce Text-Editor (Must be in Head Tag) -->
+<script src="/site_media/js/tinymce/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="/site_media/js/tinymce/js/tinymce/custom.js" ></script>
+<script src="/site_media/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+
+  $.datetimepicker.setLocale('en');
+
+  $('#start-time').datetimepicker({format: 'Y-m-d H:i', value:'',step:5});
+  $('#end-time').datetimepicker({format: 'Y-m-d H:i', value:'',step:5});
+</script>
+
+{% endblock %}
+{% block content %}
+                <div class="row">
+                     <div class="col-md-12 cont-head"><h4>Create Post</h4></div>
+                </div>
+                <div>
+                          <table class="table remove-bdr create" >
+                            <tbody>
+                            <form id="createpost-form" enctype="multipart/form-data" method="post" action=".">
+                                 {% csrf_token %}
+                              <tr>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                     {{ form.title.errors }}
+                                     {{ form.title }}
+                                    </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                        {{ form.haspic.errors }}
+                                        {{ form.haspic.label_tag }}
+                                        {{ form.haspic }}
+                                    </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                        {{ form.pic.errors }}
+                                        {{ form.pic }}
+                                    </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                    <div class="form-group inner-addon">
+                                        {{ form.text.errors }}
+                                        {{ form.text }}
+                                    </div>
+                                </td>
+                              </tr>
+                              <tr style="text-align:center;">
+                                <td class="save-btn-margin-left-140">
+                                    <div class="form-group inner-addon">
+                                        <button  type="submit" class="ln active">Save</button>
+                                    </div>
+                                </td>
+                              </tr>
+                             </form>
+                            </tbody>
+                          </table>
+                </div>
+
+{% endblock %}

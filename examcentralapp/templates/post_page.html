@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username }}{% endblock %}
+{% block external %}
+      <script type="text/javascript" src="/site_media/post.js"></script>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 cont-head"><h4>News and Updates</h4></div>
+    </div>
+        {% include "postlist.html" %}
+{% endblock %}

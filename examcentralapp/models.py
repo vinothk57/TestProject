@@ -10,6 +10,9 @@ def user_directory_path(instance, filename):
 def qtn_directory_path(instance, filename):
   return '%s/%s' % (instance.examname, filename)
 
+def post_directory_path(instance, filename):
+  return 'post_%s/%s' % (instance.id, filename)
+
 # Create your models here.
 class UserDetails(models.Model):
   user = models.ForeignKey(User)
@@ -185,6 +188,17 @@ class UserSectionScore(models.Model):
 
   def __str__(self):
     return '%s, %s, %s, %s' % (self.user.username, self.examname.examname, self.attemptid, self.section_score)
+
+class Post(models.Model):
+  title = models.CharField(max_length=150, unique=True)
+  time = models.DateTimeField()
+  text = models.TextField(max_length=5000)
+  haspic = models.BooleanField(default=False)
+  pic = models.FileField(upload_to=post_directory_path, null=True, blank=True)
+  published = models.BooleanField(default=False)
+
+  def __str__(self):
+    return '%s, %s' % (self.title, self.text)
 
 class Tag(models.Model):
   name = models.CharField(max_length=64, unique=True)
