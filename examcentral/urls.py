@@ -52,6 +52,7 @@ urlpatterns = [
     url(r'^getsectiondata/$', get_section_data),
     url(r'^fetchsolution/$', fetchSolutionJSON),
     url(r'^getpost/$', getpost_page),
+    url(r'^order_history/$', order_history_page),
 
     # Account Management
     url(r'^createpost/$', createpost_page),

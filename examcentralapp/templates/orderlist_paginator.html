@@ -1,0 +1,27 @@
+{% if orderlist %}
+
+    {% for order in orderlist %}
+      <div class="container">
+        <div class="panel panel-default">
+          <div class="panel-heading">Transaction ID: {{ order.txn_id }}</div>
+          <div class="panel-body">Product: {{ order.productinfo }}</div>
+          <div class="panel-body">Date: {{ order.time }}</div>
+          <div class="panel-body">Amount: {{ order.amount }}</div>
+          {% if order.txn_status %}
+            <div class="panel-body">Status: Transaction Successful</div>
+          {% else %}
+            <div class="panel-body">Status: Failed</div>
+          {% endif %}      
+        </div>
+      </div>
+    {% endfor %}
+
+       <div class="pagination">
+         <span class="step-links">
+          {{ pagination|safe }}
+         </span>
+       </div>
+{% else %}
+  <p>You have not done any purchases in this website.</p>
+{% endif %}
+
