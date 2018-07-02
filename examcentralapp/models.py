@@ -200,6 +200,15 @@ class Post(models.Model):
   def __str__(self):
     return '%s, %s' % (self.title, self.text)
 
+#txn_status - (0 - Fail, 1 - Success)
+class TransactionDetail(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  txn_id = models.CharField(max_length=400, unique=True)
+  time = models.DateTimeField()
+  amount = models.DecimalField(max_digits=15, decimal_places=2)
+  productinfo = models.CharField(max_length=150)
+  txn_status = models.BooleanField(default=False)
+
 class Tag(models.Model):
   name = models.CharField(max_length=64, unique=True)
   examnames = models.ManyToManyField(ExamName)

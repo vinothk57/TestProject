@@ -1857,6 +1857,12 @@ def payment(request):
     data["furl"] = request.build_absolute_uri(reverse("payment_failure"))
     data["surl"] = request.build_absolute_uri(reverse("payment_success"))
     
+    txn_detail, created = TransactionDetail.objects.get_or_create(
+        user_id=request.user.id,
+        txn_id=txnid,time=datetime.now(),amount=float(exam_price),
+        productinfo=examname, txn_status=False
+    )
+
     return render(request, "payment/payment_form.html", data)        
     
 # generate the hash
@@ -1901,6 +1907,10 @@ def payment_success(request):
     data['email'] = request.POST.get("email", "")
     data['firstname'] = request.POST.get("firstname", "")
     data['examname'] = ExamName.objects.get(id=examname_id).examname
+
+    txn_record = TransactionDetail.objects.filter(txn_id=request.POST.get("txnid", ""))[0]
+    txn_record.txn_status=True
+    txn_record.save()
 
     #send mail
     msg_html = render_to_string('payment/paysuccess_mail.html', data);
@@ -1960,6 +1970,31 @@ def payment_failure(request):
     messages.info(request, "Payment Failed! Please try again.")
     return render(request, "payment/failure.html", data)
 
+@login_required
+def order_history_page(request):
+  current_page = int(request.GET.get('page' ,1))
+  limit = 10 * current_page
+  offset = limit - 10
+
+  orderlist = TransactionDetail.objects.filter(user_id=request.user.id).order_by('-time')[offset:limit]
+
+  total_list = TransactionDetail.objects.filter(user_id=request.user.id).count()
+
+  total_pages = int(total_list / 10)
+
+  reminder = total_list % 10
+
+  if reminder:
+     total_pages += 1 # adding one more page if the last page will contains less contacts 
+
+  pagination = make_pagination_html(current_page, total_pages)
+
+  return render(request, 'orderhistory_page.html', {
+    'orderlist': orderlist,
+    'pagination': pagination,
+    'offset': offset,
+    'norightclick': False
+  })
 
 '''
 ===Payment End===

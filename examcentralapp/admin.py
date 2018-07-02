@@ -97,6 +97,12 @@ class PostAdmin(admin.ModelAdmin):
     ordering = ('time', 'title')
     search_fields = ('title', 'text')
 
+class TransactionDetailAdmin(admin.ModelAdmin):
+    list_display = ('user', 'txn_id', 'productinfo', 'txn_status')
+    list_filter = ('user', 'productinfo')
+    ordering = ('time', 'user', 'productinfo')
+    search_fields = ('txn_id', 'user', 'productinfo')
+
 # Register your models here.
 admin.site.register(ExamName)
 admin.site.register(UserExams, UserExamsAdmin)
@@ -115,4 +121,5 @@ admin.site.register(UserExamAttemptInfo, UserExamAttemptInfoAdmin)
 admin.site.register(ExamSectionInfo, ExamSectionInfoAdmin)
 admin.site.register(UserSectionScore, UserSectionScoreAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(TransactionDetail, TransactionDetailAdmin)
 
