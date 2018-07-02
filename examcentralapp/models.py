@@ -203,7 +203,7 @@ class Post(models.Model):
 #txn_status - (0 - Fail, 1 - Success)
 class TransactionDetail(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
-  txn_id = models.CharField(max_length=400, unique=True)
+  txn_id = models.CharField(max_length=255, unique=True)
   time = models.DateTimeField()
   amount = models.DecimalField(max_digits=15, decimal_places=2)
   productinfo = models.CharField(max_length=150)
