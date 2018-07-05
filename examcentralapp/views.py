@@ -16,6 +16,7 @@ from django.template.loader import get_template
 from django.template.loader import *
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
+from django.contrib.auth.views import login
 from django.contrib.auth import logout
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -139,6 +140,11 @@ def user_loggedin(request):
   #redirect_url = '/user/' + username
   return HttpResponseRedirect(redirect_url)
 
+def custom_login(request, **kwargs):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(HOME_PAGE_PATH)
+    else:
+        return login(request, **kwargs)
 @login_required
 def user_page(request, username):
   current_page = int(request.GET.get('page' ,1))
