@@ -1,0 +1,23 @@
+{% if result %}
+{% else %}
+  <p>Statistics not available for the exam.</p>
+{% endif %}
+    <div>
+       <table class="table">
+           <thead>
+           <tr>
+             <th>Total user subscriptions</th>
+             <th>Total users taken</th>
+             <th>Total attempts taken</th>
+           </tr>
+           </thead>
+
+           <tbody>
+           <tr>
+             <td>{{ result.total_subscriptions }}</td>
+             <td>{{ result.users_taken}}</td>
+             <td>{{ result.attempts_taken}}</td>
+           </tr>
+           </tbody>
+       </table>
+    </div>

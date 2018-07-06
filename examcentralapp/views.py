@@ -961,6 +961,35 @@ def publishexam_page(request):
     return HttpResponseRedirect(HOME_PAGE_PATH)
 
 @login_required
+def getexamstat_page(request):
+  if request.method == 'POST':
+    examid = request.POST.get("examid", "")
+    examname = ExamName.objects.filter(id=examid)
+    if examname.exists():
+      resultdict = {}
+      total_user_subscribed = UserExams.objects.filter(examname_id=examid).count()
+      total_attempts_taken = UserScoreSheet.objects.filter(examname_id=examid).count()
+      total_users_taken = 0
+      for user in UserExams.objects.filter(examname_id=examid):
+        if UserScoreSheet.objects.filter(user_id=user.user_id, examname_id=examid).exists():
+          total_users_taken = total_users_taken + 1
+
+      resultdict['total_subscriptions'] = total_user_subscribed
+      resultdict['users_taken'] = total_users_taken
+      resultdict['attempts_taken'] = total_attempts_taken
+      return render(request, 'staff/examstat_page.html', {
+        'examid': request.POST.get("examid", ""),
+        'examname': examname[0].examname,
+        'result': resultdict
+      })
+    else:
+      messages.info(request, 'Could not retrieve exam statistics!')
+      return HttpResponseRedirect(HOME_PAGE_PATH)
+  else:
+    messages.info(request, 'Could not retrieve exam statistics!')
+    return HttpResponseRedirect(HOME_PAGE_PATH)
+
+@login_required
 def takeexam_page(request):
   if request.method == 'POST':
       #Get userexam

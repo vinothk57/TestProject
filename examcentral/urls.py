@@ -70,6 +70,7 @@ urlpatterns = [
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', activate, name='activate'),
     url(r'^terms-of-use/$', terms_of_use_page),
     url(r'^privacy-policy/$', privacy_policy_page),
+    url(r'^getexamstat/$', getexamstat_page),
 
 
     # Payment
