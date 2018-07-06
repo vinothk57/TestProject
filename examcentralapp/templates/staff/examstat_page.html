@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 cont-head"><h4>Exam Statistics - {{ examname }}</h4></div>
+    </div>
+  {% if user.is_staff %}
+    <div class="row">
+      {% include 'staff/showexamstat.html' %}
+    </div>
+  {% endif %}
+{% endblock %}
+

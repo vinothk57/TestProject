@@ -10,7 +10,13 @@
 {% block content %}
     {% if user.is_staff %}
       <div class="row">
-        <div class="col-md-12 cont-head"><h4>Exam Details - {{ examname }}</h4></div>
+        <div class="col-md-12 cont-head"><div class="col-md-10 pull-left"><h4>Exam Details - {{ examname }}</h4></div>
+        <div class"col-md-1">
+            <form method="post" action="/getexamstat/">
+              {% csrf_token %}
+              <input type="hidden" name="examid" value="{{ examid }}"/>
+              <button type="submit" id="examstatbtn" class="ln active pull-right">Exam Statistics</button></div></div>
+            </form>
       </div>
                  {% include 'staff/editsection_modal.html' %}
                  {% include 'staff/deletesection_modal.html' %}
